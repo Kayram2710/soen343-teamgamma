@@ -44,36 +44,40 @@ const Login = ({ setLoggedInUser }) => {
   };
 
   return (
-    <div className={'mainContainer'}>
-      <div className={'titleContainer'}>
-        <div>Login</div>
-      </div>
-      <br />
-      <div className={'inputContainer'}>
-        <input
-          value={email}
-          placeholder="Enter your email here"
-          onChange={(ev) => setEmail(ev.target.value)}
-          className={'inputBox'}
-        />
-        <label className="errorLabel">{emailError}</label>
-      </div>
-      <br />
-      <div className={'inputContainer'}>
-        <input
-          type="password"
-          value={password}
-          placeholder="Enter your password here"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className={'inputBox'}
-        />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div className={'inputContainer'}>
-        <input className={'inputButton'} type="button" onClick={onLogin} value={'Log in'} />
-        <input className={'inputButton'} type="button" onClick={onRegister} value={'Register'} />
-        <label className="errorLabel">{loginError}</label>
+    <div className="authMasterCtn">
+      <div className="authMainContainer">
+        <div className={'titleContainer'}>
+          <div>Login</div>
+        </div>
+        <div className="credentialsCtn">
+          <div className={'inputContainer'}>
+            <input
+              value={email}
+              placeholder="Enter your email here"
+              onChange={(ev) => setEmail(ev.target.value)}
+              className={'inputBox'}
+            />
+            <label className="errorLabel">{emailError}</label>
+          </div>
+          <div className={'inputContainer'}>
+            <input
+              type="password"
+              value={password}
+              placeholder="Enter your password here"
+              onChange={(ev) => setPassword(ev.target.value)}
+              className={'inputBox'}
+            />
+            <label className="errorLabel">{passwordError}</label>
+        </div>
+        </div>
+        <div className={'inputContainer'}>
+          <input className={'authBtn'} type="button" onClick={onLogin} value={'Log in'} />
+          <label className="errorLabel">{loginError}</label>
+        </div>
+        <div className={'inputContainer'}>
+          <p>Don't have an account?</p>
+          <input className="noAccountRegisterBtn" type="button" onClick={onRegister} value={'Register'} />
+        </div>
       </div>
     </div>
   );
