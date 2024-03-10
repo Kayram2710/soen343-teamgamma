@@ -14,10 +14,10 @@ const Home = (props) => {
             <div className={'titleContainer'}>
                 <div>Welcome!</div>
             </div>
-            <div>This is the home page.</div>
+            <p>This is the home page.</p>
             <div className={'buttonContainer'}>
                 <input
-                    className={'inputButton'}
+                    className={'authBtn'}
                     type="button"
                     onClick={onLogout}
                     value={'Log out'}

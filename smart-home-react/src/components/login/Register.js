@@ -44,50 +44,54 @@ const Register = ({ setLoggedInUser }) => {
   };
 
   return (
-    <div className="mainContainer">
-      <div className="titleContainer">
-        <div>Register</div>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={email}
-          placeholder="Enter your email"
-          onChange={(ev) => setEmail(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{emailError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={username}
-          placeholder="Enter your username"
-          onChange={(ev) => setUsername(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{usernameError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          type="password"
-          value={password}
-          placeholder="Enter your password"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          className="inputButton"
-          type="button"
-          onClick={onRegister}
-          value="Register"
-        />
-        <label className="errorLabel">{registrationError}</label>
+    <div className="authMasterCtn">
+      <div className="authMainContainer">
+        <div className="titleContainer">
+          <div>Register</div>
+        </div>
+        <div className="credentialsCtn">
+          <div className="inputContainer">
+            <input
+              value={email}
+              placeholder="Enter your email"
+              onChange={(ev) => setEmail(ev.target.value)}
+              className="inputBox"
+            />
+            <label className="errorLabel">{emailError}</label>
+          </div>
+          <div className="inputContainer">
+            <input
+              value={username}
+              placeholder="Enter your username"
+              onChange={(ev) => setUsername(ev.target.value)}
+              className="inputBox"
+            />
+            <label className="errorLabel">{usernameError}</label>
+          </div>
+          <div className="inputContainer">
+            <input
+              type="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={(ev) => setPassword(ev.target.value)}
+              className="inputBox"
+            />
+            <label className="errorLabel">{passwordError}</label>
+          </div>
+        </div>
+        <div className="inputContainer">
+          <input
+            className="authBtn"
+            type="button"
+            onClick={onRegister}
+            value="Register"
+          />
+          <label className="errorLabel">{registrationError}</label>
+        </div>
+        <div className={'inputContainer'}>
+          <p>Have an account?</p>
+          <input className="noAccountRegisterBtn" type="button" onClick={onRegister} value={'Login'} />
+        </div>
       </div>
     </div>
   );
