@@ -1,9 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-import api from './api/axiosConfig';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/login/Register';

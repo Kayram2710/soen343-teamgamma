@@ -13,6 +13,10 @@ const Register = ({ setLoggedInUser }) => {
   const [registrationError, setRegistrationError] = useState('');
   const navigate = useNavigate();
 
+  const onLogin = () => {
+    navigate('/login'); 
+  };
+
   const onRegister = async () => {
     if (!email) {
       setEmailError('Email is required');
@@ -44,50 +48,52 @@ const Register = ({ setLoggedInUser }) => {
   };
 
   return (
-    <div className="mainContainer">
-      <div className="titleContainer">
-        <div>Register</div>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={email}
-          placeholder="Enter your email"
-          onChange={(ev) => setEmail(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{emailError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          value={username}
-          placeholder="Enter your username"
-          onChange={(ev) => setUsername(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{usernameError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          type="password"
-          value={password}
-          placeholder="Enter your password"
-          onChange={(ev) => setPassword(ev.target.value)}
-          className="inputBox"
-        />
-        <label className="errorLabel">{passwordError}</label>
-      </div>
-      <br />
-      <div className="inputContainer">
-        <input
-          className="inputButton"
-          type="button"
-          onClick={onRegister}
-          value="Register"
-        />
-        <label className="errorLabel">{registrationError}</label>
+    // Full-screen container with Tailwind CSS
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-xs">
+        <h2 className="text-center text-4xl font-bold text-gray-800 mb-6">Register</h2>
+
+        {/* Email Input */}
+        <div className="mb-4">
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            placeholder="Enter your email"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <p className="text-red-500 text-xs italic">{emailError}</p>
+        </div>
+
+        {/* Username Input */}
+        <div className="mb-4">
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            type="text"
+            placeholder="Enter your username"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <p className="text-red-500 text-xs italic">{usernameError}</p>
+        </div>
+
+        {/* Password Input */}
+        <div className="mb-6">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <p className="text-red-500 text-xs italic">{passwordError}</p>
+        </div>
+
+        {/* Error Message */}
+        <p className="text-red-500 text-xs italic mb-4">{registrationError}</p>
+
+        <input className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline"  type="button" onClick={onRegister} value={'Register'} />
+        <input className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline" type="button" onClick={onLogin} value={'Already have an account? Log in'} />
       </div>
     </div>
   );
