@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Layout loggedInUser={loggedInUser} />}>
           <Route path="/" element={checkLoggedIn() ? <Home loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} />} />
           <Route path="/register" element={<Register setLoggedInUser={setLoggedInUser} />} />
