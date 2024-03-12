@@ -1,4 +1,23 @@
-import api from './axiosConfig';
+import { default as api, default as axios } from './axiosConfig';
+
+export const createProfile = (userEmail, profileData) => {
+  return axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
+};
+
+export const deleteProfile = (userEmail, profileId) => {
+  return axios.delete(`/api/v1/users/${userEmail}/profiles/${profileId}`);
+};
+
+export const getUserProfiles = async (user) => {
+  try {
+    const response = await axios.get(`/api/v1/users/${user.email}/profiles`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profiles:", error);
+    throw error;
+  }
+};
+
 
 export async function validateUserLoggin(user) {
     try {
