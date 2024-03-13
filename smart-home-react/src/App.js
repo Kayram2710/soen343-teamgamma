@@ -7,6 +7,7 @@ import Settings from './components/Settings'; // Import Settings component
 import Home from './components/home/Home';
 import Login from './components/login/Login';
 import Register from './components/login/Register';
+import HouseLayout from './components/house/HouseLayout';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(
@@ -31,6 +32,7 @@ function App() {
             <Route path="/profile" element={checkLoggedIn() ? <Profile user={loggedInUser} /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} />} />
             <Route path="/register" element={<Register setLoggedInUser={setLoggedInUser} />} />
+            <Route path="/layout" element={<HouseLayout/>}/>
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>

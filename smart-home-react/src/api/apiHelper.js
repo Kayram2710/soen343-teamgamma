@@ -36,7 +36,23 @@ export async function validateUserRegistration(user){
         console.log(response.data);
         return response.data; 
     } catch (err) {
-        console.log(err);
-        throw err;
+      console.log(err);
+      throw err;
     }
+}
+
+
+export async function parseLayout(jsonData){
+  try{
+    const response = await api.get('/api/v1/Layout/parse-layout', jsonData, {
+      headers: {
+          'Content-Type': 'application/json'
+      }
+    });
+    console.log('Layout parsed successfully:', response.data);
+    return response.data;
+  }catch (err){
+    console.log(err);
+    throw err;
+  }
 }
