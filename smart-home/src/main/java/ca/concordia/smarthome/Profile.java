@@ -7,8 +7,8 @@ public class Profile {
     @Id
     private ObjectId  id;
 
-    private String profileName;
-    private double temperature;
+    public String profileName;
+    public double temperature;
 
     public Profile() {
         // No-argument constructor
@@ -24,7 +24,7 @@ public class Profile {
     }
 
     public String getProfileName() {
-        return profileName;
+        return this.profileName;
     }
 
     public void setProfileName(String profileName) {
@@ -32,7 +32,7 @@ public class Profile {
     }
 
     public double getTemperature() {
-        return temperature;
+        return this.temperature;
     }
 
     public void setTemperature(double temperature) {

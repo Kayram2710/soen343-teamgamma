@@ -28,24 +28,6 @@ public class UserService {
         }
     }
 
-    public Profile getIndividualProfile(String userEmail, ObjectId profileId) {
-        Optional<User> userOptional = userRepository.findByEmail(userEmail);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Profile> profiles = user.getProfiles();
-            if (profiles != null) {
-                for (Profile profile : profiles) {
-                    if (profile.getId().equals(profileId)) {
-                        return profile;
-                    }
-                }
-            }
-            throw new RuntimeException("Profile not found with id: " + profileId);
-        } else {
-            throw new RuntimeException("User not found with email, individual profile: " + userEmail);
-        }
-    }
-
     public Profile createProfile(String userEmail, Profile profile) {
         Optional<User> userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isPresent()) {
@@ -93,33 +75,33 @@ public class UserService {
     }
     
 
-    public Profile editProfile(ObjectId userId, Long profileId, Profile updatedProfileData) {
-        if (updatedProfileData == null) {
+    public Profile editProfile(String userEmail, ObjectId profileId, Profile ProfileData) {
+        if (ProfileData == null) {
             throw new IllegalArgumentException("updatedProfileData cannot be null");
         }
     
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<Profile> profiles = user.getProfiles();
             if (profiles != null) {
-                Profile updatedProfile = profiles.stream()
-                        .filter(profile -> profile.getId().equals(profileId))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Profile not found with id: " + profileId));
-    
-                updatedProfile.setProfileName(updatedProfileData.getProfileName());
-                updatedProfile.setTemperature(updatedProfileData.getTemperature());
-                // Update other fields as necessary
-    
-                userRepository.save(user); // Save user with updated profile list
-    
-                return updatedProfile;
+                for (Profile profile : profiles) {
+                    if (profile.getId().toString().equals(profileId.toString())) {
+                        profile.setProfileName(ProfileData.getProfileName());
+                        System.out.println("Profile Data: " + ProfileData.getProfileName());
+                        profile.setTemperature(ProfileData.getTemperature());
+                        System.out.println("Profile Data: " + ProfileData.getTemperature());
+                        user.setProfiles(profiles);
+                        userRepository.save(user);
+                        return profile;
+                    }
+                }
+                throw new RuntimeException("Profile not found with id: " + ProfileData.getId());
             } else {
                 throw new RuntimeException("User has no profiles");
             }
         } else {
-            throw new RuntimeException("User not found with id: " + userId);
+            throw new RuntimeException("User not found with email: " + userEmail);
         }
     }
     
