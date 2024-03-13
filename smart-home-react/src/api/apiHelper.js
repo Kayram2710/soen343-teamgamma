@@ -1,12 +1,40 @@
 import { default as api, default as axios } from './axiosConfig';
 
-export const createProfile = (userEmail, profileData) => {
-  return axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
+export const createProfile = async (userEmail, profileData) => {
+  try {
+    const response = await axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating profile:", error);
+    throw error;
+  }
 };
 
-export const deleteProfile = (userEmail, profileId) => {
-  return axios.delete(`/api/v1/users/${userEmail}/profiles/${profileId}`);
+export const deleteProfile = async (userEmail, profileId) => {
+  try {
+    const response = await axios.delete(`/api/v1/users/${userEmail}/profiles/${profileId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting profile:", error);
+    throw error;
+  }
 };
+
+export const editProfile = async (userEmail, profileId, updatedProfileData) => {
+  if (!user || !user.email || !profileId || !updatedProfileData) {
+    console.error("Invalid parameters passed to editProfile");
+    throw new Error("Invalid parameters passed to editProfile");
+  }
+
+  try {
+    const response = await axios.put(`/api/v1/users/${userEmail}/profiles/${profileId}`, updatedProfileData);
+    return response.data;
+  } catch (error) {
+    console.error("Error editing profile API HELPER:", error);
+    throw error;
+  }
+};
+
 
 export const getUserProfiles = async (user) => {
   try {

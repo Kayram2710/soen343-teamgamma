@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createProfile, deleteProfile, getUserProfiles } from '../api/apiHelper';
+import { createProfile, deleteProfile, editProfile, getUserProfiles } from '../api/apiHelper';
 
 
 
@@ -9,6 +9,9 @@ const Profile = ({user}) => {
   const [newProfileName, setNewProfileName] = useState('');
   const [newProfileTemperature, setNewProfileTemperature] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [editProfileTemperature, setEditProfileTemperature] = useState('');
+  const [editProfileName, setEditProfileName] = useState('');
+  const [editProfileId , setEditProfileId] = useState('');
 
   useEffect(() => {
     if (!user) return; // If no userId, do nothing
@@ -47,9 +50,10 @@ const Profile = ({user}) => {
     try {
       const newProfile = { profileName: newProfileName, temperature: newProfileTemperature };
       await createProfile(user.email, newProfile);
-      setProfiles([...profiles, newProfile]); // Update local state
-      setNewProfileName(newProfileName); // Reset input fields
-      setNewProfileTemperature(newProfileTemperature);
+      const updatedProfiles = await getUserProfiles(user);
+      setProfiles(updatedProfiles); // Update local state with profiles from the database
+      setNewProfileName(''); // Reset input fields
+      setNewProfileTemperature('');
     } catch (error) {
       console.error('Error creating profile:', error);
     }
@@ -65,26 +69,53 @@ const Profile = ({user}) => {
     }
   };
 
+  const handleEditProfile = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedProfile = { name: editProfileName, temperature: editProfileTemperature };
+      await editProfile(userEmail, editProfileId, updatedProfile);
+      const updatedProfiles = await getUserProfiles(user);
+      console.log(updatedProfiles); // Check the structure of the profiles
+      setProfiles(updatedProfiles); // Update local state with profiles from the database
+      setEditProfileId(''); // Reset input fields
+      setEditProfileName('');
+      setEditProfileTemperature('');
+    } catch (error) {
+      console.log("Profile Name " + editProfileName + " temp " + editProfileTemperature + " ID " + editProfileId + " email " + user.email)
+      console.error('Error editing profile PROFILE.JS:', error);
+    }
+  };
+  
+
+  
+
   if (isLoading) {
     return <div>Loading...</div>; // Loading state
   }
 
   return (
-    <div className="profile-container">
-      <h1>User Profiles</h1>
-      <form onSubmit={handleCreateProfile}>
-        <input type="text" value={newProfileName} onChange={e => setNewProfileName(e.target.value)} placeholder="Profile Name" />
-        <input type="number" value={newProfileTemperature} onChange={e => setNewProfileTemperature(e.target.value)} placeholder="Temperature" />
-        <button type="submit">Add Profile</button>
-      </form>
-      {profiles.map(profile => (
-        <div key={profile.id}>
-          <p>{profile.name}: {profile.temperature}°C</p>
-          <button onClick={() => handleDeleteProfile(profile.id)}>Delete</button>
-        </div>
-      ))}
-    </div>
+      <div className="profile-container">
+        <h1>User Profiles</h1>
+        <form onSubmit={handleCreateProfile}>
+          <input type="text" value={newProfileName} onChange={e => setNewProfileName(e.target.value)} placeholder="Profile Name" />
+          <input type="number" value={newProfileTemperature} onChange={e => setNewProfileTemperature(e.target.value)} placeholder="Temperature" />
+          <button type="submit">Add Profile</button>
+        </form>
+        {profiles.map(profile => (
+          <div key={profile.id}>
+            <p>{profile.name}: {profile.temperature}°C</p>
+            <button onClick={() => handleDeleteProfile(profile.id)}>Delete</button>
+            <button onClick={() => { setEditProfileId(profile.id); setEditProfileName(profile.name); setEditProfileTemperature(profile.temperature); }}>Edit</button>
+            {editProfileId === profile.id && (
+              <form onSubmit={handleEditProfile}>
+                <input type="text" value={editProfileName} onChange={e => setEditProfileName(e.target.value)} placeholder="Profile Name" />
+                <input type="number" value={editProfileTemperature} onChange={e => setEditProfileTemperature(e.target.value)} placeholder="Temperature" />
+                <button type="submit">Update Profile</button>
+              </form>
+            )}
+          </div>
+        ))}
+      </div>
   );
-};
-
+ }
 export default Profile;

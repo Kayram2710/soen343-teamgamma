@@ -93,7 +93,7 @@ public class UserService {
     }
     
 
-    public Profile editProfile(String userEmail, Profile ProfileData) {
+    public Profile editProfile(String userEmail, ObjectId profileId, Profile ProfileData) {
         if (ProfileData == null) {
             throw new IllegalArgumentException("updatedProfileData cannot be null");
         }
@@ -104,8 +104,11 @@ public class UserService {
             List<Profile> profiles = user.getProfiles();
             if (profiles != null) {
                 for (Profile profile : profiles) {
-                    if (profile.getId().toString().equals(ProfileData.getId().toString())) {
-                        profiles.remove(profile);
+                    if (profile.getId().toString().equals(profileId.toString())) {
+                        profile.setProfileName(ProfileData.getProfileName());
+                        profile.setTemperature(ProfileData.getTemperature());
+                        user.setProfiles(profiles);
+                        userRepository.save(user);
                         return profile;
                     }
                 }

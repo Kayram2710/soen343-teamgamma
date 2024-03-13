@@ -32,11 +32,11 @@ public class UserController {
         return ResponseEntity.ok(createdProfile);
     }
 
-    @GetMapping("/{userEmail}/profiles/{profileId}")
-    public ResponseEntity<Profile> getIndividualProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId) {
-        Profile createdProfile = userService.getIndividualProfile(userEmail, profileId);
-        return ResponseEntity.ok(createdProfile);
-    }
+    @PutMapping("/{userEmail}/profiles/{profileId}")
+    public ResponseEntity<Profile> editProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId, @RequestBody Profile updatedProfileData) {
+    Profile updatedProfile = userService.editProfile(userEmail, profileId, updatedProfileData);
+    return ResponseEntity.ok(updatedProfile);
+}
 
     @GetMapping("/{userEmail}/profiles")
     public ResponseEntity<List<Profile>> getProfiles(@PathVariable String userEmail) {
@@ -48,12 +48,6 @@ public class UserController {
     public ResponseEntity<?> removeProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId) {
         userService.removeProfile(userEmail, profileId);
         return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/{userId}/profiles/{profileId}")
-    public ResponseEntity<Profile> updateProfile(@PathVariable ObjectId userId, @PathVariable Long profileId, @RequestBody Profile updatedProfile) {
-        updatedProfile = userService.editProfile(userId, profileId, updatedProfile);
-        return ResponseEntity.ok(updatedProfile);
     }
 
     @GetMapping
