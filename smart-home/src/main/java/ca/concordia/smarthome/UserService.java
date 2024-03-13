@@ -93,33 +93,28 @@ public class UserService {
     }
     
 
-    public Profile editProfile(ObjectId userId, Long profileId, Profile updatedProfileData) {
-        if (updatedProfileData == null) {
+    public Profile editProfile(String userEmail, Profile ProfileData) {
+        if (ProfileData == null) {
             throw new IllegalArgumentException("updatedProfileData cannot be null");
         }
     
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<Profile> profiles = user.getProfiles();
             if (profiles != null) {
-                Profile updatedProfile = profiles.stream()
-                        .filter(profile -> profile.getId().equals(profileId))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Profile not found with id: " + profileId));
-    
-                updatedProfile.setProfileName(updatedProfileData.getProfileName());
-                updatedProfile.setTemperature(updatedProfileData.getTemperature());
-                // Update other fields as necessary
-    
-                userRepository.save(user); // Save user with updated profile list
-    
-                return updatedProfile;
+                for (Profile profile : profiles) {
+                    if (profile.getId().toString().equals(ProfileData.getId().toString())) {
+                        profiles.remove(profile);
+                        return profile;
+                    }
+                }
+                throw new RuntimeException("Profile not found with id: " + ProfileData.getId());
             } else {
                 throw new RuntimeException("User has no profiles");
             }
         } else {
-            throw new RuntimeException("User not found with id: " + userId);
+            throw new RuntimeException("User not found with email: " + userEmail);
         }
     }
     
