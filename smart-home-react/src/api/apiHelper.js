@@ -21,13 +21,10 @@ export const deleteProfile = async (userEmail, profileId) => {
 };
 
 export const editProfile = async (userEmail, profileId, updatedProfileData) => {
-  if (!user || !user.email || !profileId || !updatedProfileData) {
-    console.error("Invalid parameters passed to editProfile");
-    throw new Error("Invalid parameters passed to editProfile");
-  }
-
   try {
     const response = await axios.put(`/api/v1/users/${userEmail}/profiles/${profileId}`, updatedProfileData);
+    console.log(updatedProfileData.profileName)
+    console.log(updatedProfileData.temperature)
     return response.data;
   } catch (error) {
     console.error("Error editing profile API HELPER:", error);
@@ -36,9 +33,9 @@ export const editProfile = async (userEmail, profileId, updatedProfileData) => {
 };
 
 
-export const getUserProfiles = async (user) => {
+export const getUserProfiles = async (userEmail) => {
   try {
-    const response = await axios.get(`/api/v1/users/${user.email}/profiles`);
+    const response = await axios.get(`/api/v1/users/${userEmail}/profiles`);
     return response.data;
   } catch (error) {
     console.error("Error fetching profiles:", error);

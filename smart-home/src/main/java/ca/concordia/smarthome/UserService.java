@@ -28,24 +28,6 @@ public class UserService {
         }
     }
 
-    public Profile getIndividualProfile(String userEmail, ObjectId profileId) {
-        Optional<User> userOptional = userRepository.findByEmail(userEmail);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Profile> profiles = user.getProfiles();
-            if (profiles != null) {
-                for (Profile profile : profiles) {
-                    if (profile.getId().equals(profileId)) {
-                        return profile;
-                    }
-                }
-            }
-            throw new RuntimeException("Profile not found with id: " + profileId);
-        } else {
-            throw new RuntimeException("User not found with email, individual profile: " + userEmail);
-        }
-    }
-
     public Profile createProfile(String userEmail, Profile profile) {
         Optional<User> userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isPresent()) {
@@ -106,7 +88,9 @@ public class UserService {
                 for (Profile profile : profiles) {
                     if (profile.getId().toString().equals(profileId.toString())) {
                         profile.setProfileName(ProfileData.getProfileName());
+                        System.out.println("Profile Data: " + ProfileData.getProfileName());
                         profile.setTemperature(ProfileData.getTemperature());
+                        System.out.println("Profile Data: " + ProfileData.getTemperature());
                         user.setProfiles(profiles);
                         userRepository.save(user);
                         return profile;
