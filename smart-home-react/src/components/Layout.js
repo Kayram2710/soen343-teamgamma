@@ -1,12 +1,17 @@
-import {Outlet} from "react-router-dom";
 import React from 'react';
+import { Outlet } from 'react-router-dom';
+import NavbarForLoggedInUsers from './NavbarForLoggedInUsers';
 
-const Layout = () => {
-    return (
-        <main className="layout-container">
-            <Outlet/>
-        </main>
-    )
-}
+
+const Layout = ({ loggedInUser }) => {
+  return (
+    <div>
+      {loggedInUser && <NavbarForLoggedInUsers />}
+      <main>
+        <Outlet /> {/* Child routes are rendered here */}
+      </main>
+    </div>
+  );
+};
 
 export default Layout;

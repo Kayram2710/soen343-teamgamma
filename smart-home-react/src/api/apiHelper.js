@@ -1,4 +1,48 @@
-import api from './axiosConfig';
+import { default as api, default as axios } from './axiosConfig';
+
+export const createProfile = async (userEmail, profileData) => {
+  try {
+    const response = await axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating profile:", error);
+    throw error;
+  }
+};
+
+export const deleteProfile = async (userEmail, profileId) => {
+  try {
+    const response = await axios.delete(`/api/v1/users/${userEmail}/profiles/${profileId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting profile:", error);
+    throw error;
+  }
+};
+
+export const editProfile = async (userEmail, profileId, updatedProfileData) => {
+  try {
+    const response = await axios.put(`/api/v1/users/${userEmail}/profiles/${profileId}`, updatedProfileData);
+    console.log(updatedProfileData.profileName)
+    console.log(updatedProfileData.temperature)
+    return response.data;
+  } catch (error) {
+    console.error("Error editing profile API HELPER:", error);
+    throw error;
+  }
+};
+
+
+export const getUserProfiles = async (userEmail) => {
+  try {
+    const response = await axios.get(`/api/v1/users/${userEmail}/profiles`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profiles:", error);
+    throw error;
+  }
+};
+
 
 export async function validateUserLoggin(user) {
     try {
