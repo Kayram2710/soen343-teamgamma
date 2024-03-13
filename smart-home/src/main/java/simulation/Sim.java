@@ -22,7 +22,6 @@ public class Sim {
      * Block Windows from closing
      * 
      */
-
     
 
     //call this command to start simulation
