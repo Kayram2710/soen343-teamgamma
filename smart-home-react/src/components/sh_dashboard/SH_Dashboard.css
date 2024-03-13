@@ -1,0 +1,178 @@
+.flex {
+    display: flex;
+}
+.f-col {
+    flex-direction: column;
+}
+.align-center {
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+}
+.topCtnPadding {
+    padding: 0.5rem 1rem;
+}
+
+.dashboardMasterCtn {
+    max-height: 100vh;
+    width: 100%;
+}
+
+#dashboardMainCtn {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    gap: 2rem;
+    width: 100%;
+}
+
+#dashboardTopCtn {
+    display: flex;
+    padding: 0 2rem;
+    color: #FFF;
+    position: relative;
+}
+
+.dashboardTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#shdProfileSettings {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--hover-blue);
+    border-radius: 0.5rem 0 0 0.5rem;
+    border-right: 2px solid #FFF;
+}
+
+.profileIcon {
+    font-size: 2rem;
+}
+
+#userLocationCtn {
+    background-color: var(--hover-blue);
+    color: #FFF;
+}
+
+#dateCtn {
+    background-color: #FFF;
+    color: #000;
+}
+
+#timeCtn {
+    background-color: var(--hover-blue);
+    color: #FFF;
+}
+
+#temperatureCtn {
+    gap: 0.25rem;
+    background-color: var(--yellow);
+    color: #000;
+}
+
+#dashboardMiddleCtn {
+    padding: 0 3rem;
+    height: 50vh;
+    gap: 1rem;
+}
+
+#shdControllerMainContent {
+    position: relative;
+    flex-grow: 3;
+    height: 100%;
+}
+
+#shdControllerCtn {
+    background-color: var(--hover-blue);
+    color: #FFF;
+    width: 100%;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+#shdTopMenuBar {
+    justify-content: space-between;
+    border: 1px solid var(--hover-blue);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.shdMenuItem {
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+}
+
+.shdMenuItem:hover {
+    background-color: var(--primary-blue);
+}
+
+.shdMenuPadding {
+    padding: 0 0.5rem;
+}
+
+.active {
+    background-color: var(--primary-blue);
+}
+
+#shdControllerOutputCtn {
+    background-color: #FFF;
+    flex: 1;
+    padding: 0.5rem;
+}
+
+#houseViewCtn {
+    flex-grow: 5;
+    height: 100%;
+    background: #FFF;
+}
+
+#dashboardBottomCtn {
+    height: 10vh;
+    padding: 0 3rem;
+}
+
+#shdOutputConsole {
+    background: #FFF;
+    height: 100%;
+    width: 100%;
+}
+
+#simulationCtn {
+    border-radius: 0 0.5rem 0.5rem 0;
+    background-color: var(--green);
+    transition: 0.2s all ease-in-out;
+}
+
+#startSimulationBtn {
+    all: unset;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+#stopSimulationBtn {
+    all: unset;
+    padding: 1rem;
+    cursor: pointer;
+    display: none;
+}
+
+#simSettingsCtn {
+    position: absolute;
+    right: 6rem;
+    background-color: #818589;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+#simSettingsBtn {
+    all: unset;
+    cursor: pointer;
+    padding: 1rem;
+    color: #FFF;
+    background-color: #818589;
+}
