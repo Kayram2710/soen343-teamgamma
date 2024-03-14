@@ -10,6 +10,7 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import "./SH_Dashboard.css";
+import { startSim } from "../../api/apiHelper";
 
 const SH_Dashboard = (props) => {
   const { loggedInUser, setLoggedInUser } = props;
@@ -23,9 +24,16 @@ const SH_Dashboard = (props) => {
   const handleStart = () => {
     document.getElementById("startSimulationBtn").style.display = "none";
     document.getElementById("stopSimulationBtn").style.display = "block";
-    document.getElementById("simulationCtn").style.backgroundColor =
-      "var(--red)";
+    document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
+
+    start();
   };
+
+  const start = async () => {
+    console.log("started");
+    const runSim = await startSim();
+  }
+
   const handleStop = () => {
     document.getElementById("startSimulationBtn").style.display = "block";
     document.getElementById("stopSimulationBtn").style.display = "none";

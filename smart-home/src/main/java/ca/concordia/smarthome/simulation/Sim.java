@@ -1,5 +1,12 @@
-package simulation;
+package ca.concordia.smarthome.simulation;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/simulation")
 public class Sim {
 
     /*
@@ -24,8 +31,10 @@ public class Sim {
      */
     
 
-    //call this command to start simulation
-    public void run(){
+    @GetMapping("/run")
+    public String run(){
+
+        return "Test";
 
     }
 

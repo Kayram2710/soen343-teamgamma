@@ -1,5 +1,16 @@
 import { default as api, default as axios } from './axiosConfig';
 
+export const startSim = async () => {
+  try {
+    const response = await axios.get(`api/v1/simulation/run`);
+    console.log("success");
+    return response.data;
+  } catch (error) {
+    console.error("Error starting simulation:", error);
+    throw error;
+  }
+};
+
 export const createProfile = async (userEmail, profileData) => {
   try {
     const response = await axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
