@@ -11,6 +11,8 @@ public class Profile {
     public String HouseLocation;
     public String code;
 
+    public String permission;
+
     public Profile() {
         // No-argument constructor
     }
