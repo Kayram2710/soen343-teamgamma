@@ -12,8 +12,22 @@ import {
 import "./SH_Dashboard.css";
 import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
+import { startSim } from "../../api/apiHelper";
 
 const SH_Dashboard = (props) => {
+
+  const date = new Date();
+  const options = {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  };
+
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const currentTime = hours + ":" + minutes;
 
   /////////////////////////////////////////////////
   //Yousef's Implementation
@@ -21,10 +35,10 @@ const SH_Dashboard = (props) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
-    profile: '',
-    date: '',
-    time: '',
-    location: ''
+    profile: 'N/A',
+    date: formattedDate,
+    time: currentTime,
+    location: "Room"
   });
 
   // must dynamically adjust the options for the select element
@@ -52,13 +66,22 @@ const SH_Dashboard = (props) => {
       setPermissions(selectedOptions);
     };
 
-  const SettingsModal = ({ isOpen, onClose, settings, onInputChange }) => {
+    const handleTimeChange = (e) => {
+      const { name, value } = e.target;
+      const arr = value.split('T')
+      setSettings({
+        date: arr[0],
+        time: arr[1]
+      });
+    };
+
+  const SettingsModal = ({ isOpen, settings }) => {
     if (!isOpen) return null;
 
     return (
       <div className="settingsModal">
         <div className="settingsModalContent">
-          <h2>Simulation Settings</h2>
+          <h2>Simulation Parameter</h2>
           <form>
             <label>
               Select a profile:
@@ -77,7 +100,7 @@ const SH_Dashboard = (props) => {
             </label>
             <label>
               Set date and time:
-              <input type="datetime-local" name="date" value={settings.date} onChange={handleInputChange} />
+              <input type="datetime-local" name="date" value={settings.date} onChange={handleTimeChange} />
             </label>
             <label>
               Set house location:
@@ -96,14 +119,14 @@ const SH_Dashboard = (props) => {
             <label>
               Select profile permissions:
               <select name="permissions" value={permissions} onChange={handlePermissionsChange}  multiple={true}>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
+                <option value="parent">Parent</option>
+                <option value="children">Children</option>
+                <option value="stranger">Stranger</option>
                 <option value="guest">Guest</option>
                 {/* // we'll need to dynamically adjust the options for the select element */}
               </select>
             </label>
-            <button type="button" onClick={onClose}>Close</button>
-            <button type="submit">Save Settings</button>
+            <button type="button" onClick={handleCloseSettings}>Start</button>
           </form>
         </div>
       </div>
@@ -113,15 +136,15 @@ const SH_Dashboard = (props) => {
 //End of Yousef's Implementation
 ////////////////////////////////////////////
 
-  const { loggedInUser, setLoggedInUser } = props;
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
   const navigate = useNavigate();
 
-  const onLogout = () => {
-    setLoggedInUser(null);
-  };
-
   const handleStart = () => {
+
+    handleOpenSettings();
+
+    console.log(successfullCreation.exist);
+
     document.getElementById("startSimulationBtn").style.display = "none";
     document.getElementById("stopSimulationBtn").style.display = "block";
     document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
@@ -141,20 +164,9 @@ const SH_Dashboard = (props) => {
       "var(--green)";
   };
 
-  const today = new Date();
-  const options = {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  };
-  const formattedDate = today.toLocaleDateString("en-US", options);
-  const hours = String(today.getHours()).padStart(2, "0");
-  const minutes = String(today.getMinutes()).padStart(2, "0");
-  const currentTime = hours + ":" + minutes;
-
   return (
     <div className="dashboardMasterCtn flex justify-center">
+      
       <div id="dashboardMainCtn">
         <div className="dashboardTitle" style={{ fontSize: "1.25rem" }}>
           <b>My Smart Home Dashboard</b>
@@ -191,20 +203,20 @@ const SH_Dashboard = (props) => {
                     />
                   </div>
                   <div id="profileTitle">
-                    <p>Jane {/* loggedInUser.username */}</p>
+                    <p> {settings.profile}</p>
                   </div>
                 </div>
                 <div
                   id="userLocationCtn"
                   className="flex align-center topCtnPadding"
                 >
-                  <p>Location: Living Room{/* make location dynamic */}</p>
+                  <p>Location: {settings.location}</p>
                 </div>
                 <div id="dateCtn" className="flex align-center topCtnPadding">
-                  <p>{formattedDate}</p>
+                  <p>{settings.date}</p>
                 </div>
                 <div id="timeCtn" className="flex align-center topCtnPadding">
-                  <p>{currentTime}</p>
+                  <p>{settings.time}</p>
                 </div>
                 <div
                   id="temperatureCtn"
@@ -218,7 +230,7 @@ const SH_Dashboard = (props) => {
                 </div>
               </div>
               <div id="simSettingsCtn" className="flex align-center">
-                <button id="simSettingsBtn" onClick={handleOpenSettings} >
+                <button id="simSettingsBtn" >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
                 </button>
               </div>
@@ -316,9 +328,7 @@ const SH_Dashboard = (props) => {
       </div>
       <SettingsModal
       isOpen={isSettingsModalOpen}
-      onClose={handleCloseSettings}
       settings={settings}
-      onInputChange={handleInputChange}
     />
     </div>
   );

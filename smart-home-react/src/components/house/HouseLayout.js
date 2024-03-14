@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './HouseLayout.css';
 
+
 const LayoutParser = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [layoutHtml, setLayoutHtml] = useState('');
@@ -36,7 +37,15 @@ const LayoutParser = () => {
                 }
             });
             console.log('Layout parsed successfully:', response.data);
-            setLayoutHtml(response.data)
+
+            setParam({
+                exist: true,
+                json: jsonData,
+            });
+
+            console.log(successfullCreation.exist);
+
+            setLayoutHtml(response.data);
         } catch (error) {
             console.error('Error parsing layout:', error);
         }
