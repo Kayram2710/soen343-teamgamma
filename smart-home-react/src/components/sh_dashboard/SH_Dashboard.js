@@ -6,7 +6,7 @@ import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { getUserProfiles, startSim } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
@@ -24,6 +24,61 @@ const SH_Dashboard = ({user}) => {
     day: "numeric",
     year: "numeric",
   };
+
+  const [activeProfileId, setActiveProfileId] = useState(() => {
+    // Get the stored active profile ID from local storage
+    const savedProfileId = localStorage.getItem('activeProfileId');
+    return savedProfileId || null;
+  });
+
+  const handleClearActiveProfile = useCallback(() => {
+    // Remove the current active profile from local storage
+    localStorage.removeItem('activeProfileId');
+  
+    // Find the first profile that is not the current active profile
+    const newActiveProfile = profiles.find(profile => profile.id !== activeProfileId);
+  
+    // If such a profile exists, set it as the new active profile
+    if (newActiveProfile) {
+      setActiveProfileId(newActiveProfile.id);
+      localStorage.setItem('activeProfileId', newActiveProfile.id);
+    } else {
+      // If no other profiles exist, clear the active profile ID
+      setActiveProfileId(null);
+    }
+  }, [activeProfileId, profiles]);
+
+  // Function to set a profile as active
+  const handleSetActiveProfile = useCallback(async (profile) => {
+    const enteredPin = prompt("Enter PIN for " + profile.profileName);
+    if (enteredPin === null) return;
+
+    try {
+      const isValid = await verifyProfilePin(user.email, profile.id, enteredPin);
+      if (isValid) {
+        setActiveProfileId(profile.id);
+        localStorage.setItem('activeProfileId', profile.id);
+      } else {
+        alert('Incorrect PIN');
+      }
+    } catch (error) {
+      console.error('Error during PIN verification:', error);
+    }
+  }, [user.email]);
+
+  useEffect(() => {
+    if (!user) return; // If no userId, do nothing
+
+    getUserProfiles(user.email)
+      .then(profiles => {
+        setProfiles(profiles);
+      })
+      .catch(error => {
+        console.error('Error fetching profiles:', error);
+      })
+      .finally(() => {
+      });
+  }, [user.email]);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -64,12 +119,10 @@ const SH_Dashboard = ({user}) => {
       setIsSettingsModalOpen(false);
     };
 
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        [name]: value
-      }));
+    const handleInputChange = (event) => {
+      const inputValue = event.target.value;
+      const selectedProfile = profiles.find(profile => profile.id === inputValue);
+      handleSetActiveProfile(selectedProfile);
     };
 
     const handlePermissionsChange = (e) => {
