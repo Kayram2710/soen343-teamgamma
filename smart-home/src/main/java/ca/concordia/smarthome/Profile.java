@@ -16,6 +16,12 @@ public class Profile {
     public Profile() {
         // No-argument constructor
     }
+    public void setPerms(String permission) {
+        this.permission = permission;
+    }
+    public String getPerms() {
+        return this.permission;
+    }
 
     // Getters and setters
     public String getId() {

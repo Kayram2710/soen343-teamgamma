@@ -39,6 +39,13 @@ public class UserController {
     return ResponseEntity.ok(isVerified);
 }
 
+    @PutMapping("/{userEmail}/profiles/{profileId}/savePerms/{permission}")
+    public ResponseEntity<Profile> updatePerms(@PathVariable String userEmail, @PathVariable ObjectId profileId, @PathVariable String permission) {
+        Profile updatedPerms = userService.updatePerms(userEmail, profileId, permission);
+        return ResponseEntity.ok(updatedPerms);
+    }
+    
+
 
     @PutMapping("/{userEmail}/profiles/{profileId}")
     public ResponseEntity<Profile> editProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId, @RequestBody Profile updatedProfileData) {

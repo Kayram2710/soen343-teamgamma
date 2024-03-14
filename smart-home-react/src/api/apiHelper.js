@@ -23,10 +23,12 @@ export const sendLayout = async (jsonData) => {
   }
 };
 
-export const savePerm = async (permission) =>{
+export const savePerm = async (userEmail, permission, profileId) =>{
   try {
     console.log(permission);
-    const response = await axios.get(`/api/v1/users/savePerms`, permission);
+    console.log("profile id " + profileId);
+    console.log("usereamil " + userEmail);
+    const response = await axios.put(`/api/v1/users/${userEmail}/profiles/${profileId}/savePerms/${permission}`);
     console.log(response.data);
     return response.data;
   } catch (error) {
