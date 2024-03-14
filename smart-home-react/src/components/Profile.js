@@ -108,10 +108,6 @@ const Profile = ({user}) => {
   
 
   const handleCreateProfile = useCallback(async (e) => {
-    if (!isActiveProfileAdmin) {
-      alert('Only admin profiles can add new profiles.');
-      return;
-    }
     e.preventDefault();
     try {
       const newProfile = { profileName: newProfileName, houseLocation: newProfileHouseLocation, code: newProfileCode, isAdmin: newProfileisAdmin};
@@ -128,10 +124,6 @@ const Profile = ({user}) => {
   });
 
   const handleDeleteProfile = async (profileId) => {
-    if (!isActiveProfileAdmin) {
-      alert('Only admin profiles delete profiles.');
-      return;
-    }
     try {
       await deleteProfile(user.email, profileId);
       console.log(profileId);
@@ -142,10 +134,6 @@ const Profile = ({user}) => {
   };
 
   const handleEditProfile = async (e) => {
-    if (!isActiveProfileAdmin) {
-      alert('Only admin profiles can edit profiles.');
-      return;
-    }
     e.preventDefault();
     try {
       const updatedProfile = { profileName: editProfileName, houseLocation: editProfileHouseLocation };
