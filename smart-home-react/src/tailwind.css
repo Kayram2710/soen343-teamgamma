@@ -1,3 +1,12 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+:root {
+    --primary-blue: #19456B;
+    --hover-blue: #0E2A3A;
+    --beige: #F8F1F1;
+    --yellow: #F9E076;
+    --green: #228B22;
+    --red: #D70040;
+  }
