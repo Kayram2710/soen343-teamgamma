@@ -32,6 +32,17 @@ public class UserController {
         return ResponseEntity.ok(createdProfile);
     }
 
+    @PostMapping("/{userEmail}/profiles/{profileId}/verifyPin/{Pin}")
+    public ResponseEntity<?> verifyPin(@PathVariable String userEmail, @PathVariable ObjectId profileId, @PathVariable String Pin) {
+        System.out.println("Pin is: " + Pin);
+        System.out.println("profileId is: " + profileId);
+        System.out.println("userEmail is: " + userEmail);
+    String verifiedpin = Pin;
+    boolean isVerified = userService.verifyPin(userEmail, profileId, verifiedpin);
+    return ResponseEntity.ok(isVerified);
+}
+
+
     @PutMapping("/{userEmail}/profiles/{profileId}")
     public ResponseEntity<Profile> editProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId, @RequestBody Profile updatedProfileData) {
     Profile updatedProfile = userService.editProfile(userEmail, profileId, updatedProfileData);

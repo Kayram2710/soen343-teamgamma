@@ -28,6 +28,32 @@ public class UserService {
         }
     }
 
+    public boolean verifyPin(String userEmail, ObjectId profileId, String pin) {
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Profile> profiles = user.getProfiles();
+            if (profiles != null) {
+                for (Profile profile : profiles) {
+                    if ((profile.getId().toString().equals(profileId.toHexString()))) {
+                        System.out.println(profile.getId().toString());
+                        System.out.println(profileId.toString());
+                        System.out.println(profile.getCode());
+                        System.out.println(pin);
+                        if (profile.getCode().equals(pin)) {
+                            return true;
+                        }
+                    }
+                }
+                throw new RuntimeException("US Profile not found with id: " + profileId);
+            } else {
+                throw new RuntimeException("User has no profiles");
+            }
+        } else {
+            throw new RuntimeException("User not found with email: " + userEmail);
+        }
+    }
+
     public Profile createProfile(String userEmail, Profile profile) {
         Optional<User> userOptional = userRepository.findByEmail(userEmail);
         if (userOptional.isPresent()) {
@@ -35,6 +61,8 @@ public class UserService {
             // Map ProfileData fields to newProfile
             newProfile.setProfileName(profile.getProfileName());
             newProfile.setTemperature(profile.getTemperature());
+            newProfile.setIsAdmin(profile.getIsAdmin());
+            newProfile.setCode(profile.getCode());
             newProfile.setId(new ObjectId()); 
     
             // Add profile to user and update user
@@ -88,9 +116,7 @@ public class UserService {
                 for (Profile profile : profiles) {
                     if (profile.getId().toString().equals(profileId.toString())) {
                         profile.setProfileName(ProfileData.getProfileName());
-                        System.out.println("Profile Data: " + ProfileData.getProfileName());
                         profile.setTemperature(ProfileData.getTemperature());
-                        System.out.println("Profile Data: " + ProfileData.getTemperature());
                         user.setProfiles(profiles);
                         userRepository.save(user);
                         return profile;

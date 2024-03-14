@@ -9,6 +9,8 @@ public class Profile {
 
     public String profileName;
     public double temperature;
+    public boolean isAdmin;
+    public String code;
 
     public Profile() {
         // No-argument constructor
@@ -37,6 +39,18 @@ public class Profile {
 
     public void setTemperature(double temperature) {
         this.temperature = temperature;
+    }
+    public void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+    public boolean getIsAdmin() {
+        return this.isAdmin;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public String getCode() {
+        return this.code;
     }
 
     // Other getters and setters...
