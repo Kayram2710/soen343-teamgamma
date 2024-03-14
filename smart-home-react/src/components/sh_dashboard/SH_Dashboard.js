@@ -14,6 +14,105 @@ import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
 
 const SH_Dashboard = (props) => {
+
+  /////////////////////////////////////////////////
+  //Yousef's Implementation
+
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [permissions, setPermissions] = useState([]);
+  const [settings, setSettings] = useState({
+    profile: '',
+    date: '',
+    time: '',
+    location: ''
+  });
+
+  // must dynamically adjust the options for the select element
+  const profiles = ["profile1", "profile2", "profile3"];
+  const houseLocations = ["Living Room", "Kitchen", "Bedroom"];
+
+    const handleOpenSettings = () => {
+      setIsSettingsModalOpen(true);
+    };
+
+    const handleCloseSettings = () => {
+      setIsSettingsModalOpen(false);
+    };
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        [name]: value
+      }));
+    };
+
+    const handlePermissionsChange = (e) => {
+      const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+      setPermissions(selectedOptions);
+    };
+
+  const SettingsModal = ({ isOpen, onClose, settings, onInputChange }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="settingsModal">
+        <div className="settingsModalContent">
+          <h2>Simulation Settings</h2>
+          <form>
+            <label>
+              Select a profile:
+              {/* need to dynamically adjust */}
+              <select
+                  name="profile"
+                  value={settings.profile}
+                  onChange={handleInputChange}
+                  >
+                  {profiles.map((profile, index) => (
+                      <option key={index} value={profile}>
+                      {profile}
+                      </option>
+                  ))}
+                  </select>
+            </label>
+            <label>
+              Set date and time:
+              <input type="datetime-local" name="date" value={settings.date} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set house location:
+              <select
+              name="houseLocation"
+              value={settings.houseLocation}
+              onChange={handleInputChange}
+              >
+              {houseLocations.map((location, index) => (
+                  <option key={index} value={location}>
+                  {location}
+                  </option>
+              ))}
+              </select>          
+              </label>
+            <label>
+              Select profile permissions:
+              <select name="permissions" value={permissions} onChange={handlePermissionsChange}  multiple={true}>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+                <option value="guest">Guest</option>
+                {/* // we'll need to dynamically adjust the options for the select element */}
+              </select>
+            </label>
+            <button type="button" onClick={onClose}>Close</button>
+            <button type="submit">Save Settings</button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+//End of Yousef's Implementation
+////////////////////////////////////////////
+
   const { loggedInUser, setLoggedInUser } = props;
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
   const navigate = useNavigate();
@@ -119,7 +218,7 @@ const SH_Dashboard = (props) => {
                 </div>
               </div>
               <div id="simSettingsCtn" className="flex align-center">
-                <button id="simSettingsBtn">
+                <button id="simSettingsBtn" onClick={handleOpenSettings} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
                 </button>
               </div>
@@ -215,6 +314,12 @@ const SH_Dashboard = (props) => {
           </div>
         </div>
       </div>
+      <SettingsModal
+      isOpen={isSettingsModalOpen}
+      onClose={handleCloseSettings}
+      settings={settings}
+      onInputChange={handleInputChange}
+    />
     </div>
   );
 };
