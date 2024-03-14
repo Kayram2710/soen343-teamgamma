@@ -10,43 +10,167 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import "./SH_Dashboard.css";
+import HouseLayout from '../house/HouseLayout';
+import Shc from '../shc/Shc';
+import { startSim } from "../../api/apiHelper";
 
 const SH_Dashboard = (props) => {
-  const { loggedInUser, setLoggedInUser } = props;
-  const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
-  const navigate = useNavigate();
 
-  const onLogout = () => {
-    setLoggedInUser(null);
-  };
-
-  const handleStart = () => {
-    document.getElementById("startSimulationBtn").style.display = "none";
-    document.getElementById("stopSimulationBtn").style.display = "block";
-    document.getElementById("simulationCtn").style.backgroundColor =
-      "var(--red)";
-  };
-  const handleStop = () => {
-    document.getElementById("startSimulationBtn").style.display = "block";
-    document.getElementById("stopSimulationBtn").style.display = "none";
-    document.getElementById("simulationCtn").style.backgroundColor =
-      "var(--green)";
-  };
-
-  const today = new Date();
+  const date = new Date();
   const options = {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   };
-  const formattedDate = today.toLocaleDateString("en-US", options);
-  const hours = String(today.getHours()).padStart(2, "0");
-  const minutes = String(today.getMinutes()).padStart(2, "0");
+
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
   const currentTime = hours + ":" + minutes;
+
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [permissions, setPermissions] = useState([]);
+  const [settings, setSettings] = useState({
+    profile: 'N/A',
+    date: formattedDate,
+    time: currentTime,
+    location: "Room",
+    temperature: 0,
+  });
+
+  const [isSimRunning, setRun] = useState(false);
+
+  //Hardcoded Stuff
+  // must dynamically adjust the options for the select element
+  const profiles = ["profile1", "profile2", "profile3"];
+  const houseLocations = ["Living Room", "Kitchen", "Bedroom","Outside"];
+
+    const handleOpenSettings = () => {
+      setIsSettingsModalOpen(true);
+    };
+
+    const handleCloseSettings = () => {
+      setIsSettingsModalOpen(false);
+    };
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        [name]: value
+      }));
+    };
+
+    const handlePermissionsChange = (e) => {
+      const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+      setPermissions(selectedOptions);
+    };
+
+  const SettingsModal = ({ isOpen, settings }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="settingsModal">
+        <div className="settingsModalContent">
+          <h2>Simulation Parameter</h2>
+          <form>
+            <label>
+              Select a profile:
+              {/* need to dynamically adjust */}
+              <select
+                  name="profile"
+                  value={settings.profile}
+                  onChange={handleInputChange}
+                  >
+                  {profiles.map((profile, index) => (
+                      <option key={index} value={profile}>
+                      {profile}
+                      </option>
+                  ))}
+                  </select>
+            </label>
+            <label>
+              Set date:
+              <input type="date" name="date" value={settings.date} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set Time:
+              <input type="time" name="time" value={settings.time} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set outside temperature:
+              <input type="number" name="temperature" value={settings.temperature} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set house location:
+              <select
+              name="location"
+              value={settings.location}
+              onChange={handleInputChange}
+              >
+              {houseLocations.map((location, index) => (
+                  <option key={index} value={location}>
+                  {location}
+                  </option>
+              ))}
+              </select>          
+              </label>
+            <label>
+              Select profile permissions:
+              <select name="permissions" value={permissions} onChange={handlePermissionsChange}  multiple={true}>
+                <option value="Parent">Parent</option>
+                <option value="Child">Children</option>
+                <option value="Stranger">Stranger</option>
+                <option value="Guest">Guest</option>
+                {/* // we'll need to dynamically adjust the options for the select element */}
+              </select>
+            </label>
+            <button type="button" id="simParam" onClick={handleStart}>Set Parameters </button>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
+  const navigate = useNavigate();
+
+  const popup = () =>{
+    
+    handleOpenSettings();
+  }
+
+  const handleStart = async () => {
+
+    handleCloseSettings();
+
+    setRun(true);
+
+    document.getElementById("simSettingsCtn").style.visibility="visible";
+    document.getElementById("shc-content").style.visibility="visible";
+    document.getElementById("startSimulationBtn").style.display = "none";
+    document.getElementById("stopSimulationBtn").style.display = "block";
+    document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
+
+    console.log("started");
+    const runSim = await startSim();
+  };
+
+  const handleStop = () => {
+
+    setRun(false);
+
+    document.getElementById("shc-content").style.visibility="hidden";
+    document.getElementById("simSettingsCtn").style.visibility="hidden";
+    document.getElementById("startSimulationBtn").style.display = "block";
+    document.getElementById("stopSimulationBtn").style.display = "none";
+    document.getElementById("simulationCtn").style.backgroundColor = "var(--green)";
+  };
 
   return (
     <div className="dashboardMasterCtn flex justify-center">
+      
       <div id="dashboardMainCtn">
         <div className="dashboardTitle" style={{ fontSize: "1.25rem" }}>
           <b>My Smart Home Dashboard</b>
@@ -62,7 +186,7 @@ const SH_Dashboard = (props) => {
                 id="simulationCtn"
                 className="flex align-center justify-center"
               >
-                <button id="startSimulationBtn" onClick={handleStart}>
+                <button id="startSimulationBtn" onClick={popup}>
                   Start Simulation &nbsp;
                   <FontAwesomeIcon icon={faPlay} />
                 </button>
@@ -83,20 +207,23 @@ const SH_Dashboard = (props) => {
                     />
                   </div>
                   <div id="profileTitle">
-                    <p>Jane {/* loggedInUser.username */}</p>
+                    <p> {settings.profile}</p>
                   </div>
                 </div>
                 <div
                   id="userLocationCtn"
                   className="flex align-center topCtnPadding"
                 >
-                  <p>Location: Living Room{/* make location dynamic */}</p>
+                  <p>Location: {settings.location}</p>
                 </div>
                 <div id="dateCtn" className="flex align-center topCtnPadding">
-                  <p>{formattedDate}</p>
+                  <p>{settings.date}</p>
                 </div>
                 <div id="timeCtn" className="flex align-center topCtnPadding">
-                  <p>{currentTime}</p>
+                  <p>{settings.time}</p>
+                </div>
+                <div id="timeCtn" className="flex align-center topCtnPadding">
+                  <p>Permission Profile: {permissions}</p>
                 </div>
                 <div
                   id="temperatureCtn"
@@ -104,22 +231,20 @@ const SH_Dashboard = (props) => {
                 >
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>8˚C</p>
+                    <p>{settings.temperature}</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
               </div>
               <div id="simSettingsCtn" className="flex align-center">
-                <button id="simSettingsBtn">
+                <button id="simSettingsBtn" onClick={popup} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
                 </button>
               </div>
             </div>
           </div>
 
-          <div id="houseViewCtn" className="flex justify-center align-center">
-            <h2>House View</h2>
-          </div>
+          <HouseLayout />
 
           <div id="shdControllerMainContent" className="flex f-col">
             <div id="shdControllerCtn">
@@ -193,7 +318,8 @@ const SH_Dashboard = (props) => {
               id="shdControllerOutputCtn"
               className="flex align-center justify-center"
             >
-              {shdControllerActiveTab}
+              {/* {shdControllerActiveTab} */}
+              <Shc></Shc>
             </div>
           </div>
         </div>
@@ -207,6 +333,10 @@ const SH_Dashboard = (props) => {
           </div>
         </div>
       </div>
+      <SettingsModal
+      isOpen={isSettingsModalOpen}
+      settings={settings}
+    />
     </div>
   );
 };

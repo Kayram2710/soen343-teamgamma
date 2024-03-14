@@ -1,5 +1,28 @@
 import { default as api, default as axios } from './axiosConfig';
 
+export const startSim = async () => {
+  try {
+    const response = await axios.get(`api/v1/simulation/run`);
+    console.log("success");
+    return response.data;
+  } catch (error) {
+    console.error("Error starting simulation:", error);
+    throw error;
+  }
+};
+
+export const sendLayout = async (jsonData) => {
+  try {
+    console.log(jsonData);
+    const response = await axios.get(`api/v1/simulation/saveLayout`,jsonData);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error starting simulation:", error);
+    throw error;
+  }
+};
+
 export const createProfile = async (userEmail, profileData) => {
   try {
     const response = await axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);
@@ -70,7 +93,23 @@ export async function validateUserRegistration(user){
         console.log(response.data);
         return response.data; 
     } catch (err) {
-        console.log(err);
-        throw err;
+      console.log(err);
+      throw err;
     }
+}
+
+
+export async function parseLayout(jsonData){
+  try{
+    const response = await api.get('/api/v1/Layout/parse-layout', jsonData, {
+      headers: {
+          'Content-Type': 'application/json'
+      }
+    });
+    console.log('Layout parsed successfully:', response.data);
+    return response.data;
+  }catch (err){
+    console.log(err);
+    throw err;
+  }
 }
