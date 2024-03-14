@@ -9,6 +9,7 @@ public class RoomHandler extends AbstractJsonHandler{
 
     @Override
     public void handle(JSONObject roomJson, StringBuilder htmlBuilder) {
+       try{
         String roomName = roomJson.getString("name");
         int x = roomJson.getJSONObject("position").getInt("x");
         int y = roomJson.getJSONObject("position").getInt("y");
@@ -24,5 +25,10 @@ public class RoomHandler extends AbstractJsonHandler{
         super.handle(roomJson, htmlBuilder);
 
         htmlBuilder.append("</div>");
+       }catch(Exception e){
+        System.out.println("No Rooms found.");
+        htmlBuilder.append("Invalid File");
+       }
+        
     }
 }

@@ -1,0 +1,25 @@
+#loadHouseCtn {
+    border-radius: 0.5rem;
+    background-color: var(--primary-blue);
+    transition: 0.2s all ease-in-out;
+    text-align: center;
+    margin: 1.5% 35%;
+    padding: 1%;
+    color: white;
+}
+
+#loadHouseBtn {
+    all: unset;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+#loadHouseCtn:hover {
+    transform: scale(1.05);
+    background-color: var(--hover-blue);
+}
+
+.room{
+    margin-left: 10%;
+}

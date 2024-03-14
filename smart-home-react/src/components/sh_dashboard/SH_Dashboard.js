@@ -10,7 +10,8 @@ import {
   faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import "./SH_Dashboard.css";
-import { startSim } from "../../api/apiHelper";
+import HouseLayout from '../house/HouseLayout';
+import Shc from '../shc/Shc';
 
 const SH_Dashboard = (props) => {
   const { loggedInUser, setLoggedInUser } = props;
@@ -125,9 +126,7 @@ const SH_Dashboard = (props) => {
             </div>
           </div>
 
-          <div id="houseViewCtn" className="flex justify-center align-center">
-            <h2>House View</h2>
-          </div>
+          <HouseLayout />
 
           <div id="shdControllerMainContent" className="flex f-col">
             <div id="shdControllerCtn">
@@ -201,7 +200,8 @@ const SH_Dashboard = (props) => {
               id="shdControllerOutputCtn"
               className="flex align-center justify-center"
             >
-              {shdControllerActiveTab}
+              {/* {shdControllerActiveTab} */}
+              <Shc></Shc>
             </div>
           </div>
         </div>

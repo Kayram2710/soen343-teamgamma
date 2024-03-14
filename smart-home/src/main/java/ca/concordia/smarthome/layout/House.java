@@ -8,6 +8,7 @@ public class House {
     private List<Room> rooms = new ArrayList<Room>();
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
+    private List<Window> windows = new ArrayList<Window>();
 
     private House() {
 
@@ -48,10 +49,20 @@ public class House {
         house.doors = doors;
     }
 
+    
+    public static List<Window> getWindows() {
+        return house.windows;
+    }
+
+    public static void setWindows(List<Window> windows) {
+        house.windows = windows;
+    }
+
     public static void reset(){
         house.rooms = new ArrayList<Room>();
         house.lights = new ArrayList<Light>();
         house.doors = new ArrayList<Door>();
+        house.windows = new ArrayList<Window>();
     }
 
 }

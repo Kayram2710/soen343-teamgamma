@@ -69,7 +69,10 @@ function App() {
             path="/register"
             element={<Register setLoggedInUser={setLoggedInUser} />}
           />
-          <Route path="/layout" element={<HouseLayout/>}/>
+          <Route
+            path="/layout"
+            element={<HouseLayout />}
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
