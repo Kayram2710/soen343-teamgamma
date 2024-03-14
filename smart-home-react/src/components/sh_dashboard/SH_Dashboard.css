@@ -123,6 +123,7 @@
     border-radius: 0.5rem;
     background-color: var(--green);
     transition: 0.2s all ease-in-out;
+    visibility: hidden;
 }
 
 #startSimulationBtn {
@@ -148,6 +149,7 @@
 #simSettingsCtn {
     background-color: #818589;
     border-radius: 0.5rem;
+    visibility: hidden;
 }
 
 #simSettingsBtn {
@@ -245,9 +247,8 @@
     margin-bottom: 10px;
     font-weight: bold;
   }
-  
-  .settingsModalContent form input[type="text"],
-  .settingsModalContent form input[type="datetime-local"],
+
+  .settingsModalContent form input,
   .settingsModalContent form select {
     padding: 10px;
     margin-bottom: 20px;

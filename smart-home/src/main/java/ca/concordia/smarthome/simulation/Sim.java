@@ -1,7 +1,9 @@
 package ca.concordia.smarthome.simulation;
 
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +31,8 @@ public class Sim {
      * Block Windows from closing
      * 
      */
+
+    static String layout;
     
 
     @GetMapping("/run")
@@ -36,6 +40,16 @@ public class Sim {
 
         return "Test";
 
+    }
+
+    @GetMapping("/saveLayout")
+    public String setLayout(@RequestBody String jsonData){
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        System.out.println(jsonObject);
+
+        return "Layout Saved";
     }
 
     //call this command to stop simulation

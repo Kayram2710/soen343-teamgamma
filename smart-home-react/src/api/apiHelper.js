@@ -11,6 +11,18 @@ export const startSim = async () => {
   }
 };
 
+export const sendLayout = async (jsonData) => {
+  try {
+    console.log(jsonData);
+    const response = await axios.get(`api/v1/simulation/saveLayout`,jsonData);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error starting simulation:", error);
+    throw error;
+  }
+};
+
 export const createProfile = async (userEmail, profileData) => {
   try {
     const response = await axios.post(`/api/v1/users/${userEmail}/profiles`, profileData);

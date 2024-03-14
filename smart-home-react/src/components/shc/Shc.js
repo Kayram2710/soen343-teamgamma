@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import "./shc.css"
 
 const Shc = () => {
     const [doors, setDoors] = useState([]);
     const [lights, setLights] = useState([]);
     const [windows, setWindows] = useState([]);
+
 
     useEffect(() => {
         const observer = new MutationObserver(() => {
@@ -51,7 +53,7 @@ const Shc = () => {
     };
 
     return (
-        <div>
+        <div id="shc-content">
             <table>
                 <thead>
                     <tr>
@@ -64,8 +66,8 @@ const Shc = () => {
                         <tr key={`door-${index}`} onMouseEnter={() => handleHover(door)} onMouseLeave={() => handleLeave(door)}>
                             <td>Door {index + 1}</td>
                             <td>
-                                <button onClick={() => handleToggle(door)}>Open</button>
-                                <button onClick={() => handleToggle(door)}>Close</button>
+                                <button onClick={() => handleToggle(door)}>Open/ </button>
+                                <button onClick={() => handleToggle(door)}> Close</button>
                             </td>
                         </tr>
                     ))}
@@ -73,7 +75,7 @@ const Shc = () => {
                         <tr key={`light-${index}`} onMouseEnter={() => handleHover(light)} onMouseLeave={() => handleLeave(light)}>
                             <td>Light {index + 1}</td>
                             <td>
-                                <button onClick={() => handleToggle(light)}>On</button>
+                                <button onClick={() => handleToggle(light)}>On/</button>
                                 <button onClick={() => handleToggle(light)}>Off</button>
                             </td>
                         </tr>
@@ -82,7 +84,7 @@ const Shc = () => {
                         <tr key={`window-${index}`} onMouseEnter={() => handleHover(window)} onMouseLeave={() => handleLeave(window)}>
                             <td>Window {index + 1}</td>
                             <td>
-                                <button onClick={() => handleToggle(window)}>Open</button>
+                                <button onClick={() => handleToggle(window)}>Open/</button>
                                 <button onClick={() => handleToggle(window)}>Close</button>
                             </td>
                         </tr>

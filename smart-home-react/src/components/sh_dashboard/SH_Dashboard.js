@@ -29,21 +29,22 @@ const SH_Dashboard = (props) => {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const currentTime = hours + ":" + minutes;
 
-  /////////////////////////////////////////////////
-  //Yousef's Implementation
-
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
     profile: 'N/A',
     date: formattedDate,
     time: currentTime,
-    location: "Room"
+    location: "Room",
+    temperature: 0,
   });
 
+  const [isSimRunning, setRun] = useState(false);
+
+  //Hardcoded Stuff
   // must dynamically adjust the options for the select element
   const profiles = ["profile1", "profile2", "profile3"];
-  const houseLocations = ["Living Room", "Kitchen", "Bedroom"];
+  const houseLocations = ["Living Room", "Kitchen", "Bedroom","Outside"];
 
     const handleOpenSettings = () => {
       setIsSettingsModalOpen(true);
@@ -64,15 +65,6 @@ const SH_Dashboard = (props) => {
     const handlePermissionsChange = (e) => {
       const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
       setPermissions(selectedOptions);
-    };
-
-    const handleTimeChange = (e) => {
-      const { name, value } = e.target;
-      const arr = value.split('T')
-      setSettings({
-        date: arr[0],
-        time: arr[1]
-      });
     };
 
   const SettingsModal = ({ isOpen, settings }) => {
@@ -99,14 +91,22 @@ const SH_Dashboard = (props) => {
                   </select>
             </label>
             <label>
-              Set date and time:
-              <input type="datetime-local" name="date" value={settings.date} onChange={handleTimeChange} />
+              Set date:
+              <input type="date" name="date" value={settings.date} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set Time:
+              <input type="time" name="time" value={settings.time} onChange={handleInputChange} />
+            </label>
+            <label>
+              Set outside temperature:
+              <input type="number" name="temperature" value={settings.temperature} onChange={handleInputChange} />
             </label>
             <label>
               Set house location:
               <select
-              name="houseLocation"
-              value={settings.houseLocation}
+              name="location"
+              value={settings.location}
               onChange={handleInputChange}
               >
               {houseLocations.map((location, index) => (
@@ -119,49 +119,53 @@ const SH_Dashboard = (props) => {
             <label>
               Select profile permissions:
               <select name="permissions" value={permissions} onChange={handlePermissionsChange}  multiple={true}>
-                <option value="parent">Parent</option>
-                <option value="children">Children</option>
-                <option value="stranger">Stranger</option>
-                <option value="guest">Guest</option>
+                <option value="Parent">Parent</option>
+                <option value="Child">Children</option>
+                <option value="Stranger">Stranger</option>
+                <option value="Guest">Guest</option>
                 {/* // we'll need to dynamically adjust the options for the select element */}
               </select>
             </label>
-            <button type="button" onClick={handleCloseSettings}>Start</button>
+            <button type="button" id="simParam" onClick={handleStart}>Set Parameters </button>
           </form>
         </div>
       </div>
     );
   };
 
-//End of Yousef's Implementation
-////////////////////////////////////////////
-
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
   const navigate = useNavigate();
 
-  const handleStart = () => {
-
+  const popup = () =>{
+    
     handleOpenSettings();
+  }
 
-    console.log(successfullCreation.exist);
+  const handleStart = async () => {
 
+    handleCloseSettings();
+
+    setRun(true);
+
+    document.getElementById("simSettingsCtn").style.visibility="visible";
+    document.getElementById("shc-content").style.visibility="visible";
     document.getElementById("startSimulationBtn").style.display = "none";
     document.getElementById("stopSimulationBtn").style.display = "block";
     document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
 
-    start();
-  };
-
-  const start = async () => {
     console.log("started");
     const runSim = await startSim();
-  }
+  };
 
   const handleStop = () => {
+
+    setRun(false);
+
+    document.getElementById("shc-content").style.visibility="hidden";
+    document.getElementById("simSettingsCtn").style.visibility="hidden";
     document.getElementById("startSimulationBtn").style.display = "block";
     document.getElementById("stopSimulationBtn").style.display = "none";
-    document.getElementById("simulationCtn").style.backgroundColor =
-      "var(--green)";
+    document.getElementById("simulationCtn").style.backgroundColor = "var(--green)";
   };
 
   return (
@@ -182,7 +186,7 @@ const SH_Dashboard = (props) => {
                 id="simulationCtn"
                 className="flex align-center justify-center"
               >
-                <button id="startSimulationBtn" onClick={handleStart}>
+                <button id="startSimulationBtn" onClick={popup}>
                   Start Simulation &nbsp;
                   <FontAwesomeIcon icon={faPlay} />
                 </button>
@@ -218,19 +222,22 @@ const SH_Dashboard = (props) => {
                 <div id="timeCtn" className="flex align-center topCtnPadding">
                   <p>{settings.time}</p>
                 </div>
+                <div id="timeCtn" className="flex align-center topCtnPadding">
+                  <p>Permission Profile: {permissions}</p>
+                </div>
                 <div
                   id="temperatureCtn"
                   className="flex f-col align-middle topCtnPadding"
                 >
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>8˚C</p>
+                    <p>{settings.temperature}</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
               </div>
               <div id="simSettingsCtn" className="flex align-center">
-                <button id="simSettingsBtn" >
+                <button id="simSettingsBtn" onClick={popup} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
                 </button>
               </div>
