@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SimulationControl from './SH_simulatorController';
 import {
   faUserCircle,
   faCloud,
@@ -47,48 +48,12 @@ const SH_Dashboard = (props) => {
 
   return (
     <div className="dashboardMasterCtn flex align-center justify-center">
+     <div className="dashboardSimCtn flex align-center justify-center">
+      <SimulationControl />
+      </div>
       <div id="dashboardMainCtn">
         <div className="dashboardTitle">
           <h1>My Smart Home Dashboard</h1>
-        </div>
-
-        <div id="dashboardTopCtn" className="flex justify-center">
-          <div id="shdProfileSettings" className="topCtnPadding">
-            <div id="profileIconCtn">
-              <FontAwesomeIcon icon={faUserCircle} className="profileIcon" />
-            </div>
-            <div id="profileTitle">
-              <p>Jane {/* loggedInUser.username */}</p>
-            </div>
-          </div>
-          <div id="userLocationCtn" className="flex align-center topCtnPadding">
-            <p>Location: Living Room{/* make location dynamic */}</p>
-          </div>
-          <div id="dateCtn" className="flex align-center topCtnPadding">
-            <p>{formattedDate}</p>
-          </div>
-          <div id="timeCtn" className="flex align-center topCtnPadding">
-            <p>{currentTime}</p>
-          </div>
-          <div id="temperatureCtn" className="flex align-center topCtnPadding">
-            <p>Outside Temp: 8˚C</p>
-            <FontAwesomeIcon icon={faCloud} />
-          </div>
-          <div id="simulationCtn" className="flex align-center justify-center">
-            <button id="startSimulationBtn" onClick={handleStart}>
-              Start &nbsp;
-              <FontAwesomeIcon icon={faPlay} />
-            </button>
-            <button id="stopSimulationBtn" onClick={handleStop}>
-              Stop &nbsp;
-              <FontAwesomeIcon icon={faStop} />
-            </button>
-          </div>
-          <div id="simSettingsCtn" className="flex align-center">
-            <button id="simSettingsBtn">
-              Settings &nbsp; <FontAwesomeIcon icon={faGear} />
-            </button>
-          </div>
         </div>
 
         <div id="dashboardMiddleCtn" className="flex">

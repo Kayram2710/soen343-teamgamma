@@ -11,7 +11,10 @@
     justify-content: center;
 }
 .topCtnPadding {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
 }
 
 .dashboardMasterCtn {
@@ -24,7 +27,7 @@
     flex-direction: column;
     padding-top: 2rem;
     gap: 2rem;
-    width: 100%;
+    width: 80%;
 }
 
 #dashboardTopCtn {
@@ -176,3 +179,136 @@
     color: #FFF;
     background-color: #818589;
 }
+
+.dashboardSimCtn {
+    width: 20%; 
+    flex-direction: column;
+}
+
+.simulationControlContainer {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start */
+    padding: 1rem; /* Add padding around the container */
+    gap: 10px; /* Space between items */
+  }
+  
+.simulationControl {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .simulationControl .simulationButton {
+    background-color: var(--green); /* Use a CSS variable or a specific color code */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Vertical and horizontal padding */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Mouse pointer */
+    font-weight: bold; /* Make the text bold */
+    text-transform: uppercase; /* UPPERCASE text */
+    margin-bottom: 10px; /* Space below the button */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+  
+  .simulationControl .simulationButton:hover {
+    background-color: var(--dark-green); /* Darker shade on hover */
+  }
+  
+  .simulationControl .profileIconCtn {
+    display: flex; /* Align items with flexbox */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    gap: 10px; /* Space between the icon and the text */
+    padding: 10px; /* Padding inside the container */
+    margin-bottom: 10px; /* Space below the container */
+  }
+  
+  .simulationControl .profileIcon {
+    font-size: 2rem; /* Size of the icon */
+    color: var(--blue); /* Color of the icon */
+  }
+  
+  .settingsModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .settingsModalContent {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    max-width: 500px; /* Maximum width of the form */
+  }
+  
+  .settingsModalContent h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .settingsModalContent form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .settingsModalContent form label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .settingsModalContent form input[type="text"],
+  .settingsModalContent form input[type="datetime-local"],
+  .settingsModalContent form select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ab9c9c;
+    border-radius: 5px;
+  }
+  
+  .settingsModalContent label {
+    display: block; 
+    margin-bottom: 8px; 
+  }
+  
+  .settingsModalContent input,
+  .settingsModalContent select {
+    width: 100%; 
+    margin-bottom: 16px; 
+  } 
+  .settingsModalContent form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .settingsModalContent form button[type="button"] {
+    background-color: #c23f3f;
+    color: white;
+  }
+  
+  .settingsModalContent form button[type="submit"] {
+    background-color: #4CAF50; 
+    color: white;
+  }
+  
+
+  .settingsModalContent form button:hover {
+    opacity: 0.9;
+  }
+  
+  
