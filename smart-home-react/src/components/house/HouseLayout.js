@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './HouseLayout.css';
 
 const LayoutParser = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -41,10 +42,18 @@ const LayoutParser = () => {
     };
 
     return (
-        <div>
-            <input type="file" onChange={handleFileChange} />
-            <button onClick={handleFileUpload}>Upload File</button>
-            <div dangerouslySetInnerHTML={{ __html: layoutHtml }} />
+        <div id="houseViewCtn" className="flex justify-center align-center">
+            <div style={{ position: 'relative', height: '100%', width: '100%' }}>
+                <div id="loadHouseCtn" style={{ textAlign: 'center' }}>
+                    <button id="loadHouseBtn" onClick={handleFileUpload}>Upload File</button>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                    <input type="file" onChange={handleFileChange} />
+
+                </div>
+
+                <div style={{ position: 'relative', height: '100%', width: '100%' }} dangerouslySetInnerHTML={{ __html: layoutHtml }} />
+            </div>
         </div>
     );
 };

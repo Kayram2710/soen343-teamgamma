@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ca.concordia.smarthome.handler.LightHandler;
 import ca.concordia.smarthome.handler.RoomHandler;
+import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
 import ca.concordia.smarthome.layout.House;
 import ca.concordia.smarthome.handler.DoorHandler;
@@ -24,9 +25,11 @@ public class LayoutController {
         JsonHandler roomHandler = new RoomHandler();
         JsonHandler lightHandler = new LightHandler();
         JsonHandler doorHandler = new DoorHandler();
+        JsonHandler windowHandler = new WindowHandler();
 
         roomHandler.setNextHandler(lightHandler);
         lightHandler.setNextHandler(doorHandler);
+        doorHandler.setNextHandler(windowHandler);
 
         JSONObject jsonObject = new JSONObject(jsonData);
         JSONArray rooms = jsonObject.getJSONArray("rooms");
