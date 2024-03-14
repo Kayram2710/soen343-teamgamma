@@ -20,11 +20,20 @@ export const deleteProfile = async (userEmail, profileId) => {
   }
 };
 
+export const verifyProfilePin = async (userEmail, profileId, Pin) => {
+  try {
+    const response = await axios.post(`/api/v1/users/${userEmail}/profiles/${profileId}/verifyPin/${Pin}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying profile pin:", error);
+    throw error;
+  }
+};
+
+
 export const editProfile = async (userEmail, profileId, updatedProfileData) => {
   try {
     const response = await axios.put(`/api/v1/users/${userEmail}/profiles/${profileId}`, updatedProfileData);
-    console.log(updatedProfileData.profileName)
-    console.log(updatedProfileData.temperature)
     return response.data;
   } catch (error) {
     console.error("Error editing profile API HELPER:", error);

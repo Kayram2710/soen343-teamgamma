@@ -8,7 +8,8 @@ public class Profile {
     private ObjectId  id;
 
     public String profileName;
-    public double temperature;
+    public String HouseLocation;
+    public String code;
 
     public Profile() {
         // No-argument constructor
@@ -31,12 +32,18 @@ public class Profile {
         this.profileName = profileName;
     }
 
-    public double getTemperature() {
-        return this.temperature;
+    public String getHouseLocation() {
+        return this.HouseLocation;
     }
 
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
+    public void setHouseLocation(String HouseLocation) {
+        this.HouseLocation = HouseLocation;
+    }
+    public void setCode(String code) {
+        this.code = code;
+    }
+    public String getCode() {
+        return this.code;
     }
 
     // Other getters and setters...
