@@ -18,7 +18,19 @@ export const sendLayout = async (jsonData) => {
     console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error("Error starting simulation:", error);
+    console.error("Error saving layout:", error);
+    throw error;
+  }
+};
+
+export const savePerm = async (permission) =>{
+  try {
+    console.log(permission);
+    const response = await axios.get(`/api/v1/users/savePerms`, permission);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error saving permissions", error);
     throw error;
   }
 };

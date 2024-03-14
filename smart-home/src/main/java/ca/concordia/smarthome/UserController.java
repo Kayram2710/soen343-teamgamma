@@ -77,4 +77,11 @@ public class UserController {
         return new ResponseEntity<Boolean>(userService.validRegistration(email,username,password), HttpStatus.OK); 
     }
 
+    @GetMapping("/savePerms")
+    public String savePerms(/* Figure out type of object being sent */){
+        /////////////////
+        //function to save perms
+        return "permissions updated";
+    }
+
 }

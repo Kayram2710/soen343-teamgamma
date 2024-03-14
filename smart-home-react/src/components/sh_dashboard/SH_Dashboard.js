@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getUserProfiles, startSim } from "../../api/apiHelper";
+import { getUserProfiles, startSim, savePerm } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
 import "./SH_Dashboard.css";
@@ -72,9 +72,10 @@ const SH_Dashboard = ({user}) => {
       }));
     };
 
-    const handlePermissionsChange = (e) => {
+    const handlePermissionsChange = async (e) => {
       const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
       setPermissions(selectedOptions);
+      const confirm = await savePerm(selectedOptions.toString());
     };
 
   const SettingsModal = ({ isOpen, settings }) => {
