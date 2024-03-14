@@ -25,42 +25,27 @@ const SH_Dashboard = ({user}) => {
     year: "numeric",
   };
 
-  const [activeProfileId, setActiveProfileId] = useState(() => {
-    // Get the stored active profile ID from local storage
-    const savedProfileId = localStorage.getItem('activeProfileId');
-    return savedProfileId || null;
-  });
+  const [activeProfileId, setActiveProfileId] = useState('');
 
-  const handleClearActiveProfile = useCallback(() => {
-    // Remove the current active profile from local storage
-    localStorage.removeItem('activeProfileId');
-  
-    // Find the first profile that is not the current active profile
-    const newActiveProfile = profiles.find(profile => profile.id !== activeProfileId);
-  
-    // If such a profile exists, set it as the new active profile
-    if (newActiveProfile) {
-      setActiveProfileId(newActiveProfile.id);
-      localStorage.setItem('activeProfileId', newActiveProfile.id);
-    } else {
-      // If no other profiles exist, clear the active profile ID
-      setActiveProfileId(null);
+  useEffect(() => {
+    if (profiles.length > 0) {
+        // Select a random profile
+        const randomProfileIndex = Math.floor(Math.random() * profiles.length);
+        const randomProfile = profiles[randomProfileIndex];
+        setActiveProfileId(randomProfile.id);
+        // Optionally, save it to localStorage or handle it as needed
+        localStorage.setItem('activeProfileId', randomProfile.id);
     }
-  }, [activeProfileId, profiles]);
+}, [profiles]);
+
 
   // Function to set a profile as active
   const handleSetActiveProfile = useCallback(async (profile) => {
-    const enteredPin = prompt("Enter PIN for " + profile.profileName);
-    if (enteredPin === null) return;
 
     try {
-      const isValid = await verifyProfilePin(user.email, profile.id, enteredPin);
-      if (isValid) {
         setActiveProfileId(profile.id);
         localStorage.setItem('activeProfileId', profile.id);
-      } else {
-        alert('Incorrect PIN');
-      }
+
     } catch (error) {
       console.error('Error during PIN verification:', error);
     }
@@ -101,12 +86,36 @@ const SH_Dashboard = ({user}) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
-    profile: "N/A",
+    profile: "N/A",  // Set to "N/A" initially
     date: formattedDate,
     time: currentTime,
-    location: "N/A",
+    location: "Room",
     temperature: 0,
   });
+
+  useEffect(() => {
+    const activeProfile = profiles.find(p => p.id === activeProfileId);
+    console.log(activeProfile);
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      profile: activeProfile ? activeProfile.profileName : "N/A"
+    }));
+  }, [profiles, activeProfileId]);
+
+  const handleProfileChange = useCallback(async (event) => {
+    const selectedProfileId = event.target.value;
+    const selectedProfile = profiles.find(profile => profile.id === selectedProfileId);
+        try {
+            // Assuming you have a method to validate the selected profil
+                setActiveProfileId(selectedProfile.id);
+                localStorage.setItem('activeProfileId', selectedProfile.id);
+                console.log("worked")
+        } catch (error) {
+            console.error('Error during profile validation:', error);
+        }
+}, [profiles]);
+  
+  
 
   const [isSimRunning, setRun] = useState(false);
 
@@ -143,15 +152,15 @@ const SH_Dashboard = ({user}) => {
               {/* need to dynamically adjust */}
               <select
                   name="profile"
-                  value={settings.profile}
-                  onChange={handleInputChange}
-                  >
+                  value={activeProfileId}
+                  onChange={handleProfileChange}
+              >
                   {profiles.map((profile) => (
-                      <option key={profile.id} value={profile.profileName}>
-                      {profile.profileName}
+                      <option key={profile.id} value={profile.id}>
+                          {profile.profileName}
                       </option>
                   ))}
-                  </select>
+              </select>
             </label>
             <label>
               Set date:
