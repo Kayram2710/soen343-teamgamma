@@ -9,7 +9,6 @@ public class Profile {
 
     public String profileName;
     public String HouseLocation;
-    public boolean isAdmin;
     public String code;
 
     public Profile() {
@@ -39,12 +38,6 @@ public class Profile {
 
     public void setHouseLocation(String HouseLocation) {
         this.HouseLocation = HouseLocation;
-    }
-    public void setIsAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-    public boolean getIsAdmin() {
-        return this.isAdmin;
     }
     public void setCode(String code) {
         this.code = code;

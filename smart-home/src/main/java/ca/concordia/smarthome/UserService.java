@@ -61,7 +61,6 @@ public class UserService {
             // Map ProfileData fields to newProfile
             newProfile.setProfileName(profile.getProfileName());
             newProfile.setHouseLocation(profile.getHouseLocation());
-            newProfile.setIsAdmin(profile.getIsAdmin());
             newProfile.setCode(profile.getCode());
             newProfile.setId(new ObjectId()); 
     

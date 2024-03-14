@@ -9,13 +9,10 @@ const Profile = ({user}) => {
   const [newProfileName, setNewProfileName] = useState('');
   const [newProfileHouseLocation, setNewProfileHouseLocation] = useState('');
   const [newProfileCode, setNewProfileCode] = useState('');
-  const [newProfileisAdmin, setNewProfileisAdmin] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [editProfileHouseLocation, setEditProfileHouseLocation] = useState('');
   const [editProfileName, setEditProfileName] = useState('');
   const [editProfileId , setEditProfileId] = useState('');
-  const [isActiveProfileAdmin, setIsActiveProfileAdmin] = useState(false);
-
   
 
 
@@ -52,7 +49,6 @@ const Profile = ({user}) => {
       if (isValid) {
         setActiveProfileId(profile.id);
         localStorage.setItem('activeProfileId', profile.id);
-        setIsActiveProfileAdmin(profile.isAdmin === true);
       } else {
         alert('Incorrect PIN');
       }
@@ -96,28 +92,18 @@ const Profile = ({user}) => {
     fetchProfiles();
   }, []);
 
-  useEffect(() => {
-    // Find the active profile
-    const activeProfile = profiles.find(profile => profile.id === activeProfileId);
-  
-    // If the active profile exists, set isActiveProfileAdmin based on its isAdmin property
-    if (activeProfile) {
-      setIsActiveProfileAdmin(activeProfile.isAdmin === true);
-    }
-  }, [profiles, activeProfileId]);
   
 
   const handleCreateProfile = useCallback(async (e) => {
     e.preventDefault();
     try {
-      const newProfile = { profileName: newProfileName, houseLocation: newProfileHouseLocation, code: newProfileCode, isAdmin: newProfileisAdmin};
+      const newProfile = { profileName: newProfileName, houseLocation: newProfileHouseLocation, code: newProfileCode};
       await createProfile(user.email, newProfile);
       const updatedProfiles = await getUserProfiles(user.email);
       setProfiles(updatedProfiles); // Update local state with profiles from the database
       setNewProfileName(''); // Reset input fields
       setNewProfileHouseLocation('');
       setNewProfileCode('');
-      setNewProfileisAdmin(false);
     } catch (error) {
       console.error('Error creating profile:', error);
     }
@@ -175,15 +161,13 @@ const Profile = ({user}) => {
           placeholder="House Location"
           className="border p-2 rounded"
         />
-        <label className="flex items-center">
-          <input
-            type="checkbox"
-            checked={newProfileisAdmin}
-            onChange={e => setNewProfileisAdmin(e.target.checked)}
-            className="mr-1"
+         <input
+          type="text"
+          value={newProfileCode}
+          onChange={e => setNewProfileCode(e.target.value)}
+          placeholder="Profile Code"
+          className="border p-2 rounded mr-2"
           />
-          Is Admin
-        </label>
         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Add Profile
         </button>
@@ -193,7 +177,6 @@ const Profile = ({user}) => {
           <div key={profile.id} className="bg-gray-100 p-4 rounded shadow">
             <h3 className="text-lg font-bold mb-2">{profile.profileName}</h3>
             <p>House Location: {profile.houseLocation}</p>
-            <p>Admin: {profile.isAdmin ? 'Yes' : 'No'}</p>
             <p className="mb-4">Status: {activeProfileId === profile.id ? 'Active' : 'Inactive'}</p>
             <div className="flex gap-2 mb-4">
               <button
