@@ -1,28 +1,42 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUserCircle,
   faCloud,
+  faGear,
   faPlay,
   faStop,
-  faGear,
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import "./SH_Dashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { getUserProfiles, startSim } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
-import { startSim } from "../../api/apiHelper";
+import "./SH_Dashboard.css";
 
-const SH_Dashboard = (props) => {
+
+const SH_Dashboard = ({user}) => {
 
   const date = new Date();
+  const [profiles, setProfiles] = useState([]);
   const options = {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   };
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await getUserProfiles(user.email); // Corrected to getUserProfiles
+        setProfiles(response);
+      } catch (error) {
+        console.error('Error fetching profiles:', error);
+      }
+    };
+  
+    fetchProfiles();
+  }, []);
 
   const formattedDate = date.toLocaleDateString("en-US", options);
   const hours = String(date.getHours()).padStart(2, "0");
@@ -32,19 +46,15 @@ const SH_Dashboard = (props) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
-    profile: 'N/A',
+    profile: "N/A",
     date: formattedDate,
     time: currentTime,
-    location: "Room",
+    location: "N/A",
     temperature: 0,
   });
 
   const [isSimRunning, setRun] = useState(false);
 
-  //Hardcoded Stuff
-  // must dynamically adjust the options for the select element
-  const profiles = ["profile1", "profile2", "profile3"];
-  const houseLocations = ["Living Room", "Kitchen", "Bedroom","Outside"];
 
     const handleOpenSettings = () => {
       setIsSettingsModalOpen(true);
@@ -83,9 +93,9 @@ const SH_Dashboard = (props) => {
                   value={settings.profile}
                   onChange={handleInputChange}
                   >
-                  {profiles.map((profile, index) => (
-                      <option key={index} value={profile}>
-                      {profile}
+                  {profiles.map((profile) => (
+                      <option key={profile.id} value={profile.profileName}>
+                      {profile.profileName}
                       </option>
                   ))}
                   </select>
@@ -109,9 +119,9 @@ const SH_Dashboard = (props) => {
               value={settings.location}
               onChange={handleInputChange}
               >
-              {houseLocations.map((location, index) => (
-                  <option key={index} value={location}>
-                  {location}
+              {profiles.map((profile) => (
+                  <option key={profile.id} value={profile.id}>
+                  {profile.houseLocation}
                   </option>
               ))}
               </select>          
