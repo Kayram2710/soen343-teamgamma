@@ -622,6 +622,10 @@ video {
   display: flex;
 }
 
+.grid {
+  display: grid;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -661,6 +665,10 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
 }
 
 .space-y-4 > :not([hidden]) ~ :not([hidden]) {
@@ -769,6 +777,10 @@ video {
   text-align: center;
 }
 
+.align-middle {
+  vertical-align: middle;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -859,6 +871,15 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+:root {
+  --primary-blue: #19456B;
+  --hover-blue: #0E2A3A;
+  --beige: #F8F1F1;
+  --yellow: #F9E076;
+  --green: #228B22;
+  --red: #D70040;
 }
 
 .hover\:bg-blue-700:hover {
