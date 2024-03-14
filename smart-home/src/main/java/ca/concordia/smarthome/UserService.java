@@ -45,7 +45,7 @@ public class UserService {
                         }
                     }
                 }
-                throw new RuntimeException("US Profile not found with id: " + profileId);
+                throw new RuntimeException("Profile not found with id: " + profileId);
             } else {
                 throw new RuntimeException("User has no profiles");
             }
@@ -60,7 +60,7 @@ public class UserService {
             Profile newProfile = new Profile();
             // Map ProfileData fields to newProfile
             newProfile.setProfileName(profile.getProfileName());
-            newProfile.setTemperature(profile.getTemperature());
+            newProfile.setHouseLocation(profile.getHouseLocation());
             newProfile.setIsAdmin(profile.getIsAdmin());
             newProfile.setCode(profile.getCode());
             newProfile.setId(new ObjectId()); 
@@ -116,7 +116,7 @@ public class UserService {
                 for (Profile profile : profiles) {
                     if (profile.getId().toString().equals(profileId.toString())) {
                         profile.setProfileName(ProfileData.getProfileName());
-                        profile.setTemperature(ProfileData.getTemperature());
+                        profile.setHouseLocation(ProfileData.getHouseLocation());
                         user.setProfiles(profiles);
                         userRepository.save(user);
                         return profile;
