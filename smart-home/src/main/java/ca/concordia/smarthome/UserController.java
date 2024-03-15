@@ -46,7 +46,6 @@ public class UserController {
     }
     
 
-
     @PutMapping("/{userEmail}/profiles/{profileId}")
     public ResponseEntity<Profile> editProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId, @RequestBody Profile updatedProfileData) {
     Profile updatedProfile = userService.editProfile(userEmail, profileId, updatedProfileData);
