@@ -1,0 +1,32 @@
+{
+  "rooms": [
+    {
+      "name": "Living Room",
+      "position": { "x": 0, "y": 100 },
+      "dimensions": { "width": 200, "height": 300 },
+      "lights": [
+        { "position": { "x": 20, "y": 20}, "isOn": true },
+        { "position": { "x": 80, "y": 20}, "isOn": false }
+      ],
+      "doors": [
+        { "position": { "x": 50, "y": 300, "wall": "down" }, "width": 50, "isClosed": false },
+     { "position": { "x": 200, "y": 150, "wall": "right" }, "width": 50, "isClosed": false },
+     { "position": { "x": 0, "y": 150, "wall": "left" }, "width": 50, "isClosed": false }
+      ],
+      "windows":[
+        { "position": { "x": 0, "y": 75, "wall": "left"}, "width": 20, "isClosed": false }
+      ]
+    },
+    {
+      "name": "Kitchen",
+      "position": { "x": 200, "y": 100 },
+      "dimensions": { "width": 150, "height": 200 },
+      "lights": [
+        { "position": { "x": 20, "y": 20 }, "isOn": true }
+      ],
+      "doors": [
+        { "position": { "x": 50, "y": 0, "wall": "up" }, "width": 50, "isClosed": false  }
+      ]
+    }
+  ]
+}

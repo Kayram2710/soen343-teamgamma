@@ -65,4 +65,52 @@ public class House {
         house.windows = new ArrayList<Window>();
     }
 
+    public static void toggleLights(int index){
+        Light target = house.lights.get(index);
+        boolean status = target.getIsOn();
+
+        if(status){
+            house.lights.get(index).setIsOn(false);
+        }
+        else{
+            house.lights.get(index).setIsOn(true);
+        }
+    }
+
+    public static void toggleDoor(int index){
+        Door target = house.doors.get(index);
+        boolean status = target.getIsClosed();
+
+        if(status){
+            house.doors.get(index).setIsClosed(false);
+        }
+        else{
+            house.doors.get(index).setIsClosed(true);
+        }
+    }
+
+    public static void toggleWindow(int index){
+        Window target = house.windows.get(index);
+        boolean status = target.getIsClosed();
+
+        if(status){
+            house.windows.get(index).setIsClosed(false);
+        }
+        else{
+            house.windows.get(index).setIsClosed(true);
+        }
+    }
+
+    public static void obstructWindow(int index){
+        Window target = house.windows.get(index);
+        boolean status = target.getIsObstructed();
+
+        if(status){
+            house.windows.get(index).setIsObstructed(false);
+        }
+        else{
+            house.windows.get(index).setIsObstructed(true);
+        }
+    }
+
 }
