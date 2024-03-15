@@ -62,7 +62,6 @@ public class UserService {
             newProfile.setProfileName(profile.getProfileName());
             newProfile.setHouseLocation(profile.getHouseLocation());
             newProfile.setCode(profile.getCode());
-            newProfile.setPerms("");
             newProfile.setId(new ObjectId()); 
     
             // Add profile to user and update user
@@ -103,30 +102,6 @@ public class UserService {
     }
     
 
-    public profile updatePerms(String userEmail, ObjectId profileId, String permission){
-        Optional<User> userOptional = userRepository.findByEmail(userEmail);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<Profile> profiles = user.getProfiles();
-            if (profiles != null) {
-                for (Profile profile : profiles) {
-                    if (profile.getId().toString().equals(profileId.toString())) {
-                        profile.setPerms(permission);
-                        user.setProfiles(profiles);
-                        userRepository.save(user);
-                        System.out.println("Success from userService");
-                        return profile;
-                    }
-                }
-                throw new RuntimeException("Profile not found with id: " + ProfileData.getId());
-            } else {
-                throw new RuntimeException("User has no profiles");
-            }
-        } else {
-            throw new RuntimeException("User not found with email: " + userEmail);
-        }
-    }
-
     public Profile editProfile(String userEmail, ObjectId profileId, Profile ProfileData) {
         if (ProfileData == null) {
             throw new IllegalArgumentException("updatedProfileData cannot be null");
@@ -152,6 +127,30 @@ public class UserService {
             }
         } else {
             throw new RuntimeException("User not found with email: " + userEmail);
+        }
+    }
+
+    public Profile updatePerms(String userEmail, Object profileId, String permission){
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Profile> profiles = user.getProfiles();
+            if (profiles != null) {
+                for (Profile profile : profiles) {
+                    if (profile.getId().toString().equals(profileId.toString())) {
+                        profile.setPerms(permission);
+                        user.setProfiles(profiles);
+                        userRepository.save(user);
+                        System.out.println(("success"));
+                        return profile;
+                    }
+                }
+                throw new RuntimeException("Profile not found with id: " + profileId + (", userService"));
+            } else {
+                throw new RuntimeException("User has no profiles, userService");
+            }
+        } else {
+            throw new RuntimeException("User not found with email: " + userEmail+ (", userService"));
         }
     }
     
