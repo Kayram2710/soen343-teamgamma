@@ -1,28 +1,82 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUserCircle,
   faCloud,
+  faGear,
   faPlay,
   faStop,
-  faGear,
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import "./SH_Dashboard.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { getUserProfiles, savePerm, startSim } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
-import { startSim } from "../../api/apiHelper";
+import "./SH_Dashboard.css";
 
-const SH_Dashboard = (props) => {
+
+const SH_Dashboard = ({user}) => {
 
   const date = new Date();
+  const [profiles, setProfiles] = useState([]);
   const options = {
     weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",
   };
+
+  const [activeProfileId, setActiveProfileId] = useState('');
+
+  useEffect(() => {
+    if (profiles.length > 0) {
+        // Select a random profile
+        const randomProfileIndex = Math.floor(Math.random() * profiles.length);
+        const randomProfile = profiles[randomProfileIndex];
+        setActiveProfileId(randomProfile.id);
+        // Optionally, save it to localStorage or handle it as needed
+        localStorage.setItem('activeProfileId', randomProfile.id);
+    }
+}, [profiles]);
+
+
+  // Function to set a profile as active
+  const handleSetActiveProfile = useCallback(async (profile) => {
+
+    try {
+        setActiveProfileId(profile.id);
+        localStorage.setItem('activeProfileId', profile.id);
+
+    } catch (error) {
+      console.error('Error during PIN verification:', error);
+    }
+  }, [user.email]);
+
+  useEffect(() => {
+    if (!user) return; // If no userId, do nothing
+
+    getUserProfiles(user.email)
+      .then(profiles => {
+        setProfiles(profiles);
+      })
+      .catch(error => {
+        console.error('Error fetching profiles:', error);
+      })
+      .finally(() => {
+      });
+  }, [user.email]);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        const response = await getUserProfiles(user.email); // Corrected to getUserProfiles
+        setProfiles(response);
+      } catch (error) {
+        console.error('Error fetching profiles:', error);
+      }
+    };
+  
+    fetchProfiles();
+  }, []);
 
   const formattedDate = date.toLocaleDateString("en-US", options);
   const hours = String(date.getHours()).padStart(2, "0");
@@ -32,19 +86,39 @@ const SH_Dashboard = (props) => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
-    profile: 'N/A',
+    profile: "N/A",  // Set to "N/A" initially
     date: formattedDate,
     time: currentTime,
     location: "Room",
     temperature: 0,
   });
 
+  useEffect(() => {
+    const activeProfile = profiles.find(p => p.id === activeProfileId);
+    console.log(activeProfile);
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      profile: activeProfile ? activeProfile.profileName : "N/A"
+    }));
+  }, [profiles, activeProfileId]);
+
+  const handleProfileChange = useCallback(async (event) => {
+    const selectedProfileId = event.target.value;
+    const selectedProfile = profiles.find(profile => profile.id === selectedProfileId);
+        try {
+            // Assuming you have a method to validate the selected profil
+                setActiveProfileId(selectedProfile.id);
+                localStorage.setItem('activeProfileId', selectedProfile.id);
+                console.log("worked")
+        } catch (error) {
+            console.error('Error during profile validation:', error);
+        }
+}, [profiles]);
+  
+  
+
   const [isSimRunning, setRun] = useState(false);
 
-  //Hardcoded Stuff
-  // must dynamically adjust the options for the select element
-  const profiles = ["profile1", "profile2", "profile3"];
-  const houseLocations = ["Living Room", "Kitchen", "Bedroom","Outside"];
 
     const handleOpenSettings = () => {
       setIsSettingsModalOpen(true);
@@ -54,17 +128,17 @@ const SH_Dashboard = (props) => {
       setIsSettingsModalOpen(false);
     };
 
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        [name]: value
-      }));
+    const handleInputChange = (event) => {
+      const inputValue = event.target.value;
+      const selectedProfile = profiles.find(profile => profile.id === inputValue);
+      handleSetActiveProfile(selectedProfile);
     };
 
-    const handlePermissionsChange = (e) => {
+    const handlePermissionsChange = async (e) => {
       const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
       setPermissions(selectedOptions);
+      const confirm = await savePerm(user.email, selectedOptions.toString(), activeProfileId);
+      console.log(confirm.permissions);
     };
 
   const SettingsModal = ({ isOpen, settings }) => {
@@ -80,15 +154,15 @@ const SH_Dashboard = (props) => {
               {/* need to dynamically adjust */}
               <select
                   name="profile"
-                  value={settings.profile}
-                  onChange={handleInputChange}
-                  >
-                  {profiles.map((profile, index) => (
-                      <option key={index} value={profile}>
-                      {profile}
+                  value={activeProfileId}
+                  onChange={handleProfileChange}
+              >
+                  {profiles.map((profile) => (
+                      <option key={profile.id} value={profile.id}>
+                          {profile.profileName}
                       </option>
                   ))}
-                  </select>
+              </select>
             </label>
             <label>
               Set date:
@@ -109,9 +183,9 @@ const SH_Dashboard = (props) => {
               value={settings.location}
               onChange={handleInputChange}
               >
-              {houseLocations.map((location, index) => (
-                  <option key={index} value={location}>
-                  {location}
+              {profiles.map((profile) => (
+                  <option key={profile.id} value={profile.id}>
+                  {profile.houseLocation}
                   </option>
               ))}
               </select>          

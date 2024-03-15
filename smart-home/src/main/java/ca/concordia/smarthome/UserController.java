@@ -39,6 +39,12 @@ public class UserController {
     return ResponseEntity.ok(isVerified);
 }
 
+    @PutMapping("/{userEmail}/profiles/{profileId}/savePerms/{permission}")
+    public ResponseEntity<Profile> updatePerms(@PathVariable String userEmail, @PathVariable ObjectId profileId, @PathVariable String permission) {
+        Profile updatedPerms = userService.updatePerms(userEmail, profileId, permission);
+        return ResponseEntity.ok(updatedPerms);
+    }
+    
 
     @PutMapping("/{userEmail}/profiles/{profileId}")
     public ResponseEntity<Profile> editProfile(@PathVariable String userEmail, @PathVariable ObjectId profileId, @RequestBody Profile updatedProfileData) {
@@ -75,6 +81,13 @@ public class UserController {
     @GetMapping("/{email}/{username}/{password}")
     public ResponseEntity<Boolean> getResgistrationResult(@PathVariable String email, @PathVariable String username, @PathVariable String password){
         return new ResponseEntity<Boolean>(userService.validRegistration(email,username,password), HttpStatus.OK); 
+    }
+
+    @GetMapping("/savePerms")
+    public String savePerms(/* Figure out type of object being sent */){
+        /////////////////
+        //function to save perms
+        return "permissions updated";
     }
 
 }

@@ -129,6 +129,30 @@ public class UserService {
             throw new RuntimeException("User not found with email: " + userEmail);
         }
     }
+
+    public Profile updatePerms(String userEmail, Object profileId, String permission){
+        Optional<User> userOptional = userRepository.findByEmail(userEmail);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            List<Profile> profiles = user.getProfiles();
+            if (profiles != null) {
+                for (Profile profile : profiles) {
+                    if (profile.getId().toString().equals(profileId.toString())) {
+                        profile.setPerms(permission);
+                        user.setProfiles(profiles);
+                        userRepository.save(user);
+                        System.out.println(("success"));
+                        return profile;
+                    }
+                }
+                throw new RuntimeException("Profile not found with id: " + profileId + (", userService"));
+            } else {
+                throw new RuntimeException("User has no profiles, userService");
+            }
+        } else {
+            throw new RuntimeException("User not found with email: " + userEmail+ (", userService"));
+        }
+    }
     
 
     public List<User> allUsers(){

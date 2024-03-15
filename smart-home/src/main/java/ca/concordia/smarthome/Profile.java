@@ -11,8 +11,16 @@ public class Profile {
     public String HouseLocation;
     public String code;
 
+    public String permission;
+
     public Profile() {
         // No-argument constructor
+    }
+    public void setPerms(String permission) {
+        this.permission = permission;
+    }
+    public String getPerms() {
+        return this.permission;
     }
 
     // Getters and setters
