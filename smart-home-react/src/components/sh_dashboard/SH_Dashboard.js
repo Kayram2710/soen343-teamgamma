@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getUserProfiles, savePerm, startSim } from "../../api/apiHelper";
+import { getUserProfiles, savePerm } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
 import Shc from '../shc/Shc';
 import "./SH_Dashboard.css";

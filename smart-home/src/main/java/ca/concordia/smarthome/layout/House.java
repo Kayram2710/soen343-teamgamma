@@ -1,5 +1,7 @@
 package ca.concordia.smarthome.layout;
 
+import ca.concordia.smarthome.simulation.Clock;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,10 @@ public class House {
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
+
+    private Clock time;
+
+    private static boolean running;
 
     private House() {
 
@@ -111,6 +117,10 @@ public class House {
         else{
             house.windows.get(index).setIsObstructed(true);
         }
+    }
+
+    public static void startSim(){
+        house.running = true;
     }
 
 }

@@ -1,28 +1,5 @@
 import { default as api, default as axios } from './axiosConfig';
 
-export const startSim = async () => {
-  try {
-    const response = await axios.get(`api/v1/simulation/run`);
-    console.log("success");
-    return response.data;
-  } catch (error) {
-    console.error("Error starting simulation:", error);
-    throw error;
-  }
-};
-
-export const sendLayout = async (jsonData) => {
-  try {
-    console.log(jsonData);
-    const response = await axios.get(`api/v1/simulation/saveLayout`,jsonData);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error saving layout:", error);
-    throw error;
-  }
-};
-
 export const savePerm = async (userEmail, permission, profileId) =>{
   try {
     console.log(permission);
