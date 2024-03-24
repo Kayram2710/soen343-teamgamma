@@ -13,6 +13,8 @@ import ca.concordia.smarthome.handler.LightHandler;
 import ca.concordia.smarthome.handler.RoomHandler;
 import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
+import ca.concordia.smarthome.layout.House;
+import ca.concordia.smarthome.layout.Zone;
 import ca.concordia.smarthome.handler.DoorHandler;
 
 @RestController
@@ -21,6 +23,10 @@ import ca.concordia.smarthome.handler.DoorHandler;
 public class LayoutController {
     @PostMapping("/parse-layout")
     public String parseLayout(@RequestBody String jsonData) {
+
+        Zone main_zone = new Zone();
+        House.getInstance().addZone(main_zone);
+
         JsonHandler roomHandler = new RoomHandler();
         JsonHandler lightHandler = new LightHandler();
         JsonHandler doorHandler = new DoorHandler();

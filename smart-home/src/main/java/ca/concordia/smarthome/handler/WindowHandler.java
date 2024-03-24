@@ -21,7 +21,7 @@ public class WindowHandler extends AbstractJsonHandler {
                 boolean isClosed = windowJson.getBoolean("isClosed");
 
                 Window newDoor = new Window(windowX, windowY, windowWidth, isClosed, false);
-                House.getWindows().add(newDoor);
+                House.getInstance().getWindows().add(newDoor);
 
                 int windowRotation = 0;
                 if (!isClosed) {
