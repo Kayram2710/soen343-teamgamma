@@ -6,25 +6,41 @@ import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { getUserProfiles, savePerm } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
+import Clock from "../simulation/Clock";
 import Shc from '../shc/Shc';
 import "./SH_Dashboard.css";
 
 
 const SH_Dashboard = ({user}) => {
 
+  //"Declarations"////////////////////////////////////////////////////////////////////
   const date = new Date();
-  const [profiles, setProfiles] = useState([]);
   const options = {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric",
-  };
+    year: "numeric",};
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const currentTime = hours + ":" + minutes;
 
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [permissions, setPermissions] = useState([]);
+  const [settings, setSettings] = useState({
+    profile: "N/A",  // Set to "N/A" initially
+    date: formattedDate,
+    time: currentTime,
+    location: "Room",
+    temperature: 0,
+  });
+
+  //Profile selection stuff//////////////////////////////////////////////////////////////////////
+  const [profiles, setProfiles] = useState([]);
   const [activeProfileId, setActiveProfileId] = useState('');
 
   useEffect(() => {
@@ -35,21 +51,7 @@ const SH_Dashboard = ({user}) => {
         setActiveProfileId(randomProfile.id);
         // Optionally, save it to localStorage or handle it as needed
         localStorage.setItem('activeProfileId', randomProfile.id);
-    }
-}, [profiles]);
-
-
-  // Function to set a profile as active
-  const handleSetActiveProfile = useCallback(async (profile) => {
-
-    try {
-        setActiveProfileId(profile.id);
-        localStorage.setItem('activeProfileId', profile.id);
-
-    } catch (error) {
-      console.error('Error during PIN verification:', error);
-    }
-  }, [user.email]);
+    }}, [profiles]);
 
   useEffect(() => {
     if (!user) return; // If no userId, do nothing
@@ -78,21 +80,6 @@ const SH_Dashboard = ({user}) => {
     fetchProfiles();
   }, []);
 
-  const formattedDate = date.toLocaleDateString("en-US", options);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const currentTime = hours + ":" + minutes;
-
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [permissions, setPermissions] = useState([]);
-  const [settings, setSettings] = useState({
-    profile: "N/A",  // Set to "N/A" initially
-    date: formattedDate,
-    time: currentTime,
-    location: "Room",
-    temperature: 0,
-  });
-
   useEffect(() => {
     const activeProfile = profiles.find(p => p.id === activeProfileId);
     console.log(activeProfile);
@@ -112,34 +99,33 @@ const SH_Dashboard = ({user}) => {
                 console.log("worked")
         } catch (error) {
             console.error('Error during profile validation:', error);
-        }
-}, [profiles]);
-  
+        }}, [profiles]);
+
+  //Parameters Popup Screen for Simulation//////////////////////////////////////
   const [isSimRunning, setRun] = useState(false);
 
+  const handleOpenSettings = () => {
+    setIsSettingsModalOpen(true);
+  };
 
-    const handleOpenSettings = () => {
-      setIsSettingsModalOpen(true);
-    };
+  const handleCloseSettings = () => {
+    setIsSettingsModalOpen(false);
+  };
 
-    const handleCloseSettings = () => {
-      setIsSettingsModalOpen(false);
-    };
-
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setSettings((prevSettings) => ({
-        ...prevSettings,
-        [name]: value
-      }))
-    };
-    
-    const handlePermissionsChange = async (e) => {
-      const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
-      setPermissions(selectedOptions);
-      const confirm = await savePerm(user.email, selectedOptions.toString(), activeProfileId);
-      console.log(confirm.permissions);
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSettings((prevSettings) => ({
+      ...prevSettings,
+      [name]: value
+    }))
+  };
+  
+  const handlePermissionsChange = async (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+    setPermissions(selectedOptions);
+    const confirm = await savePerm(user.email, selectedOptions.toString(), activeProfileId);
+    console.log(confirm.permissions);
+  };
 
   const SettingsModal = ({ isOpen, settings }) => {
     if (!isOpen) return null;
@@ -205,6 +191,8 @@ const SH_Dashboard = ({user}) => {
       </div>
     );
   };
+
+  //Dashboard setup/////////////////////////////////////////////////////////////////
 
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
   const navigate = useNavigate();
@@ -312,6 +300,7 @@ const SH_Dashboard = ({user}) => {
                   </div>
                 </div>
               </div>
+              <Clock/>
               <div id="simSettingsCtn" className="flex align-center">
                 <button id="simSettingsBtn" onClick={popup} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
@@ -320,7 +309,7 @@ const SH_Dashboard = ({user}) => {
             </div>
           </div>
 
-          <HouseLayout />
+          <HouseLayout/>
 
           <div id="shdControllerMainContent" className="flex f-col">
             <div id="shdControllerCtn">
@@ -401,6 +390,7 @@ const SH_Dashboard = ({user}) => {
             </div>
           </div>
         </div>
+
 
         <div id="dashboardBottomCtn">
           <div

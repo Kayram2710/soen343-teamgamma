@@ -16,14 +16,14 @@ public class SHHModule {
     public void deleteZone(Zone zone){
 
         for (Room room : zone.getRoom()) {
-            updateRoomZone(room, House.getInstance().getFirstZone());
+            updateRoomFromZone(room, House.getInstance().getFirstZone());
         }
 
         House.getInstance().removeZone(zone);
 
     }
 
-    public void updateRoomZone(Room room, Zone zone){
+    public void updateRoomFromZone(Room room, Zone zone){
 
         //remove room from last zone it was in
         room.getZone().removeRoom(room);
