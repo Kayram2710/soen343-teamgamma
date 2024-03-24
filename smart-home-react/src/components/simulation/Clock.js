@@ -40,9 +40,9 @@ const Clock = ({isActive, speed, date}) => {
 
   return (
     <div>
-      <div id="timer-display">{formatTime(seconds)}</div>
-      <div id="simDateCtn" className="flex align-center topCtnPadding">
-    </div>
+      <div id="timer-display" className="flex align-center topCtnPadding">
+        Simulation Time:<br/>
+        {formatTime(seconds)}</div>
     </div>
   );
 }

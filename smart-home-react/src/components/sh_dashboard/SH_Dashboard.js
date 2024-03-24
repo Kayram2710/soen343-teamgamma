@@ -190,10 +190,6 @@ const SH_Dashboard = ({user}) => {
 
   const [secondsPerTick, setSpeed] = useState(10);
 
-  const handleToggleClock = () => {
-    setIsActive((prevIsActive) => !prevIsActive);
-  };
-
   //Dashboard setup/////////////////////////////////////////////////////////////////
 
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
@@ -213,6 +209,7 @@ const SH_Dashboard = ({user}) => {
     setIsActive(true);
     handleCloseSettings();
 
+    document.getElementById("timer-display").style.visibility="visible";
     document.getElementById("simSettingsCtn").style.visibility="visible";
     document.getElementById("moduleControls").style.visibility="visible";
     document.getElementById("startSimulationBtn").style.display = "none";
@@ -226,6 +223,7 @@ const SH_Dashboard = ({user}) => {
 
     setIsActive(false);
 
+    document.getElementById("timer-display").style.visibility="hidden";
     document.getElementById("moduleControls").style.visibility="hidden";
     document.getElementById("simSettingsCtn").style.visibility="hidden";
     document.getElementById("startSimulationBtn").style.display = "block";
