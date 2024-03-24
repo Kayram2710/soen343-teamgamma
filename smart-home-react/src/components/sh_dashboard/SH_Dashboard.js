@@ -19,12 +19,11 @@ const SH_Dashboard = ({user}) => {
 
   //"Declarations"////////////////////////////////////////////////////////////////////
   const date = new Date();
-  const options = {
+  const formattedDate = date.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
-    year: "numeric",};
-  const formattedDate = date.toLocaleDateString("en-US", options);
+    year: "numeric",});
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const currentTime = hours + ":" + minutes;
@@ -33,8 +32,7 @@ const SH_Dashboard = ({user}) => {
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
     profile: "N/A",  // Set to "N/A" initially
-    date: formattedDate,
-    time: currentTime,
+    date: date.toLocaleString("sv").split(" ").join("T"),
     location: "Room",
     temperature: 0,
   });
@@ -149,11 +147,7 @@ const SH_Dashboard = ({user}) => {
             </label>
             <label>
               Set date:
-              <input type="date" name="date" value={settings.date} onChange={handleInputChange} />
-            </label>
-            <label>
-              Set Time:
-              <input type="time" name="time" value={settings.time} onChange={handleInputChange} />
+              <input type="datetime-local" name="date" value={settings.date} onChange={handleInputChange} />
             </label>
             <label>
               Set outside temperature:
@@ -288,7 +282,7 @@ const SH_Dashboard = ({user}) => {
                   <p>Location: {settings.location}</p>
                 </div>
                 <div id="dateCtn" className="flex align-center topCtnPadding">
-                  <p>{settings.date} at {settings.time}</p>
+                  <p>Real Time: <br/>{formattedDate} {currentTime}</p>
                 </div>
                 <div id="timeCtn" className="flex align-center topCtnPadding">
                   <p>Permission Profile: {permissions}</p>
@@ -304,7 +298,7 @@ const SH_Dashboard = ({user}) => {
                   </div>
                 </div>
               </div>
-              <Clock isActive={isActive} speed={secondsPerTick}/>
+              <Clock isActive={isActive} speed={secondsPerTick} date={settings.date}/>
               <div id="simSettingsCtn" className="flex align-center">
                 <button id="simSettingsBtn" onClick={popup} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
