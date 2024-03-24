@@ -151,7 +151,6 @@ const SH_Dashboard = ({user}) => {
           <form>
             <label>
               Select a profile:
-              {/* need to dynamically adjust */}
               <select
                   name="profile"
                   value={activeProfileId}
@@ -210,6 +209,10 @@ const SH_Dashboard = ({user}) => {
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
   const navigate = useNavigate();
 
+  const handleTabClick = (id) => {
+    setshdControllerActiveTab(id);
+  };
+
   const popup = () =>{
     
     handleOpenSettings();
@@ -222,7 +225,7 @@ const SH_Dashboard = ({user}) => {
     setRun(true);
 
     document.getElementById("simSettingsCtn").style.visibility="visible";
-    document.getElementById("shc-content").style.visibility="visible";
+    document.getElementById("moduleControls").style.visibility="visible";
     document.getElementById("startSimulationBtn").style.display = "none";
     document.getElementById("stopSimulationBtn").style.display = "block";
     document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
@@ -234,7 +237,7 @@ const SH_Dashboard = ({user}) => {
 
     setRun(false);
 
-    document.getElementById("shc-content").style.visibility="hidden";
+    document.getElementById("moduleControls").style.visibility="hidden";
     document.getElementById("simSettingsCtn").style.visibility="hidden";
     document.getElementById("startSimulationBtn").style.display = "block";
     document.getElementById("stopSimulationBtn").style.display = "none";
@@ -333,7 +336,7 @@ const SH_Dashboard = ({user}) => {
                         item.classList.remove("active");
                       });
                     document.getElementById("shdmi-1").classList.add("active");
-                    setshdControllerActiveTab("SHC");
+                    handleTabClick("SHC");
                   }}
                 >
                   <p className="shdMenuItemText">SHC</p>
@@ -348,7 +351,7 @@ const SH_Dashboard = ({user}) => {
                         item.classList.remove("active");
                       });
                     document.getElementById("shdmi-2").classList.add("active");
-                    setshdControllerActiveTab("SHS");
+                    handleTabClick("SHS");
                   }}
                 >
                   <p className="shdMenuItemText">SHS</p>
@@ -363,7 +366,7 @@ const SH_Dashboard = ({user}) => {
                         item.classList.remove("active");
                       });
                     document.getElementById("shdmi-3").classList.add("active");
-                    setshdControllerActiveTab("SHP");
+                    handleTabClick("SHP");
                   }}
                 >
                   <p className="shdMenuItemText">SHP</p>
@@ -379,7 +382,7 @@ const SH_Dashboard = ({user}) => {
                         item.classList.remove("active");
                       });
                     document.getElementById("shdmi-4").classList.add("active");
-                    setshdControllerActiveTab("SHH");
+                    handleTabClick("SHH");
                   }}
                 >
                   <p className="shdMenuItemText">SHH</p>
@@ -391,8 +394,10 @@ const SH_Dashboard = ({user}) => {
               id="shdControllerOutputCtn"
               className="flex align-center justify-center"
             >
-              {/* {shdControllerActiveTab} */}
-              <Shc></Shc>
+              <div id="moduleControls">
+                {/* {shdControllerActiveTab} */}
+                {shdControllerActiveTab === 'SHC' && <Shc/>}
+              </div>
             </div>
           </div>
         </div>
