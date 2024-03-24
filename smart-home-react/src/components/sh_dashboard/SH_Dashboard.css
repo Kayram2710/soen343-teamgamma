@@ -210,7 +210,11 @@
     font-size: 2rem; /* Size of the icon */
     color: var(--blue); /* Color of the icon */
   }
-  
+
+  #moduleControls{
+    visibility: hidden;
+  }
+
   .settingsModal {
     position: fixed;
     top: 0;

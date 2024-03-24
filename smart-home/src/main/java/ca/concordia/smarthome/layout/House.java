@@ -11,6 +11,7 @@ public class House {
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
+    private List<Zone> zones = new ArrayList<Zone>();
 
     //Simulation parameters
     private Clock time;
@@ -117,6 +118,18 @@ public class House {
         else{
             house.windows.get(index).setIsObstructed(true);
         }
+    }
+
+    public static void addZone(Zone zone){
+        house.zones.add(zone);
+    }
+
+    public static void removeZone(Zone zone){
+        house.zones.remove(zone);
+    }
+
+    public static Zone getFirstZone(){
+        return house.zones.get(0);
     }
 
     public static void startSim(){
