@@ -5,6 +5,8 @@ public class Room extends HouseComponent{
     int height;
     int temperature;
 
+    String name;
+
     Zone zone;
 
     public Room(int positionX, int positionY, int width, int height, Zone zone) {
@@ -12,6 +14,14 @@ public class Room extends HouseComponent{
         this.width = width;
         this.height = height;
         this.zone = zone;
+    }
+
+    public Room(String name,int positionX, int positionY, int width, int height, Zone zone) {
+        super(positionX, positionY);
+        this.width = width;
+        this.height = height;
+        this.zone = zone;
+        this.name = name;
     }
 
     public int getWidth() {
@@ -44,5 +54,9 @@ public class Room extends HouseComponent{
 
     public void setZone(Zone zone){
         this.zone = zone;
+    }
+
+    public String getName(){
+        return name;
     }
 }

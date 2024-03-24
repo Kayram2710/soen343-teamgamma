@@ -7,13 +7,8 @@ public class Zone {
 
     private List<Room> contained_rooms = new ArrayList<Room>();
 
-
-    boolean periodical = false;
-    private int main_temperature;
-
-    private int period1_temp;
-    private int period2_temp;
-    private int period3_temp;
+    private int static_temperature;
+    private int[] period_temp = new int[3];
 
     public Zone(){}
 
@@ -35,26 +30,51 @@ public class Zone {
         return contained_rooms;
     }
 
-    public void setTemp(int temperature){
-        this.main_temperature = temperature;
+    public void setStaticTemperature(int temperature){
+        this.static_temperature = temperature;
     }
 
-    public void setAltTemp1(int temperature){
-        this.period1_temp = temperature;
+    public int getStaticTemperature(){
+        return static_temperature;
     }
 
-    public void setAltTemp2(int temperature){
-        this.period2_temp = temperature;
+    public void setPeriodicTemperature(int index, int temperature){
+        this.period_temp[index] = temperature;
     }
 
-    public void setAltTemp3(int temperature){
-        this.period3_temp = temperature;
+    public int getPeriodicTempeature(int index){
+        if(index <= 1 && index >= 3){
+            return period_temp[index];
+        }
+
+        return static_temperature;
     }
 
     public void cycleRoomSetTemp(int temp){
         for (Room room : contained_rooms) {
             room.setTemp(temp);
         }
+    }
+
+    public void updateTemp(String mode){
+        switch (mode) {
+            case "period1":
+                cycleRoomSetTemp(period_temp[0]);
+                break;
+
+            case "period2":
+                cycleRoomSetTemp(period_temp[1]);
+                break;
+
+            case "period3":
+                cycleRoomSetTemp(period_temp[2]);
+                break;
+        
+            default:
+                cycleRoomSetTemp(static_temperature);
+                break;
+        }
+
     }
 
 }
