@@ -12,8 +12,8 @@ public class House {
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
 
+    //Simulation parameters
     private Clock time;
-
     private static boolean running;
 
     private House() {
