@@ -102,8 +102,6 @@ const SH_Dashboard = ({user}) => {
         }}, [profiles]);
 
   //Parameters Popup Screen for Simulation//////////////////////////////////////
-  const [isSimRunning, setRun] = useState(false);
-
   const handleOpenSettings = () => {
     setIsSettingsModalOpen(true);
   };
@@ -192,6 +190,16 @@ const SH_Dashboard = ({user}) => {
     );
   };
 
+  //Clock Functionalities/////////////////////////////////////////////////////////
+
+  const [isActive, setIsActive] = useState(false);
+
+  const [secondsPerTick, setSpeed] = useState(10);
+
+  const handleToggleClock = () => {
+    setIsActive((prevIsActive) => !prevIsActive);
+  };
+
   //Dashboard setup/////////////////////////////////////////////////////////////////
 
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
@@ -208,9 +216,8 @@ const SH_Dashboard = ({user}) => {
 
   const handleStart = async () => {
 
+    handleToggleClock();
     handleCloseSettings();
-
-    setRun(true);
 
     document.getElementById("simSettingsCtn").style.visibility="visible";
     document.getElementById("moduleControls").style.visibility="visible";
@@ -223,7 +230,7 @@ const SH_Dashboard = ({user}) => {
 
   const handleStop = () => {
 
-    setRun(false);
+    handleToggleClock();
 
     document.getElementById("moduleControls").style.visibility="hidden";
     document.getElementById("simSettingsCtn").style.visibility="hidden";
@@ -300,7 +307,7 @@ const SH_Dashboard = ({user}) => {
                   </div>
                 </div>
               </div>
-              <Clock/>
+              <Clock isActive={isActive} speed={secondsPerTick}/>
               <div id="simSettingsCtn" className="flex align-center">
                 <button id="simSettingsBtn" onClick={popup} >
                   Settings &nbsp; <FontAwesomeIcon icon={faGear} />
