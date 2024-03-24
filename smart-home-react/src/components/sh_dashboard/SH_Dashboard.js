@@ -216,7 +216,7 @@ const SH_Dashboard = ({user}) => {
 
   const handleStart = async () => {
 
-    handleToggleClock();
+    setIsActive(true);
     handleCloseSettings();
 
     document.getElementById("simSettingsCtn").style.visibility="visible";
@@ -230,7 +230,7 @@ const SH_Dashboard = ({user}) => {
 
   const handleStop = () => {
 
-    handleToggleClock();
+    setIsActive(false);
 
     document.getElementById("moduleControls").style.visibility="hidden";
     document.getElementById("simSettingsCtn").style.visibility="hidden";
@@ -288,10 +288,7 @@ const SH_Dashboard = ({user}) => {
                   <p>Location: {settings.location}</p>
                 </div>
                 <div id="dateCtn" className="flex align-center topCtnPadding">
-                  <p>{settings.date}</p>
-                </div>
-                <div id="timeCtn" className="flex align-center topCtnPadding">
-                  <p>{settings.time}</p>
+                  <p>{settings.date} at {settings.time}</p>
                 </div>
                 <div id="timeCtn" className="flex align-center topCtnPadding">
                   <p>Permission Profile: {permissions}</p>
