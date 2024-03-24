@@ -115,8 +115,6 @@ const SH_Dashboard = ({user}) => {
         }
 }, [profiles]);
   
-  
-
   const [isSimRunning, setRun] = useState(false);
 
 
@@ -128,12 +126,14 @@ const SH_Dashboard = ({user}) => {
       setIsSettingsModalOpen(false);
     };
 
-    const handleInputChange = (event) => {
-      const inputValue = event.target.value;
-      const selectedProfile = profiles.find(profile => profile.id === inputValue);
-      handleSetActiveProfile(selectedProfile);
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setSettings((prevSettings) => ({
+        ...prevSettings,
+        [name]: value
+      }))
     };
-
+    
     const handlePermissionsChange = async (e) => {
       const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
       setPermissions(selectedOptions);
@@ -228,7 +228,6 @@ const SH_Dashboard = ({user}) => {
     document.getElementById("simulationCtn").style.backgroundColor = "var(--red)";
 
     console.log("started");
-    const runSim = await startSim();
   };
 
   const handleStop = () => {
