@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class Sim {
 
     /*
-     * The Simulation will run once the house layout is displayed.
-     * It is a toggle that will simulate the house environment once certain parameters are passed:
+     * The Simulation will run once the set parameters is clicked.
+     * It is a toggle that will keep a log of the house environment once certain parameters are passed:
      * 
      * Pre-Start of Simulation:
      * Profile Selection (from existing profile)
@@ -32,24 +32,13 @@ public class Sim {
      * 
      */
 
-    static String layout;
-    
+    private Sim simulation;    
 
-    @GetMapping("/run")
-    public String run(){
+    @GetMapping("/startSim")
+    public String startSim(){
 
         return "Test";
 
-    }
-
-    @GetMapping("/saveLayout")
-    public String setLayout(@RequestBody String jsonData){
-
-        JSONObject jsonObject = new JSONObject(jsonData);
-
-        System.out.println(jsonObject);
-
-        return "Layout Saved";
     }
 
     //call this command to stop simulation

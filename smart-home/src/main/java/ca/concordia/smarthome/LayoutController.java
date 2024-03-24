@@ -13,7 +13,6 @@ import ca.concordia.smarthome.handler.LightHandler;
 import ca.concordia.smarthome.handler.RoomHandler;
 import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
-import ca.concordia.smarthome.layout.House;
 import ca.concordia.smarthome.handler.DoorHandler;
 
 @RestController

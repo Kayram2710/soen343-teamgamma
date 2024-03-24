@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./shc.css"
+import { toggleWindow, toggleDoor, toggleLight } from './shcApi';
 
 const Shc = () => {
     const [doors, setDoors] = useState([]);
@@ -33,8 +34,9 @@ const Shc = () => {
         setWindows(Array.from(windowElements));
     };
 
-    const handleToggle = (element) => {
+    const handleToggle = async (element) => {
         if (element.classList.contains('door')) {
+            //const confirm = await toggleDoor(1); 
             // Handle door toggle
             console.log('Toggle door:', element.id);
         } else if (element.classList.contains('light')) {

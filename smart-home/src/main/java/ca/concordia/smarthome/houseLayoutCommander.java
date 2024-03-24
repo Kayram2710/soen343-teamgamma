@@ -20,6 +20,7 @@ public class houseLayoutCommander {
     @GetMapping("/DoorT")
     public boolean toggleDoorCommand(int index){
         House.toggleDoor(index);
+        System.out.println(House.getDoors().get(index).getIsClosed());
         return House.getDoors().get(index).getIsClosed();
     }
 
