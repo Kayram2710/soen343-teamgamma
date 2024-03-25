@@ -46,10 +46,7 @@ const SH_Dashboard = ({ user }) => {
   const [profiles, setProfiles] = useState([]);
   const [activeProfileId, setActiveProfileId] = useState("");
 
-  useEffect(() => {
-    if (isActive) {
-    }
-  }, [date]);
+  useEffect(() => {}, [date]);
 
   useEffect(() => {
     if (profiles.length > 0) {
@@ -271,6 +268,12 @@ const SH_Dashboard = ({ user }) => {
     console.log("Seconds per tick: " + speed);
   };
 
+  // --> Outdoor Temperature Setup ########################################################
+  const handleOutdoorTemperatureChange = (temperature) => {
+    setOutdoorTemperature(temperature);
+    console.log("Outdoor temperature in dashboard: " + temperature);
+  };
+
   //Dashboard setup/////////////////////////////////////////////////////////////////
 
   const [shdControllerActiveTab, setshdControllerActiveTab] = useState("SHC");
@@ -375,7 +378,7 @@ const SH_Dashboard = ({ user }) => {
                 >
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>{settings.temperature}</p>
+                    <p>{outdoorTemperature}˚C</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
@@ -384,6 +387,7 @@ const SH_Dashboard = ({ user }) => {
                 isActive={isActive}
                 speed={secondsPerTick}
                 date={settings.date}
+                changeOutdoorTemperature={handleOutdoorTemperatureChange}
               />
               <div
                 id="time-speed"

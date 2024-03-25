@@ -18,7 +18,7 @@ public class SHHTemperatureService {
             JSONArray jsonOutdoorTemperatures;
             if (season.equals("summer")) {
                 br = new BufferedReader(new FileReader("src/main/resources/Summer_Outdoor_Temperatures.csv"));
-            } else if (season.equals("winter")) {
+            } else if (season.equals("spring")) {
                 br = new BufferedReader(new FileReader("src/main/resources/Outdoor_Temperatures_Winter.csv"));
             } else {
                 throw new RuntimeException("Season Invalid.");
@@ -35,7 +35,6 @@ public class SHHTemperatureService {
             return temperatureRecords;
         }
         catch (IOException e) {
-            System.out.println(e);
             throw new IOException();
         }
     }
