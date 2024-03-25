@@ -12,6 +12,7 @@ import { getUserProfiles, savePerm } from "../../api/apiHelper";
 import HouseLayout from '../house/HouseLayout';
 import Clock from "../simulation/Clock";
 import Shc from '../shc/Shc';
+import Shh from '../shh/Shh';
 import "./SH_Dashboard.css";
 
 
@@ -382,6 +383,7 @@ const SH_Dashboard = ({user}) => {
               <div id="moduleControls">
                 {/* {shdControllerActiveTab} */}
                 {shdControllerActiveTab === 'SHC' && <Shc/>}
+                {shdControllerActiveTab === 'SHH' && <Shh/>}
               </div>
             </div>
           </div>
