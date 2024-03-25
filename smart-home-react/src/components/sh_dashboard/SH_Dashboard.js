@@ -33,7 +33,7 @@ const SH_Dashboard = ({ user }) => {
   const [simulationDate, setSimulationDate] = useState(date);
   const [simulationHour, setSimulationHour] = useState(0);
 
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(true); // SET TO TRUE FOR TESTING SISAHGA !!!!
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false); // SET TO TRUE FOR TESTING SISAHGA !!!!
   const [permissions, setPermissions] = useState([]);
   const [settings, setSettings] = useState({
     profile: "N/A", // Set to "N/A" initially
