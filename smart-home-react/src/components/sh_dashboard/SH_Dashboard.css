@@ -66,7 +66,7 @@
 
 #dashboardMiddleCtn {
     padding: 0 3rem;
-    height: 60vh;
+    min-height: 60vh;
     grid-template-columns: calc(20% - 1.5rem) 50% calc(30% - 1.5rem);
     grid-gap: 1.5rem;
     max-width: 100%;
@@ -98,6 +98,10 @@
     background-color: var(--primary-blue);
 }
 
+.speedActive {
+  background-color: var(--green);
+  color: white;
+}
 .active {
     background-color: var(--primary-blue);
 }
@@ -123,7 +127,6 @@
     border-radius: 0.5rem;
     background-color: var(--green);
     transition: 0.2s all ease-in-out;
-    visibility: hidden;
 }
 
 #startSimulationBtn {

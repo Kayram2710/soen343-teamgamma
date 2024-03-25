@@ -577,6 +577,10 @@ video {
   position: static;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
 }
@@ -660,6 +664,10 @@ video {
 
 .max-w-xs {
   max-width: 20rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .appearance-none {
@@ -773,6 +781,10 @@ video {
   padding: 1.5rem;
 }
 
+.p-0 {
+  padding: 0px;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -795,6 +807,10 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {
