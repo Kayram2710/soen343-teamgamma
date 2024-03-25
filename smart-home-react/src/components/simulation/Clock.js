@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./sim.css";
 
-const Clock = ({ isActive, speed, date }) => {
+const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
   const [seconds, setSeconds] = useState(0);
+  const [prevHour, setPrevHour] = useState(0);
+  const [dateTime, setDateTime] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+  const [outdoorTemperature, setOutdoorTemperature] = useState(0);
+  var season = "spring";
 
   const datetime = new Date(date);
 
@@ -23,6 +28,56 @@ const Clock = ({ isActive, speed, date }) => {
     return () => clearInterval(interval);
   }, [isActive, speed]);
 
+  useEffect(() => {
+    console.log("Current DateTime: " + dateTime);
+    const month = datetime.getMonth() + 1;
+    console.log("Current Month: " + month);
+    console.log("Current Date: " + currentDate);
+    console.log("Current Hour: " + datetime.getHours());
+    console.log("Stored Hour: " + prevHour);
+
+    switch (month) {
+      case (12, 1, 2):
+        season = "winter";
+        break;
+      case (3, 4, 5):
+        season = "spring";
+        break;
+      case (6, 7, 8):
+        season = "summer";
+        break;
+      case (9, 10, 11):
+        season = "fall";
+        break;
+    }
+
+    console.log("Current season: " + season);
+
+    fetch(
+      `http://localhost:8080/api/shh/temperature/get-outdoor-temperature/${season}/${currentDate}/${prevHour}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Successfully retrieved outdoor temperatures.");
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log("Temperature: ", data.body.temperature);
+        setOutdoorTemperature(data.body.temperature);
+        changeOutdoorTemperature(data.body.temperature);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [prevHour]);
+
   const formatTime = (totalSeconds) => {
     datetime.setTime(datetime.getTime() + totalSeconds * 1000);
 
@@ -34,7 +89,17 @@ const Clock = ({ isActive, speed, date }) => {
     const seconds = ("0" + datetime.getSeconds()).slice(-2);
 
     const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
+    const formattedDate = `${year}-${month}-${day}`;
+    //setDateTime(formattedDateTime);
+    if (prevHour !== datetime.getHours()) {
+      console.log("Previous Hour: " + prevHour);
+      setPrevHour(datetime.getHours());
+      setDateTime(formattedDateTime);
+      setCurrentDate(formattedDate);
+      console.log("HOUR CHANGED!");
+      console.log("New Hour: " + datetime.getHours());
+      console.log("New DateTime: " + formattedDateTime);
+    }
     return formattedDateTime;
   };
 
