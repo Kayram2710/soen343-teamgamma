@@ -12,12 +12,11 @@ public class House {
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
+    private Thermostat thermostat = new Thermostat();
 
     // Simulation parameters
     private Clock time;
     private boolean isRunning;
-    private int indoorTemp;
-    private int outdoorTemp;
     private String season;
 
     private House() {
@@ -36,6 +35,14 @@ public class House {
         return house;
     }
 
+    public static Thermostat getThermostat(){
+        return house.thermostat;
+    }
+
+    public static void setThermostat(Thermostat thermostat){
+        house.thermostat = thermostat;
+    }
+
     public static String getSeason() {
         return house.season;
     }
@@ -50,22 +57,6 @@ public class House {
 
     public static void setIsRunning(boolean isRunning) {
         house.isRunning = isRunning;
-    }
-
-    public static int getIndoorTemp() {
-        return house.indoorTemp;
-    }
-
-    public static void setIndoorTemp(int indoorTemp) {
-        house.indoorTemp = indoorTemp;
-    }
-
-    public static int getOutdoorTemp() {
-        return house.outdoorTemp;
-    }
-
-    public static void setOutdoorTemp(int outdoorTemp) {
-        house.outdoorTemp = outdoorTemp;
     }
 
     public static List<Room> getRooms() {

@@ -41,11 +41,9 @@ public class SimulationController {
     @GetMapping("/updateTemp/{indoorTemp}/{outdoorTemp}/{season}")
     public String updateTemp(@PathVariable int indoorTemp, @PathVariable int outdoorTemp, @PathVariable String season) {
         House.getInstance();
-
-        House.setIndoorTemp(indoorTemp);
-        House.setOutdoorTemp(outdoorTemp);
+        House.getThermostat().setCurrentTemp(indoorTemp);
+        House.getThermostat().setOutsideTemp(outdoorTemp);
         House.setSeason(season);
-        // TODO Handle temp conditions
 
         return "Success";
     }

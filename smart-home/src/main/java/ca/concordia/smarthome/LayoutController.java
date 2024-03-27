@@ -16,6 +16,7 @@ import ca.concordia.smarthome.handler.RoomHandler;
 import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
 import ca.concordia.smarthome.layout.House;
+import ca.concordia.smarthome.layout.Thermostat;
 import ca.concordia.smarthome.layout.Zone;
 import ca.concordia.smarthome.handler.DoorHandler;
 
@@ -28,18 +29,6 @@ public class LayoutController {
     public String updateTemp() {
         House.getInstance();
         House.setIsRunning(true);
-        return House.getSeason();
-    }
-
-    @GetMapping("/updateTemp/{indoorTemp}/{outdoorTemp}/{season}")
-    public String updateTemp(@PathVariable int indoorTemp, @PathVariable int outdoorTemp, @PathVariable String season) {
-        House.getInstance();
-
-        House.setIndoorTemp(indoorTemp);
-        House.setOutdoorTemp(outdoorTemp);
-        House.setSeason(season);
-        // TODO Handle temp conditions
-
         return House.getSeason();
     }
 
