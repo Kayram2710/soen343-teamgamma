@@ -76,7 +76,7 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [prevHour]);
+  }, [seconds]);
 
   const formatTime = (totalSeconds) => {
     datetime.setTime(datetime.getTime() + totalSeconds * 1000);

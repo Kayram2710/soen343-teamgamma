@@ -3,6 +3,8 @@ package ca.concordia.smarthome;
 import org.json.CDL;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -12,16 +14,25 @@ import org.springframework.util.ResourceUtils;
 
 @Service
 public class SHHTemperatureService {
-    public List<SHHTemperature> convertCsvTemperaturesToJson(String season) throws IOException, RuntimeException {
+
+    private final ResourceLoader resourceLoader;
+
+    @Autowired
+    public SHHTemperatureService(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
+
+  public List<SHHTemperature> convertCsvTemperaturesToJson(String season) throws IOException, RuntimeException {
         try {
             BufferedReader br;
-            JSONArray jsonOutdoorTemperatures;
             if (season.equals("summer")) {
-                br = new BufferedReader(new FileReader("src/main/resources/Summer_Outdoor_Temperatures.csv"));
+                Resource resource = resourceLoader.getResource("classpath:Summer_Outdoor_Temperatures.csv");
+                br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             } else if (season.equals("spring")) {
-                br = new BufferedReader(new FileReader("src/main/resources/Outdoor_Temperatures_Winter.csv"));
+                Resource resource = resourceLoader.getResource("classpath:Outdoor_Temperatures_Winter.csv");
+                br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
             } else {
-                throw new RuntimeException("Season Invalid.");
+                throw new IllegalArgumentException("Invalid season: " + season);
             }
 
             String line = "";
@@ -35,6 +46,7 @@ public class SHHTemperatureService {
             return temperatureRecords;
         }
         catch (IOException e) {
+            e.printStackTrace();
             throw new IOException();
         }
     }
