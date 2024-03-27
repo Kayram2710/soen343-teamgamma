@@ -1,6 +1,6 @@
 import { default as api, default as axios } from './axiosConfig';
 
-export const savePerm = async (userEmail, permission, profileId) =>{
+export const savePerm = async (userEmail, permission, profileId) => {
   try {
     console.log(permission);
     console.log("profile id " + profileId);
@@ -68,38 +68,53 @@ export const getUserProfiles = async (userEmail) => {
 
 
 export async function validateUserLoggin(user) {
-    try {
-        const response = await api.get("/api/v1/users/" + user.email + "/" + user.password);
-        console.log(response.data);
-        return response.data; 
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
+  try {
+    const response = await api.get("/api/v1/users/" + user.email + "/" + user.password);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
-export async function validateUserRegistration(user){
-    try {
-        const response = await api.get("/api/v1/users/" + user.email + "/" + user.password + "/" + user.username);
-        console.log(response.data);
-        return response.data; 
-    } catch (err) {
-      console.log(err);
-      throw err;
-    }
+export async function validateUserRegistration(user) {
+  try {
+    const response = await api.get("/api/v1/users/" + user.email + "/" + user.password + "/" + user.username);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 }
 
 
-export async function parseLayout(jsonData){
-  try{
+export async function parseLayout(jsonData) {
+  try {
     const response = await api.get('/api/v1/Layout/parse-layout', jsonData, {
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
     console.log('Layout parsed successfully:', response.data);
     return response.data;
-  }catch (err){
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function updateTemp(indoor, outdoor, season) {
+  try {
+    const response = await api.get('/api/v1/Layout/updateTemp/' + indoor + "/" + outdoor + "/" + season, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Temp updated: ', response.data);
+    return response.data;
+  } catch (err) {
     console.log(err);
     throw err;
   }

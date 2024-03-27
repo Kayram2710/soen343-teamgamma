@@ -13,9 +13,12 @@ public class House {
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
 
-    //Simulation parameters
+    // Simulation parameters
     private Clock time;
     private static boolean running;
+    private int indoorTemp;
+    private int outdoorTemp;
+    private String season;
 
     private House() {
 
@@ -30,6 +33,30 @@ public class House {
             }
         }
         return house;
+    }
+
+    public static String getSeason() {
+        return house.season;
+    }
+
+    public static void setSeason(String season) {
+        house.season = season;
+    }
+
+    public static int getIndoorTemp() {
+        return house.indoorTemp;
+    }
+
+    public static void setIndoorTemp(int indoorTemp) {
+        house.indoorTemp = indoorTemp;
+    }
+
+    public static int getOutdoorTemp() {
+        return house.outdoorTemp;
+    }
+
+    public static void setOutdoorTemp(int outdoorTemp) {
+        house.outdoorTemp = outdoorTemp;
     }
 
     public static List<Room> getRooms() {
@@ -56,7 +83,6 @@ public class House {
         house.doors = doors;
     }
 
-    
     public static List<Window> getWindows() {
         return house.windows;
     }
@@ -65,74 +91,70 @@ public class House {
         house.windows = windows;
     }
 
-    public static void reset(){
+    public static void reset() {
         house.rooms = new ArrayList<Room>();
         house.lights = new ArrayList<Light>();
         house.doors = new ArrayList<Door>();
         house.windows = new ArrayList<Window>();
     }
 
-    public static void toggleLights(int index){
+    public static void toggleLights(int index) {
         Light target = house.lights.get(index);
         boolean status = target.getIsOn();
 
-        if(status){
+        if (status) {
             house.lights.get(index).setIsOn(false);
-        }
-        else{
+        } else {
             house.lights.get(index).setIsOn(true);
         }
     }
 
-    public static void toggleDoor(int index){
+    public static void toggleDoor(int index) {
         Door target = house.doors.get(index);
         boolean status = target.getIsClosed();
 
-        if(status){
+        if (status) {
             house.doors.get(index).setIsClosed(false);
-        }
-        else{
+        } else {
             house.doors.get(index).setIsClosed(true);
         }
     }
 
-    public static void toggleWindow(int index){
+    public static void toggleWindow(int index) {
         Window target = house.windows.get(index);
         boolean status = target.getIsClosed();
 
-        if(status){
+        if (status) {
             house.windows.get(index).setIsClosed(false);
-        }
-        else{
+        } else {
             house.windows.get(index).setIsClosed(true);
         }
     }
 
-    public static void obstructWindow(int index){
+    public static void obstructWindow(int index) {
         Window target = house.windows.get(index);
         boolean status = target.getIsObstructed();
 
-        if(status){
+        if (status) {
             house.windows.get(index).setIsObstructed(false);
-        }
-        else{
+        } else {
             house.windows.get(index).setIsObstructed(true);
         }
     }
 
-    public static void addZone(Zone zone){
+    public static void addZone(Zone zone) {
         house.zones.add(zone);
     }
 
-    public static void removeZone(Zone zone){
+    public static void removeZone(Zone zone) {
         house.zones.remove(zone);
     }
 
-    public static Zone getFirstZone(){
+    public static Zone getFirstZone() {
         return house.zones.get(0);
     }
 
-    public static void startSim(){
+    public static void startSim() {
         house.running = true;
     }
 

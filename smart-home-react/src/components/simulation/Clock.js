@@ -3,7 +3,7 @@ import "./sim.css";
 
 const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
   const [seconds, setSeconds] = useState(0);
-  const [prevHour, setPrevHour] = useState(0);
+  const [prevHour, setPrevHour] = useState(-1);
   const [dateTime, setDateTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [outdoorTemperature, setOutdoorTemperature] = useState(0);
@@ -12,7 +12,7 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
   const datetime = new Date(date);
 
   useEffect(() => {
-    console.log("Clock.js: speed: ", speed);
+    //console.log("Clock.js: speed: ", speed);
 
     let interval;
 
@@ -29,30 +29,37 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
   }, [isActive, speed]);
 
   useEffect(() => {
-    console.log("Current DateTime: " + dateTime);
+    // console.log("Current DateTime: " + dateTime);
     const month = datetime.getMonth() + 1;
-    console.log("Current Month: " + month);
-    console.log("Current Date: " + currentDate);
-    console.log("Current Hour: " + datetime.getHours());
-    console.log("Stored Hour: " + prevHour);
+    // console.log("Current Month: " + month);
+    // console.log("Current Date: " + currentDate);
+    // console.log("Current Hour: " + datetime.getHours());
+    // console.log("Stored Hour: " + prevHour);
 
     switch (month) {
-      case (12, 1, 2):
+      case 12:
+      case 1:
+      case 2:
         season = "winter";
         break;
-      case (3, 4, 5):
+      case 3:
+      case 4:
+      case 5:
         season = "spring";
         break;
-      case (6, 7, 8):
+      case 6:
+      case 7:
+      case 8:
         season = "summer";
         break;
-      case (9, 10, 11):
+      case 9:
+      case 10:
+      case 11:
         season = "fall";
         break;
     }
 
-    console.log("Current season: " + season);
-
+    // console.log("Current season: " + season);
     fetch(
       `http://localhost:8080/api/shh/temperature/get-outdoor-temperature/${season}/${currentDate}/${prevHour}`,
       {
@@ -64,12 +71,12 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
     )
       .then((response) => {
         if (response.ok) {
-          console.log("Successfully retrieved outdoor temperatures.");
+          //console.log("Successfully retrieved outdoor temperatures.");
           return response.json();
         }
       })
       .then((data) => {
-        console.log("Temperature: ", data.body.temperature);
+        // console.log("Temperature: ", data.body.temperature);
         setOutdoorTemperature(data.body.temperature);
         changeOutdoorTemperature(data.body.temperature);
       })
@@ -92,13 +99,13 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
     const formattedDate = `${year}-${month}-${day}`;
     //setDateTime(formattedDateTime);
     if (prevHour !== datetime.getHours()) {
-      console.log("Previous Hour: " + prevHour);
+      //console.log("Previous Hour: " + prevHour);
       setPrevHour(datetime.getHours());
       setDateTime(formattedDateTime);
       setCurrentDate(formattedDate);
-      console.log("HOUR CHANGED!");
-      console.log("New Hour: " + datetime.getHours());
-      console.log("New DateTime: " + formattedDateTime);
+      //console.log("HOUR CHANGED!");
+      //console.log("New Hour: " + datetime.getHours());
+      //console.log("New DateTime: " + formattedDateTime);
     }
     return formattedDateTime;
   };

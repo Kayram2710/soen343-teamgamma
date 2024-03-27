@@ -20,7 +20,7 @@ const LayoutParser = () => {
             const fileReader = new FileReader();
             fileReader.onload = async (event) => {
                 const jsonData = JSON.parse(event.target.result);
-                await parseLayout(jsonData);//called here
+                await parseLayout(jsonData);
             };
             fileReader.readAsText(selectedFile);
         } catch (error) {
@@ -28,7 +28,6 @@ const LayoutParser = () => {
         }
     };
 
-    //function here
     const parseLayout = async (jsonData) => {
         try {
             const response = await axios.post('http://localhost:8080/api/v1/Layout/parse-layout', jsonData, {
