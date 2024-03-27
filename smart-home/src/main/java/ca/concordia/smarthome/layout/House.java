@@ -15,7 +15,7 @@ public class House {
 
     // Simulation parameters
     private Clock time;
-    private static boolean running;
+    private boolean isRunning;
     private int indoorTemp;
     private int outdoorTemp;
     private String season;
@@ -29,6 +29,7 @@ public class House {
             synchronized (House.class) {
                 if (house == null) {
                     house = new House();
+                    house.isRunning = false;
                 }
             }
         }
@@ -41,6 +42,14 @@ public class House {
 
     public static void setSeason(String season) {
         house.season = season;
+    }
+
+    public static boolean isRunning() {
+        return house.isRunning;
+    }
+
+    public static void setIsRunning(boolean isRunning) {
+        house.isRunning = isRunning;
     }
 
     public static int getIndoorTemp() {
@@ -154,8 +163,12 @@ public class House {
         return house.zones.get(0);
     }
 
-    public static void startSim() {
-        house.running = true;
+    public static boolean isHouseEmpty(){
+        for(Room room : house.rooms){
+            if(!room.isRoomEmpty){
+                return false;
+            }
+        }
+        return true;
     }
-
 }

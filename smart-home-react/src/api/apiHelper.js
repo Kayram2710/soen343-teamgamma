@@ -107,12 +107,42 @@ export async function parseLayout(jsonData) {
 
 export async function updateTemp(indoor, outdoor, season) {
   try {
-    const response = await api.get('/api/v1/Layout/updateTemp/' + indoor + "/" + outdoor + "/" + season, {
+    const response = await api.get('/api/v1/simulation/updateTemp/' + indoor + "/" + outdoor + "/" + season, {
       headers: {
         'Content-Type': 'application/json'
       }
     });
     console.log('Temp updated: ', response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function startSim(){
+  try {
+    const response = await api.get('/api/v1/simulation/startSim', {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Simulation Started: ', response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+export async function stopSim(){
+  try {
+    const response = await api.get('/api/v1/simulation/stopSim', {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Simulation Stopped: ', response.data);
     return response.data;
   } catch (err) {
     console.log(err);
