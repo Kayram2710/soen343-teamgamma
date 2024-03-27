@@ -1,5 +1,6 @@
 package ca.concordia.smarthome;
 
+import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,10 @@ import ca.concordia.smarthome.handler.LightHandler;
 import ca.concordia.smarthome.handler.RoomHandler;
 import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
+import ca.concordia.smarthome.layout.Door;
 import ca.concordia.smarthome.layout.House;
 import ca.concordia.smarthome.layout.Thermostat;
+import ca.concordia.smarthome.layout.Window;
 import ca.concordia.smarthome.layout.Zone;
 import ca.concordia.smarthome.handler.DoorHandler;
 
@@ -55,5 +58,41 @@ public class LayoutController {
         }
         House.getInstance();
         return htmlBuilder.toString();
+    }
+
+    @GetMapping("/toggleDoor/{id}")
+    public String toggleDoor(@PathVariable ObjectId id) {
+        House.getInstance();
+        for (Door door : House.getDoors()) {
+            if (door.getId().toString().equals(id.toString())) {
+                door.setIsClosed(!door.getIsClosed());
+                return "Success";
+            }
+        }
+        return "Failed";
+    }
+
+    @GetMapping("/toggleWindow/{id}")
+    public String toggleWindow(@PathVariable ObjectId id) {
+        House.getInstance();
+        for (Window window : House.getWindows()) {
+            if (window.getId().toString().equals(id.toString())) {
+                window.setIsClosed(!window.getIsClosed());
+                return "Success";
+            }
+        }
+        return "Failed";
+    }
+
+    @GetMapping("/obstructWindow/{id}")
+    public String obstructWindow(@PathVariable ObjectId id) {
+        House.getInstance();
+        for (Window window : House.getWindows()) {
+            if (window.getId().toString().equals(id.toString())) {
+                window.setIsObstructed(!window.getIsObstructed());
+                return "Success";
+            }
+        }
+        return "Failed";
     }
 }

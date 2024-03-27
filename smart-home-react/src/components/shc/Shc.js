@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./shc.css"
-import { toggleWindow, toggleDoor, toggleLight } from './shcApi';
+import { toggleWindow, toggleDoor, toggleLight, obstructWindow } from './shcApi';
 
 const Shc = () => {
     const [doors, setDoors] = useState([]);
@@ -14,9 +14,9 @@ const Shc = () => {
         });
 
         observer.observe(document, {
-            childList: true, 
-            subtree: true 
-            
+            childList: true,
+            subtree: true
+
         });
 
         fetchElements();
@@ -36,58 +36,83 @@ const Shc = () => {
 
     const handleToggle = async (element) => {
         if (element.classList.contains('door')) {
-            //const confirm = await toggleDoor(1); 
-            // Handle door toggle
-            console.log('Toggle door:', element.id);
+            await toggleDoor(element.id);
+            updateTogglingUI(element);
         } else if (element.classList.contains('light')) {
-            // Handle light toggle
-            console.log('Toggle light:', element.id);
+            await toggleLight(element.id);
+            console.log(window.getComputedStyle(element).getPropertyValue('background-color'))
+            if (element.style.backgroundColor === 'yellow') {
+                element.style.backgroundColor = 'black';
+            } else {
+                element.style.backgroundColor = 'yellow';
+            }
         } else if (element.classList.contains('window')) {
-            // Handle window toggle
-            console.log('Toggle window:', element.id);
+            await toggleWindow(element.id);
+            updateTogglingUI(element);
         }
     };
+
+    const handleObstruct = async (element) => {
+        await obstructWindow(element.id);
+        if (element.style.backgroundColor === 'gray') {
+            element.style.backgroundColor = 'red';
+        } else {
+            element.style.backgroundColor === 'gray';
+        }
+        isWindowObstructed(element);
+    };
+
     const handleHover = (element) => {
-        element.style.border = '2px solid red';
+        element.style.border = '2px solid orange';
     };
     const handleLeave = (element) => {
         element.style.border = 'none';
     };
-
+    const isWindowObstructed = (window) => {
+        console.log(window.style.backgroundColor === 'red')
+        return window.style.backgroundColor === 'red';
+    };
     return (
-        <div id="shc-content">
-            <table>
-                <thead>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right">
+                <thead class="text-xs uppercase" style={{ color: 'white' }}>
                     <tr>
-                        <th>Type</th>
-                        <th>Action</th>
+                        <th scope="col" class="px-6 py-3" style={{ backgroundColor: 'var(--hover-blue)' }}>
+                            Type
+                        </th>
+                        <th scope="col" class="px-6 py-3" style={{ backgroundColor: 'var(--hover-blue)' }}>
+                            Action
+                        </th>
+                        <th scope="col" class="px-6 py-3" style={{ backgroundColor: 'var(--hover-blue)' }}>
+                            Obstruction
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {doors.map((door, index) => (
-                        <tr key={`door-${index}`} onMouseEnter={() => handleHover(door)} onMouseLeave={() => handleLeave(door)}>
-                            <td>Door {index + 1}</td>
-                            <td>
-                                <button onClick={() => handleToggle(door)}>Open/ </button>
-                                <button onClick={() => handleToggle(door)}> Close</button>
+                        <tr class="border-b border-gray-200 dark:border-gray-700" key={`door-${index}`} onMouseEnter={() => handleHover(door)} onMouseLeave={() => handleLeave(door)}>
+                            <td class="px-6 py-4">Door {index + 1}</td>
+                            <td class="px-6 py-4" >
+                                <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => handleToggle(door)}>Open/Close</button>
                             </td>
                         </tr>
                     ))}
                     {lights.map((light, index) => (
-                        <tr key={`light-${index}`} onMouseEnter={() => handleHover(light)} onMouseLeave={() => handleLeave(light)}>
-                            <td>Light {index + 1}</td>
-                            <td>
-                                <button onClick={() => handleToggle(light)}>On/</button>
-                                <button onClick={() => handleToggle(light)}>Off</button>
+                        <tr class="border-b border-gray-200 dark:border-gray-700" key={`light-${index}`} onMouseEnter={() => handleHover(light)} onMouseLeave={() => handleLeave(light)}>
+                            <td class="px-6 py-4">Light {index + 1}</td>
+                            <td class="px-6 py-4">
+                                <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => handleToggle(light)}>Open/Close</button>
                             </td>
                         </tr>
                     ))}
                     {windows.map((window, index) => (
-                        <tr key={`window-${index}`} onMouseEnter={() => handleHover(window)} onMouseLeave={() => handleLeave(window)}>
-                            <td>Window {index + 1}</td>
-                            <td>
-                                <button onClick={() => handleToggle(window)}>Open/</button>
-                                <button onClick={() => handleToggle(window)}>Close</button>
+                        <tr class="border-b border-gray-200 dark:border-gray-700" key={`window-${index}`} onMouseEnter={() => handleHover(window)} onMouseLeave={() => handleLeave(window)}>
+                            <td class="px-6 py-4" >Window {index + 1}</td>
+                            <td class="px-6 py-4">
+                                <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => handleToggle(window)} disabled={isWindowObstructed(window)}>Open/Close</button>
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" onClick={() => handleObstruct(window)}>Obstruct</button>
                             </td>
                         </tr>
                     ))}
@@ -96,5 +121,20 @@ const Shc = () => {
         </div>
     );
 };
-
+function updateTogglingUI(element) {
+    const currentTransform = element.style.transform;
+    const match = /rotate\(([-\d]+)deg\)/.exec(currentTransform);
+    const currentRotation = match ? parseInt(match[1]) : 0;
+    var newRotation = 0;
+    if (currentRotation == 45) {
+        newRotation = currentRotation - 45;
+    } else if (currentRotation == -45) {
+        newRotation = currentRotation + 44;
+    } else if (currentRotation == 0) {
+        newRotation = currentRotation + 45;
+    } else {
+        newRotation = currentRotation - 44;
+    }
+    element.style.transform = `rotate(${newRotation}deg)`;
+}
 export default Shc;
