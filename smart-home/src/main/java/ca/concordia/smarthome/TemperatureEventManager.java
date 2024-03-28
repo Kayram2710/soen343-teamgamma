@@ -1,4 +1,4 @@
-package ca.concordia.smarthome.interfaces;
+package ca.concordia.smarthome;
 
 import ca.concordia.smarthome.layout.HouseComponent;
 
