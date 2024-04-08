@@ -1,0 +1,25 @@
+.sliderCtn {
+    width: 3rem;
+    height: 24px;
+    border: 2px solid #FFF;
+    border-radius: 1rem;
+    transition: 0.25s all ease-in-out;
+}
+
+.sliderBall {
+    cursor: pointer;
+    border-radius: 1rem;
+    width: 20px;
+    height: 20px;
+    background-color: #FFF;
+    transition: 0.25s all ease-in-out;
+}
+
+.sliderBallActive {
+    background-color: var(--green);
+    transform: translateX(24px);
+}
+
+.sliderCtnActive {
+    background-color: #FFF;
+}

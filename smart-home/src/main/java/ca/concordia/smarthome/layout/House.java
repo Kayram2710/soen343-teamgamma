@@ -1,5 +1,6 @@
 package ca.concordia.smarthome.layout;
 
+import ca.concordia.smarthome.AwayMode;
 import ca.concordia.smarthome.simulation.Clock;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class House {
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
     private Thermostat thermostat = new Thermostat();
+    private AwayMode awayMode = new AwayMode();
 
     // Simulation parameters
     private Clock time;
@@ -34,6 +36,11 @@ public class House {
         }
         return house;
     }
+
+    public static void setAwayMode(boolean enabled) {
+        house.awayMode.setAwayMode(enabled);
+    }
+    public static AwayMode getAwayMode() { return house.awayMode; }
 
     public static Thermostat getThermostat(){
         return house.thermostat;
