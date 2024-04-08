@@ -4,16 +4,35 @@ public class Room extends HouseComponent{
     int width;
     int height;
     int temperature;
-
+    boolean isRoomEmpty;
     String name;
-
     Zone zone;
 
+    public int getTemperature() {
+        return this.temperature;
+    }
+
+    public void setTemperature(int temperature) {
+        this.temperature = temperature;
+    }
+
+    public boolean getIsRoomEmpty() {
+        return this.isRoomEmpty;
+    }
+
+    public void setIsRoomEmpty(boolean isRoomEmpty) {
+        this.isRoomEmpty = isRoomEmpty;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public Room(int positionX, int positionY, int width, int height, Zone zone) {
         super(positionX, positionY);
         this.width = width;
         this.height = height;
         this.zone = zone;
+        this.isRoomEmpty = true;
     }
 
     public Room(String name,int positionX, int positionY, int width, int height, Zone zone) {

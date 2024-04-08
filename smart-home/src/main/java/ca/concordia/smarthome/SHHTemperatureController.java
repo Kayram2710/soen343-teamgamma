@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ca.concordia.smarthome.layout.House;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -33,4 +35,19 @@ public class SHHTemperatureController {
         }
         return Optional.empty();
     }
+
+    @GetMapping("/saveEnergy")
+    public String saveEnergy(){
+        House.getInstance();
+        if(House.getSeason().equalsIgnoreCase("summer")){
+            //TODO
+        }else if(House.getSeason().equalsIgnoreCase("winter")){
+            if(House.isHouseEmpty()){
+                House.getThermostat().setGoalTemp(17);
+                return "House is empty, heating turned down to 17";
+            }
+        }
+
+        return "No Energy Saving Available";
+    } 
 }

@@ -12,10 +12,12 @@ public class House {
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
+    private Thermostat thermostat = new Thermostat();
 
-    //Simulation parameters
+    // Simulation parameters
     private Clock time;
-    private static boolean running;
+    private boolean isRunning;
+    private String season;
 
     private House() {
 
@@ -26,10 +28,35 @@ public class House {
             synchronized (House.class) {
                 if (house == null) {
                     house = new House();
+                    house.isRunning = false;
                 }
             }
         }
         return house;
+    }
+
+    public static Thermostat getThermostat(){
+        return house.thermostat;
+    }
+
+    public static void setThermostat(Thermostat thermostat){
+        house.thermostat = thermostat;
+    }
+
+    public static String getSeason() {
+        return house.season;
+    }
+
+    public static void setSeason(String season) {
+        house.season = season;
+    }
+
+    public static boolean isRunning() {
+        return house.isRunning;
+    }
+
+    public static void setIsRunning(boolean isRunning) {
+        house.isRunning = isRunning;
     }
 
     public static List<Room> getRooms() {
@@ -56,7 +83,6 @@ public class House {
         house.doors = doors;
     }
 
-    
     public static List<Window> getWindows() {
         return house.windows;
     }
@@ -65,75 +91,75 @@ public class House {
         house.windows = windows;
     }
 
-    public static void reset(){
+    public static void reset() {
         house.rooms = new ArrayList<Room>();
         house.lights = new ArrayList<Light>();
         house.doors = new ArrayList<Door>();
         house.windows = new ArrayList<Window>();
     }
 
-    public static void toggleLights(int index){
+    public static void toggleLights(int index) {
         Light target = house.lights.get(index);
         boolean status = target.getIsOn();
 
-        if(status){
+        if (status) {
             house.lights.get(index).setIsOn(false);
-        }
-        else{
+        } else {
             house.lights.get(index).setIsOn(true);
         }
     }
 
-    public static void toggleDoor(int index){
+    public static void toggleDoor(int index) {
         Door target = house.doors.get(index);
         boolean status = target.getIsClosed();
 
-        if(status){
+        if (status) {
             house.doors.get(index).setIsClosed(false);
-        }
-        else{
+        } else {
             house.doors.get(index).setIsClosed(true);
         }
     }
 
-    public static void toggleWindow(int index){
+    public static void toggleWindow(int index) {
         Window target = house.windows.get(index);
         boolean status = target.getIsClosed();
 
-        if(status){
+        if (status) {
             house.windows.get(index).setIsClosed(false);
-        }
-        else{
+        } else {
             house.windows.get(index).setIsClosed(true);
         }
     }
 
-    public static void obstructWindow(int index){
+    public static void obstructWindow(int index) {
         Window target = house.windows.get(index);
         boolean status = target.getIsObstructed();
 
-        if(status){
+        if (status) {
             house.windows.get(index).setIsObstructed(false);
-        }
-        else{
+        } else {
             house.windows.get(index).setIsObstructed(true);
         }
     }
 
-    public static void addZone(Zone zone){
+    public static void addZone(Zone zone) {
         house.zones.add(zone);
     }
 
-    public static void removeZone(Zone zone){
+    public static void removeZone(Zone zone) {
         house.zones.remove(zone);
     }
 
-    public static Zone getFirstZone(){
+    public static Zone getFirstZone() {
         return house.zones.get(0);
     }
 
-    public static void startSim(){
-        house.running = true;
+    public static boolean isHouseEmpty(){
+        for(Room room : house.rooms){
+            if(!room.isRoomEmpty){
+                return false;
+            }
+        }
+        return true;
     }
-
 }

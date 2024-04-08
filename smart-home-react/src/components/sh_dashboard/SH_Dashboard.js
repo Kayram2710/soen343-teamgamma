@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faClose } from "@fortawesome/free-solid-svg-icons";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProfiles, savePerm } from "../../api/apiHelper";
+import { getUserProfiles, savePerm, updateTemp, startSim, stopSim } from "../../api/apiHelper";
 import HouseLayout from "../house/HouseLayout";
 import Clock from "../simulation/Clock";
 import Shc from "../shc/Shc";
@@ -30,6 +30,7 @@ const SH_Dashboard = ({ user }) => {
   const currentTime = hours + ":" + minutes;
 
   const [outdoorTemperature, setOutdoorTemperature] = useState(0);
+  const [indoorTemperature, setIndoorTemperature] = useState(0);
   const [simulationDate, setSimulationDate] = useState(date);
   const [simulationHour, setSimulationHour] = useState(0);
 
@@ -39,14 +40,14 @@ const SH_Dashboard = ({ user }) => {
     profile: "N/A", // Set to "N/A" initially
     date: date.toLocaleString("sv").split(" ").join("T"),
     location: "Room",
-    temperature: outdoorTemperature,
+    temperature: indoorTemperature,
   });
 
   // --> Profile selection ########################################################
   const [profiles, setProfiles] = useState([]);
   const [activeProfileId, setActiveProfileId] = useState("");
 
-  useEffect(() => {}, [date]);
+  useEffect(() => { }, [date]);
 
   useEffect(() => {
     if (profiles.length > 0) {
@@ -69,7 +70,7 @@ const SH_Dashboard = ({ user }) => {
       .catch((error) => {
         console.error("Error fetching profiles:", error);
       })
-      .finally(() => {});
+      .finally(() => { });
   }, [user.email]);
 
   useEffect(() => {
@@ -94,6 +95,11 @@ const SH_Dashboard = ({ user }) => {
     }));
   }, [profiles, activeProfileId]);
 
+  useEffect(() =>{
+    var season = getSeason(settings.date);
+    updateTemp(indoorTemperature, outdoorTemperature, season);
+  }, [indoorTemperature, outdoorTemperature]);
+
   const handleProfileChange = useCallback(
     async (event) => {
       const selectedProfileId = event.target.value;
@@ -104,7 +110,7 @@ const SH_Dashboard = ({ user }) => {
         // Assuming you have a method to validate the selected profil
         setActiveProfileId(selectedProfile.id);
         localStorage.setItem("activeProfileId", selectedProfile.id);
-        console.log("worked");
+        //console.log("worked");
       } catch (error) {
         console.error("Error during profile validation:", error);
       }
@@ -127,6 +133,9 @@ const SH_Dashboard = ({ user }) => {
       ...prevSettings,
       [name]: value,
     }));
+    if (name == "temperature") {
+      setIndoorTemperature(value);
+    }
   };
 
   const handlePermissionsChange = async (e) => {
@@ -191,7 +200,7 @@ const SH_Dashboard = ({ user }) => {
               />
             </label>
             <label>
-              Set outside temperature:
+              Set inside temperature:
               <input
                 type="number"
                 name="temperature"
@@ -265,13 +274,13 @@ const SH_Dashboard = ({ user }) => {
     }
     document.getElementById("speed" + speed).classList.add("speedActive");
     setSpeed(speed);
-    console.log("Seconds per tick: " + speed);
+    //console.log("Seconds per tick: " + speed);
   };
 
   // --> Outdoor Temperature Setup ########################################################
   const handleOutdoorTemperatureChange = (temperature) => {
     setOutdoorTemperature(temperature);
-    console.log("Outdoor temperature in dashboard: " + temperature);
+    //console.log("Outdoor temperature in dashboard: " + temperature);
   };
 
   //Dashboard setup/////////////////////////////////////////////////////////////////
@@ -300,10 +309,14 @@ const SH_Dashboard = ({ user }) => {
     document.getElementById("simulationCtn").style.backgroundColor =
       "var(--red)";
 
-    console.log("started");
+    var season = getSeason(settings.date);
+
+    await startSim();
+    await updateTemp(indoorTemperature, outdoorTemperature, season);
+    //console.log("started");
   };
 
-  const handleStop = () => {
+  const handleStop = async () => {
     setIsActive(false);
 
     document.getElementById("timer-display").style.display = "none";
@@ -314,8 +327,9 @@ const SH_Dashboard = ({ user }) => {
     document.getElementById("stopSimulationBtn").style.display = "none";
     document.getElementById("simulationCtn").style.backgroundColor =
       "var(--green)";
+    await stopSim();
   };
-
+   
   return (
     <div className="dashboardMasterCtn flex justify-center">
       <div id="dashboardMainCtn">
@@ -379,6 +393,11 @@ const SH_Dashboard = ({ user }) => {
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
                     <p>{outdoorTemperature}˚C</p>
+                    <FontAwesomeIcon icon={faCloud} />
+                  </div>
+                  <p>Indoor Temp: </p>
+                  <div className="flex align-center" style={{ gap: "0.25rem" }}>
+                    <p>{indoorTemperature}˚C</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
@@ -549,5 +568,37 @@ const SH_Dashboard = ({ user }) => {
     </div>
   );
 };
+
+function getSeason(dateString) {
+  var datetime = new Date(dateString);
+  var month = datetime.getMonth() + 1;
+  var season = "";
+  
+  switch (month) {
+    case 12:
+    case 1:
+    case 2:
+      season = "winter";
+      break;
+    case 3:
+    case 4:
+    case 5:
+      season = "spring";
+      break;
+    case 6:
+    case 7:
+    case 8:
+      season = "summer";
+      break;
+    case 9:
+    case 10:
+    case 11:
+      season = "fall";
+      break;
+  }
+
+  return season;
+}
+
 
 export default SH_Dashboard;

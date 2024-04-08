@@ -34,16 +34,16 @@ public class Sim {
 
     private Sim simulation;    
 
-    @GetMapping("/startSim")
-    public String startSim(){
+    // @GetMapping("/startSim")
+    // public String startSim(){
 
-        return "Test";
+    //     return "Test";
 
-    }
+    // }
 
-    //call this command to stop simulation
-    public void stop(){
+    // //call this command to stop simulation
+    // public void stop(){
 
-    }
+    // }
 
 }
