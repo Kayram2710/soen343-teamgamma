@@ -25,6 +25,9 @@ public class SHPModule {
             List<ObjectId> closedDoorsIds = House.getAwayMode().closeDoors(); // Close doors and retrieve list of doors just closed.
             List<ObjectId> closedWindowsIds = House.getAwayMode().closeWindows(); // Close windows and retrieve list of windows just closed.
 
+            System.out.println("Closed doors: " + closedDoorsIds);
+            System.out.println("Closed windows: " + closedWindowsIds);
+
             JSONArray jsonDoorArray = new JSONArray(closedDoorsIds);
             JSONArray jsonWindowArray = new JSONArray(closedWindowsIds);
             JSONObject houseComponentsJsonObj = new JSONObject();
