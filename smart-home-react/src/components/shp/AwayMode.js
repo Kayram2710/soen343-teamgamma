@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import "./AwayMode.css";
 
-const AwayMode = ({ layoutDoors, layoutWindows }) => {
+const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnabled }) => {
   const [doors, setDoors] = useState([]);
   const [windows, setWindows] = useState([]);
-  const [awayModeEnabled, setAwayModeEnabled] = useState(false);
 
   const fetchElements = () => {
     const doorElements = document.querySelectorAll(".door");
@@ -65,12 +64,12 @@ const AwayMode = ({ layoutDoors, layoutWindows }) => {
     const awayModeToggler = document.getElementById("awayModeToggler");
     const sliderCtn = document.querySelector(".sliderCtn");
     if (awayModeToggler.classList.contains("sliderBallActive")) {
-      {/*awayModeToggler.classList.remove("sliderBallActive");
-      sliderCtn.classList.remove("sliderCtnActive");*/}
+      {awayModeToggler.classList.remove("sliderBallActive");
+      sliderCtn.classList.remove("sliderCtnActive");}
       setAwayModeEnabled(false);
     } else {
-      {/*awayModeToggler.classList.add("sliderBallActive");
-      sliderCtn.classList.add("sliderCtnActive");*/}
+      {awayModeToggler.classList.add("sliderBallActive");
+      sliderCtn.classList.add("sliderCtnActive");}
       setAwayModeEnabled(true);
     }
 

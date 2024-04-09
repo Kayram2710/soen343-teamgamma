@@ -22,7 +22,6 @@ import Shc from "../shc/Shc";
 import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
 import Shp from "../shp/Shp";
-import AwayMode from "../shp/AwayMode";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
@@ -41,6 +40,7 @@ const SH_Dashboard = ({ user }) => {
   const [indoorTemperature, setIndoorTemperature] = useState(0);
   const [simulationDate, setSimulationDate] = useState(date);
   const [simulationHour, setSimulationHour] = useState(0);
+  const [awayMode, setawaymode] = useState(false);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false); // SET TO TRUE FOR TESTING SISAHGA !!!!
   const [permissions, setPermissions] = useState([]);
@@ -569,7 +569,7 @@ const SH_Dashboard = ({ user }) => {
                 {/* {shdControllerActiveTab} */}
                 {shdControllerActiveTab === "SHC" && <Shc />}
                 {shdControllerActiveTab === "SHH" && <Shh />}
-                {shdControllerActiveTab === "SHP" && <Shp shpDoors={doors} shpWindows={windows} />}
+                {shdControllerActiveTab === "SHP" && <Shp shpDoors={doors} shpWindows={windows} awayModeSet={setawaymode} awayModeVar={awayMode} />}
               </div>
             </div>
           </div>
