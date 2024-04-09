@@ -1,6 +1,6 @@
 import AwayMode from "../shp/AwayMode";
 
-const Shp = ({ shpDoors, shpWindows }) => {
+const Shp = ({ shpDoors, shpWindows , awayModeSet, awayModeVar}) => {
 
     return (
         <div
@@ -9,7 +9,7 @@ const Shp = ({ shpDoors, shpWindows }) => {
             <p>
                 <b>Away Mode</b>
             </p>
-            <AwayMode layoutDoors={shpDoors} layoutWindows={shpWindows}/>
+            <AwayMode layoutDoors={shpDoors} layoutWindows={shpWindows} setAwayModeEnabled={awayModeSet} awayModeEnabled={awayModeVar}/>
         </div>
     );
 
