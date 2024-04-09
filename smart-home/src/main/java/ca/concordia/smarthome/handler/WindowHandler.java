@@ -42,13 +42,13 @@ public class WindowHandler extends AbstractJsonHandler {
                 }
                 if (windowWall.toLowerCase().equals("left") || windowWall.toLowerCase().equals("right")) {
                     htmlBuilder.append("<div id='").append(newDoor.getId())
-                    .append("' class='window' style='position: absolute; left: ").append(windowX)
+                    .append("' isClosed='").append(isClosed).append("' class='window' style='position: absolute; left: ").append(windowX)
                     .append("px; top: ").append(windowY).append("px; height: ").append(windowWidth)
                     .append("px; width: 5px; background-color: gray; transform-origin: 0px 0px; transform: rotate(")
                     .append(windowRotation).append("deg)'></div>");
                 }else{
                     htmlBuilder.append("<div id='").append(newDoor.getId())
-                    .append("' class='window' style='position: absolute; left: ").append(windowX)
+                    .append("' isClosed='").append(isClosed).append("' class='window' style='position: absolute; left: ").append(windowX)
                     .append("px; top: ").append(windowY).append("px; width: ").append(windowWidth)
                     .append("px; height: 5px; background-color: gray; transform-origin: 0px 0px; transform: rotate(")
                     .append(windowRotation).append("deg)'></div>");

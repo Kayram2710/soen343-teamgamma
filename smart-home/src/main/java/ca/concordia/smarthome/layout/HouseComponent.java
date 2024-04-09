@@ -6,6 +6,7 @@ public abstract class HouseComponent {
     private ObjectId id;
     private int positionX;
     private int positionY;
+    public HouseComponent(){}
 
     public HouseComponent(int positionX, int positionY) {
         this.positionX = positionX;
@@ -13,8 +14,8 @@ public abstract class HouseComponent {
         this.id = new ObjectId();
     }
 
-    public ObjectId getId() {
-        return this.id;
+    public String getId() {
+        return this.id.toString();
     }
     
     public int getPositionX() {

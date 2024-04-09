@@ -35,6 +35,15 @@ public class House {
         return house;
     }
 
+    public static void clear(){
+        house = new House();
+        house.isRunning = false;
+    }
+
+    public static List<Zone> getZones(){
+        return house.zones;
+    }
+
     public static Thermostat getThermostat(){
         return house.thermostat;
     }
@@ -141,7 +150,14 @@ public class House {
             house.windows.get(index).setIsObstructed(true);
         }
     }
-
+    public static void openAllWindows(){
+        for(Window win : house.windows){
+            if(!win.getIsObstructed()){
+                win.setIsClosed(false);
+            }
+        }
+    }
+    
     public static void addZone(Zone zone) {
         house.zones.add(zone);
     }

@@ -24,10 +24,17 @@ import ca.concordia.smarthome.handler.DoorHandler;
 @RequestMapping("/api/v1/simulation")
 public class SimulationController {
 
-    @GetMapping("/startSim")
-    public String startSim() {
+    @GetMapping("/startSim/{indoorTemp}/{outdoorTemp}")
+    public String startSim(@PathVariable int indoorTemp, @PathVariable int outdoorTemp) {
         House.getInstance();
         House.setIsRunning(true);
+        House.getFirstZone().getThermostat().setCurrentTemp(indoorTemp);
+        House.getFirstZone().getThermostat().setGoalTemp(22);
+        if (22 > indoorTemp) {
+            House.getFirstZone().getThermostat().turnOnHeating();
+        } else {
+            House.getFirstZone().getThermostat().turnOnCooling();
+        }
         return "Success";
     }
 

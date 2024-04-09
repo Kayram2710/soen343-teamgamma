@@ -38,7 +38,7 @@ public class HouseTest {
     public void fillRoom() {
 
         List<Room> testRooms = new ArrayList<Room>();
-        Zone zone = new Zone();
+        Zone zone = new Zone("test");
         
         testRooms.add(new Room(40, 20, 10, 10, zone));
         testRooms.add(new Room(60, 20, 10, 20, zone));
