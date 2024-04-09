@@ -65,12 +65,12 @@ const AwayMode = ({ layoutDoors, layoutWindows }) => {
     const awayModeToggler = document.getElementById("awayModeToggler");
     const sliderCtn = document.querySelector(".sliderCtn");
     if (awayModeToggler.classList.contains("sliderBallActive")) {
-      awayModeToggler.classList.remove("sliderBallActive");
-      sliderCtn.classList.remove("sliderCtnActive");
+      {/*awayModeToggler.classList.remove("sliderBallActive");
+      sliderCtn.classList.remove("sliderCtnActive");*/}
       setAwayModeEnabled(false);
     } else {
-      awayModeToggler.classList.add("sliderBallActive");
-      sliderCtn.classList.add("sliderCtnActive");
+      {/*awayModeToggler.classList.add("sliderBallActive");
+      sliderCtn.classList.add("sliderCtnActive");*/}
       setAwayModeEnabled(true);
     }
 
@@ -99,7 +99,7 @@ const AwayMode = ({ layoutDoors, layoutWindows }) => {
         <div
           id="awayModeToggler"
           onClick={handleAwayModeToggle}
-          className="sliderBall"
+          className={`sliderBall ${awayModeEnabled ? 'sliderBallActive' : ''}`}
         ></div>
       </div>
     </>
