@@ -14,7 +14,7 @@ export const getOutput = async () => {
   }
 };
 
-//Call this to get the lastest even stored in the mediator
+//Call this to get the lastest event stored in the mediator
 export const getLatestOutput = async () => {
   try {
     const response = await axios.get(`api/v1/shp/LatestEvent/`);
@@ -64,7 +64,7 @@ export const getAllSensors = async () => {
     }
 };
 
-//Call this function to trigger an alert (to the authorities) after a set amout of seconds pass
+//Call this function to trigger an alert (to the authorities) after a set amount of seconds pass
 //This alert will be sent to the mediator and will be the latest event, you can retrieve it with one of the first two functions
 export const triggerAlert = async (seconds) => {
     try {
