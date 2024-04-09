@@ -4,11 +4,29 @@ import ca.concordia.smarthome.layout.HouseComponent;
 
 public class Notifier implements Mediator{
 
-    private String outputLog = "";
-    private int logCount = 1;
+    private String outputLog;
+    private int logCount;
+
+    public Notifier(){
+        outputLog = "";
+        logCount = 1;
+    }
 
     public void output(String event, HouseComponent source){
         outputLog = outputLog+"Event "+logCount+": "+event+", at location: X="+source.getPositionX()+", Y="+source.getPositionY()+".\n";
+        logCount++;
+        System.out.println(outputLog);
+    }
+
+    public String getLastest(){
+        String[] events = outputLog.split("\n");
+        String lastevent = events[events.length - 1];
+        String latest = lastevent.split(": ")[1] + lastevent.split(":")[2];
+        return latest;
+    }
+
+    public void outputEvent(String event){
+        outputLog = outputLog+"Event "+logCount+": "+event+".\n";
         logCount++;
         System.out.println(outputLog);
     }

@@ -24,7 +24,6 @@ public class House {
 
     private House() {
         mediator = new Notifier();
-        System.out.println(mediator);
     }
 
     public static House getInstance() {
@@ -192,5 +191,13 @@ public class House {
             }
         }
         return true;
+    }
+
+    public static void awayOn(){
+        house.mediator.outputEvent("AwayMode turned on, all windows and doors closed");
+    }
+
+    public static void awayOff(){
+        house.mediator.outputEvent("AwayMode turned off");
     }
 }

@@ -12,6 +12,18 @@ export const getOutput = async () => {
   }
 };
 
+//Call this to get the lastest even stored in the mediator
+export const getLatestOutput = async () => {
+  try {
+    const response = await axios.get(`api/v1/shp/LatestEvent/`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting outputlog:", error);
+    throw error;
+  }
+};
+
 //call this function to add a motion sensor at the given position
 //Have some form of error handling on the front end to make sure it falls in a proper position if you can
 //it will return the new sensor feel free to do with that as you will

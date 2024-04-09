@@ -5,12 +5,8 @@ import ca.concordia.smarthome.layout.House;
 import ca.concordia.smarthome.layout.Window;
 import org.bson.types.ObjectId;
 
-import javax.persistence.Tuple;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AwayMode {
     protected boolean enabled;

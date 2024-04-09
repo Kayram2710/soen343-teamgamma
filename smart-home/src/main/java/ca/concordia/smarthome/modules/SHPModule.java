@@ -29,6 +29,8 @@ public class SHPModule {
             System.out.println("Closed doors: " + closedDoorsIds);
             System.out.println("Closed windows: " + closedWindowsIds);
 
+            House.awayOn();
+
             JSONArray jsonDoorArray = new JSONArray(closedDoorsIds);
             JSONArray jsonWindowArray = new JSONArray(closedWindowsIds);
             JSONObject houseComponentsJsonObj = new JSONObject();
@@ -39,6 +41,8 @@ public class SHPModule {
         }
         else
             House.setAwayMode(false);
+            House.awayOff();
+
         return Optional.empty();
     }
     // Get current state of Away Mode.
@@ -72,6 +76,11 @@ public class SHPModule {
     @GetMapping("/getAllSensors")
     public List<MotionDetector> getDetectors(){
         return House.getDetectors();
+    }
+
+    @GetMapping("/LatestEvent")
+    public String getLastestEvent(){
+        return House.getInstance().getMediator().getLastest();
     }
 
 }

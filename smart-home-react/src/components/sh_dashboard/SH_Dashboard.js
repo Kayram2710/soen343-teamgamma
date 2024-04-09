@@ -22,6 +22,7 @@ import Shc from "../shc/Shc";
 import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
 import Shp from "../shp/Shp";
+import AwayMode from "../shp/AwayMode";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
