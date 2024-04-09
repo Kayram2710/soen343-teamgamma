@@ -17,7 +17,7 @@ public class LightHandler extends AbstractJsonHandler {
                     int lightY = lightJson.getJSONObject("position").getInt("y");
                     boolean isOn = lightJson.getBoolean("isOn");
                     
-                    Light newLight = new Light(lightX, lightY, isOn);
+                    Light newLight = new Light(lightX, lightY,House.getInstance().getMediator() , isOn);
                     House.getInstance().getLights().add(newLight);
     
                     htmlBuilder.append("<div id='").append(newLight.getId()).append("' class='light' style='position: absolute; left: ").append(lightX).append("px; top: ").append(lightY).append("px; width: 10px; height: 10px; background-color: yellow; border-radius: 50%;'></div>");

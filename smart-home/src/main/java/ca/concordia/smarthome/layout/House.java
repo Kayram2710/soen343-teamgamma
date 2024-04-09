@@ -1,23 +1,24 @@
 package ca.concordia.smarthome.layout;
 
 import ca.concordia.smarthome.AwayMode;
-import ca.concordia.smarthome.simulation.Clock;
+import ca.concordia.smarthome.communication.Notifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class House {
     private static House house;
+    private Notifier mediator = new Notifier();
     private List<Room> rooms = new ArrayList<Room>();
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
+    private List<MotionDetector> sensors = new ArrayList<MotionDetector>();
     private Thermostat thermostat = new Thermostat();
     private AwayMode awayMode = new AwayMode();
 
     // Simulation parameters
-    private Clock time;
     private boolean isRunning;
     private String season;
 
@@ -114,6 +115,19 @@ public class House {
         } else {
             house.lights.get(index).setIsOn(true);
         }
+    }
+
+    public void addMotionSensor(int positionX, int positionY){
+        sensors.add(new MotionDetector(positionX, positionY,this.mediator));
+    }
+
+    public static String triggerMotionSensor(int index) {
+        MotionDetector target = house.sensors.get(index);
+        return target.trigger();
+    }
+
+    public Notifier getMediator(){
+        return mediator;
     }
 
     public static void toggleDoor(int index) {

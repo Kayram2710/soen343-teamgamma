@@ -2,12 +2,16 @@ package ca.concordia.smarthome.layout;
 
 import org.bson.types.ObjectId;
 
+import ca.concordia.smarthome.communication.Notifier;
+
 public abstract class HouseComponent {
     private ObjectId id;
     private int positionX;
     private int positionY;
 
-    public HouseComponent(int positionX, int positionY) {
+    private Notifier mediator;
+
+    public HouseComponent(int positionX, int positionY, Notifier mediator) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.id = new ObjectId();

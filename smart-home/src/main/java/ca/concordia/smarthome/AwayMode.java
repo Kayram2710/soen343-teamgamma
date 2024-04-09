@@ -59,4 +59,8 @@ public class AwayMode {
     public String toString() {
         return "Away mode is " + (this.enabled ? "enabled." : "disabled.");
     }
+
+    public boolean getStatus(){
+        return enabled;
+    }
 }

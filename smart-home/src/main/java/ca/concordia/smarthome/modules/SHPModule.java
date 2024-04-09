@@ -43,4 +43,10 @@ public class SHPModule {
         House.getInstance();
         return ResponseEntity.ok(House.getAwayMode());
     }
+
+    @GetMapping("/notification")
+    public String getOutputLog(){
+        return House.getInstance().getMediator().getOutputLog();
+    }
+
 }
