@@ -39,5 +39,11 @@ public class Window extends HouseComponent {
         this.isObscured = isObstructed;
     }
 
+    public void check(){
+        if(House.getAwayMode().getStatus()){
+            super.getMediator().output("Window opened while away",this);
+        }
+    }
+
     
 }

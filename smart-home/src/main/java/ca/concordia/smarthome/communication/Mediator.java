@@ -4,6 +4,6 @@ import ca.concordia.smarthome.layout.HouseComponent;
 
 public interface Mediator {
 
-    public void output(HouseComponent sender, String event);
+    public void output(String event, HouseComponent source);
 
 }

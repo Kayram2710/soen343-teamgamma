@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ObjectInput;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +46,13 @@ public class SHPModule {
     @GetMapping("/notification")
     public String getOutputLog(){
         return House.getInstance().getMediator().getOutputLog();
+    }
+
+    @GetMapping("/addMotion")
+    public String addMotionSensor(int positionX, int positionY){
+        House.getInstance().addMotionSensor(positionX,positionY);
+        return "success";
+
     }
 
 }

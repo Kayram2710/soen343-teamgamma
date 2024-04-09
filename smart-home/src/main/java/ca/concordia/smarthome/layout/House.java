@@ -8,7 +8,7 @@ import java.util.List;
 
 public class House {
     private static House house;
-    private Notifier mediator = new Notifier();
+    private Notifier mediator;
     private List<Room> rooms = new ArrayList<Room>();
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
@@ -23,7 +23,8 @@ public class House {
     private String season;
 
     private House() {
-
+        mediator = new Notifier();
+        System.out.println(mediator);
     }
 
     public static House getInstance() {
@@ -121,9 +122,9 @@ public class House {
         sensors.add(new MotionDetector(positionX, positionY,this.mediator));
     }
 
-    public static String triggerMotionSensor(int index) {
+    public static void triggerMotionSensor(int index) {
         MotionDetector target = house.sensors.get(index);
-        return target.trigger();
+        target.trigger();
     }
 
     public Notifier getMediator(){
@@ -136,6 +137,7 @@ public class House {
 
         if (status) {
             house.doors.get(index).setIsClosed(false);
+            target.check();
         } else {
             house.doors.get(index).setIsClosed(true);
         }
@@ -147,6 +149,7 @@ public class House {
 
         if (status) {
             house.windows.get(index).setIsClosed(false);
+            target.check();
         } else {
             house.windows.get(index).setIsClosed(true);
         }

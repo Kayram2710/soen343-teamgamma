@@ -32,4 +32,11 @@ public class Door extends HouseComponent{
         this.isClosed = isClosed;
     }
 
+    public void check(){
+        //System.out.println("Door being checked");
+        if(House.getAwayMode().getStatus()){
+            super.getMediator().output("Door opened while away",this);
+        }
+    }
+
 }

@@ -8,8 +8,12 @@ public class MotionDetector extends HouseComponent{
         super(positionX, positionY, mediator);
     }
 
-    public String trigger(){
-        return "Motion Sensor Triggered At Location: X:"+super.getPositionX()+", Y: "+super.getPositionY()+".";
+    public void trigger(){
+        if(House.getAwayMode().getStatus()){
+            super.getMediator().output("Motion Sensor triggered while away",this);
+        }else{
+            super.getMediator().output("Motion Sensor triggered",this);
+        }
     }
 
 
