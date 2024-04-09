@@ -21,7 +21,7 @@ import Clock from "../simulation/Clock";
 import Shc from "../shc/Shc";
 import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
-import AwayMode from "../shp/AwayMode";
+import Shp from "../shp/Shp";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
@@ -310,7 +310,6 @@ const SH_Dashboard = ({ user }) => {
     setIsActive(true);
     handleCloseSettings();
 
-    document.getElementById("awayModeCtn").style.display = "flex";
     document.getElementById("timer-display").style.display = "flex";
     document.getElementById("time-speed").style.display = "flex";
     document.getElementById("simSettingsCtn").style.visibility = "visible";
@@ -335,7 +334,6 @@ const SH_Dashboard = ({ user }) => {
   const handleStop = async () => {
     setIsActive(false);
 
-    document.getElementById("awayModeCtn").style.display = "none";
     document.getElementById("timer-display").style.display = "none";
     document.getElementById("time-speed").style.display = "none";
     document.getElementById("moduleControls").style.visibility = "hidden";
@@ -418,16 +416,6 @@ const SH_Dashboard = ({ user }) => {
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
-              </div>
-              <div
-                id="awayModeCtn"
-                className="px-4 py-2 gap-2"
-                style={{ display: "none" }}
-              >
-                <p>
-                  <b>Away Mode</b>
-                </p>
-                <AwayMode layoutDoors={doors} layoutWindows={windows} />
               </div>
               <div>
                 <Clock
@@ -580,6 +568,7 @@ const SH_Dashboard = ({ user }) => {
                 {/* {shdControllerActiveTab} */}
                 {shdControllerActiveTab === "SHC" && <Shc />}
                 {shdControllerActiveTab === "SHH" && <Shh />}
+                {shdControllerActiveTab === "SHP" && <Shp shpDoors={doors} shpWindows={windows} />}
               </div>
             </div>
           </div>

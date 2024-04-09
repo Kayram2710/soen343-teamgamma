@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const Shc = () => {
+const Shh = () => {
     const [room, setRooms] = useState([]);
 
     useEffect(() => {
@@ -56,4 +56,4 @@ const Shc = () => {
     );
 };
 
-export default Shc;
+export default Shh;

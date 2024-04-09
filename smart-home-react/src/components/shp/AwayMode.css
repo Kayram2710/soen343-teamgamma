@@ -1,7 +1,7 @@
 .sliderCtn {
     width: 3rem;
     height: 24px;
-    border: 2px solid #FFF;
+    border: 2px solid #000000;
     border-radius: 1rem;
     transition: 0.25s all ease-in-out;
 }
@@ -11,7 +11,7 @@
     border-radius: 1rem;
     width: 20px;
     height: 20px;
-    background-color: #FFF;
+    background-color: var(--red);
     transition: 0.25s all ease-in-out;
 }
 
