@@ -48,6 +48,11 @@ const Shc = () => {
             }
         } else if (element.classList.contains('window')) {
             await toggleWindow(element.id);
+            if(element.getAttribute('isClosed') === 'false'){
+                element.setAttribute('isClosed','true');
+            }else{
+                element.setAttribute('isClosed','false');
+            }
             updateTogglingUI(element);
         }
     };

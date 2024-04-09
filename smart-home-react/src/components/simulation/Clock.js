@@ -76,7 +76,8 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
         }
       })
       .then((data) => {
-        // console.log("Temperature: ", data.body.temperature);
+         //console.log("Temperature: ", data.body.temperature);
+        
         setOutdoorTemperature(data.body.temperature);
         changeOutdoorTemperature(data.body.temperature);
       })

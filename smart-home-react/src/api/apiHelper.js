@@ -120,9 +120,9 @@ export async function updateTemp(indoor, outdoor, season) {
   }
 }
 
-export async function startSim(){
+export async function startSim(indoorTemperature, outdoorTemperature){
   try {
-    const response = await api.get('/api/v1/simulation/startSim', {
+    const response = await api.get('/api/v1/simulation/startSim/'+indoorTemperature+'/'+outdoorTemperature, {
       headers: {
         'Content-Type': 'application/json'
       }

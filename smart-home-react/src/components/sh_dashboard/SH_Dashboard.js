@@ -311,7 +311,7 @@ const SH_Dashboard = ({ user }) => {
 
     var season = getSeason(settings.date);
 
-    await startSim();
+    await startSim(indoorTemperature,outdoorTemperature);
     await updateTemp(indoorTemperature, outdoorTemperature, season);
     //console.log("started");
   };
@@ -392,12 +392,7 @@ const SH_Dashboard = ({ user }) => {
                 >
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>{outdoorTemperature}˚C</p>
-                    <FontAwesomeIcon icon={faCloud} />
-                  </div>
-                  <p>Indoor Temp: </p>
-                  <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>{indoorTemperature}˚C</p>
+                    <p id='outdoorTemp'>{outdoorTemperature}˚C</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>
@@ -546,7 +541,7 @@ const SH_Dashboard = ({ user }) => {
               id="shdControllerOutputCtn"
               className="flex align-center justify-center"
             >
-              <div id="moduleControls">
+              <div id="moduleControls" style={{ width: '100%' }}>
                 {/* {shdControllerActiveTab} */}
                 {shdControllerActiveTab === "SHC" && <Shc />}
                 {shdControllerActiveTab === "SHH" && <Shh />}
