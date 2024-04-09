@@ -118,13 +118,20 @@ public class House {
         }
     }
 
-    public void addMotionSensor(int positionX, int positionY){
-        sensors.add(new MotionDetector(positionX, positionY,this.mediator));
+    public MotionDetector addMotionSensor(int positionX, int positionY){
+        MotionDetector newSensor = new MotionDetector(positionX, positionY,this.mediator);
+        sensors.add(newSensor);
+
+        return newSensor;
     }
 
     public static void triggerMotionSensor(int index) {
         MotionDetector target = house.sensors.get(index);
         target.trigger();
+    }
+
+    public static List<MotionDetector> getDetectors(){
+        return house.sensors;
     }
 
     public Notifier getMediator(){

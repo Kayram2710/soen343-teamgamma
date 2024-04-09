@@ -2,6 +2,8 @@ package ca.concordia.smarthome.modules;
 
 import ca.concordia.smarthome.AwayMode;
 import ca.concordia.smarthome.layout.House;
+import ca.concordia.smarthome.layout.MotionDetector;
+
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,10 +51,24 @@ public class SHPModule {
     }
 
     @GetMapping("/addMotion")
-    public String addMotionSensor(int positionX, int positionY){
-        House.getInstance().addMotionSensor(positionX,positionY);
-        return "success";
+    public MotionDetector addMotionSensor(int positionX, int positionY){
+        return House.getInstance().addMotionSensor(positionX,positionY);
+    }
 
+    @GetMapping("/triggerSensor/{id}")
+    public void triggerSensor(@PathVariable ObjectId id){
+        int index = 0;
+        for (MotionDetector sensor : House.getDetectors()) {
+            if (sensor.getId().toString().equals(id.toString())) {
+                House.triggerMotionSensor(index);            
+            }
+            index++;
+        }
+    }
+
+    @GetMapping("/getAllSensors")
+    public List<MotionDetector> getDetectors(){
+        return House.getDetectors();
     }
 
 }
