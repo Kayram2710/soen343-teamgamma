@@ -57,8 +57,8 @@ public class SHPModule {
         return House.getInstance().getMediator().getOutputLog();
     }
 
-    @GetMapping("/addMotion")
-    public MotionDetector addMotionSensor(int positionX, int positionY){
+    @GetMapping("/addMotion/{positionX}/{positionY}")
+    public MotionDetector addMotionSensor(@PathVariable int positionX, @PathVariable int positionY){
         return House.getInstance().addMotionSensor(positionX,positionY);
     }
 
@@ -81,6 +81,17 @@ public class SHPModule {
     @GetMapping("/LatestEvent")
     public String getLastestEvent(){
         return House.getInstance().getMediator().getLastest();
+    }
+
+    @GetMapping("/sendAlert/{seconds}")
+    public void sendAlert(@PathVariable int seconds){
+        try {
+            Thread.sleep(seconds*1000);
+            House.alertAuthortities();
+        } catch (InterruptedException e) {
+            System.out.println("Function Interrupted");
+        }
+
     }
 
 }
