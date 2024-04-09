@@ -1,5 +1,7 @@
 package ca.concordia.smarthome.layout;
 
+import ca.concordia.smarthome.communication.Notifier;
+
 public class Room extends HouseComponent{
     int width;
     int height;
@@ -27,16 +29,16 @@ public class Room extends HouseComponent{
         this.name = name;
     }
     
-    public Room(int positionX, int positionY, int width, int height, Zone zone) {
-        super(positionX, positionY);
+    public Room(int positionX, int positionY, int width, int height, Zone zone, Notifier mediator) {
+        super(positionX, positionY, mediator);
         this.width = width;
         this.height = height;
         this.zone = zone;
         this.isRoomEmpty = true;
     }
 
-    public Room(String name,int positionX, int positionY, int width, int height, Zone zone) {
-        super(positionX, positionY);
+    public Room(String name,int positionX, int positionY, int width, int height, Zone zone, Notifier mediator) {
+        super(positionX, positionY, mediator);
         this.width = width;
         this.height = height;
         this.zone = zone;

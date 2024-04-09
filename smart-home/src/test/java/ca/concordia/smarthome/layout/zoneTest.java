@@ -27,7 +27,7 @@ public class zoneTest {
     @Test
     public void testCreates() {
 
-        Room room = new Room(0, 0, 0, 0, zone);
+        Room room = new Room(0, 0, 0, 0, zone, house.getMediator());
 
         assertEquals(house.getFirstZone(),room.getZone());
     }

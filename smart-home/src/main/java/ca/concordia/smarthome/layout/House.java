@@ -1,26 +1,30 @@
 package ca.concordia.smarthome.layout;
 
-import ca.concordia.smarthome.simulation.Clock;
+import ca.concordia.smarthome.AwayMode;
+import ca.concordia.smarthome.communication.Notifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class House {
     private static House house;
+    private Notifier mediator;
     private List<Room> rooms = new ArrayList<Room>();
     private List<Light> lights = new ArrayList<Light>();
     private List<Door> doors = new ArrayList<Door>();
     private List<Window> windows = new ArrayList<Window>();
     private List<Zone> zones = new ArrayList<Zone>();
+    private List<MotionDetector> sensors = new ArrayList<MotionDetector>();
     private Thermostat thermostat = new Thermostat();
+    private AwayMode awayMode = new AwayMode();
 
     // Simulation parameters
-    private Clock time;
     private boolean isRunning;
     private String season;
 
     private House() {
-
+        mediator = new Notifier();
+        System.out.println(mediator);
     }
 
     public static House getInstance() {
@@ -34,6 +38,11 @@ public class House {
         }
         return house;
     }
+
+    public static void setAwayMode(boolean enabled) {
+        house.awayMode.setAwayMode(enabled);
+    }
+    public static AwayMode getAwayMode() { return house.awayMode; }
 
     public static Thermostat getThermostat(){
         return house.thermostat;
@@ -109,12 +118,33 @@ public class House {
         }
     }
 
+    public MotionDetector addMotionSensor(int positionX, int positionY){
+        MotionDetector newSensor = new MotionDetector(positionX, positionY,this.mediator);
+        sensors.add(newSensor);
+
+        return newSensor;
+    }
+
+    public static void triggerMotionSensor(int index) {
+        MotionDetector target = house.sensors.get(index);
+        target.trigger();
+    }
+
+    public static List<MotionDetector> getDetectors(){
+        return house.sensors;
+    }
+
+    public Notifier getMediator(){
+        return mediator;
+    }
+
     public static void toggleDoor(int index) {
         Door target = house.doors.get(index);
         boolean status = target.getIsClosed();
 
         if (status) {
             house.doors.get(index).setIsClosed(false);
+            target.check();
         } else {
             house.doors.get(index).setIsClosed(true);
         }
@@ -126,6 +156,7 @@ public class House {
 
         if (status) {
             house.windows.get(index).setIsClosed(false);
+            target.check();
         } else {
             house.windows.get(index).setIsClosed(true);
         }

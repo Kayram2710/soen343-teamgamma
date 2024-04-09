@@ -19,7 +19,7 @@ public class DoorHandler extends AbstractJsonHandler {
                 int doorWidth = doorJson.getInt("width");
                 boolean isClosed = doorJson.getBoolean("isClosed");
 
-                Door newDoor = new Door(doorX, doorY, doorWidth, isClosed);
+                Door newDoor = new Door(doorX, doorY, House.getInstance().getMediator(), doorWidth, isClosed);
                 House.getInstance().getDoors().add(newDoor);
 
                 int doorRotation = 0;
