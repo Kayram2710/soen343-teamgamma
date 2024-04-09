@@ -303,6 +303,9 @@ const SH_Dashboard = ({ user }) => {
     handleOpenSettings();
   };
 
+  const [doors, setDoors] = useState([]);
+  const [windows, setWindows] = useState([]);
+
   const handleStart = async () => {
     setIsActive(true);
     handleCloseSettings();
@@ -318,6 +321,11 @@ const SH_Dashboard = ({ user }) => {
       "var(--red)";
 
     var season = getSeason(settings.date);
+
+    var doorElements = document.querySelectorAll(".door");
+    setDoors(Array.from(doorElements));
+    var windowElements = document.querySelectorAll(".window");
+    setWindows(Array.from(windowElements));
 
     await startSim();
     await updateTemp(indoorTemperature, outdoorTemperature, season);
@@ -419,7 +427,7 @@ const SH_Dashboard = ({ user }) => {
                 <p>
                   <b>Away Mode</b>
                 </p>
-                <AwayMode />
+                <AwayMode layoutDoors={doors} layoutWindows={windows} />
               </div>
               <div>
                 <Clock
