@@ -200,4 +200,9 @@ public class House {
     public static void awayOff(){
         house.mediator.outputEvent("AwayMode turned off");
     }
+
+    public static void alertAuthortities(){
+        house.mediator.outputEvent("Authorities Alerted");
+    }
 }
+
