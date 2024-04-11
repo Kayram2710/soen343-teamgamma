@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AwayMode from "../shp/AwayMode";
-import { addMotionSensor, getLatestOutput, getOutput, triggerAlert, triggerAlertStalling, triggerSensor } from "./shpApi";
+import { addMotionSensor, getAllSensors, getLatestOutput, triggerAlert, triggerAlertStalling, triggerSensor } from "./shpApi";
 
 const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
     const [output, setOutput] = useState('');
@@ -8,9 +8,6 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
 
     const captureEvents = async () => {
         try {
-            const outputResult = await getOutput();
-            setOutput(`\n${outputResult}`);
-
             const latestOutputResult = await getLatestOutput();
             setLatestOutput(`\n${latestOutputResult}`);
         } catch (error) {
@@ -36,9 +33,28 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
     };
 
     const handleTriggerSensor = async () => {
-        await triggerSensor(0);
-        captureEvents();
+        try {
+            const sensors = await getAllSensors();
+            if (sensors.length === 0) {
+                console.log("No sensors available to trigger.");
+                return;
+            }
+    
+            const sensorOptions = sensors.map((sensor, index) => `${index}: Sensor at X=${sensor.positionX}, Y=${sensor.positionY}`).join("\n");
+            const chosenSensorIndex = prompt(`Which sensor would you like to trigger?\n${sensorOptions}`);
+    
+            if (chosenSensorIndex !== null && !isNaN(chosenSensorIndex) && sensors[chosenSensorIndex]) {
+                await triggerSensor(sensors[chosenSensorIndex].id);
+                captureEvents();
+                console.log(`Sensor with ID ${sensors[chosenSensorIndex].id} triggered.`);
+            } else {
+                console.log("Sensor triggering cancelled or invalid selection.");
+            }
+        } catch (error) {
+            console.error("Error triggering sensor:", error);
+        }
     };
+    
 
     const handleTriggerAlert = async () => {
         await triggerAlert();
@@ -46,12 +62,12 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
     };
 
     const handleTriggerAlertStalling = async () => {
-        await triggerAlertStalling(5);
+        await triggerAlertStalling();
         captureEvents();
     };
 
     useEffect(() => {
-        const interval = setInterval(captureEvents, 5000); // Adjust as needed
+        const interval = setInterval(captureEvents, 5000);
         return () => clearInterval(interval);
     }, []);
 
