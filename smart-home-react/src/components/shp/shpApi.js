@@ -5,8 +5,7 @@ import { default as axios } from '../../api/axiosConfig';
 //Call this to get a message output from the mediator which is storing important notifications 
 export const getOutput = async () => {
   try {
-    const response = await axios.get(`api/v1/shp/notification/`);
-    console.log(response.data);
+    const response = await axios.get(`api/v1/shp/notification`);
     return response.data;
   } catch (error) {
     console.error("Error getting outputlog:", error);
@@ -17,8 +16,7 @@ export const getOutput = async () => {
 //Call this to get the lastest event stored in the mediator
 export const getLatestOutput = async () => {
   try {
-    const response = await axios.get(`api/v1/shp/LatestEvent/`);
-    console.log(response.data);
+    const response = await axios.get(`api/v1/shp/LatestEvent`);
     return response.data;
   } catch (error) {
     console.error("Error getting outputlog:", error);
@@ -32,7 +30,6 @@ export const getLatestOutput = async () => {
 export const addMotionSensor = async (positionX, positionY) => {
     try {
       const response = await axios.get(`api/v1/shp/addMotion/`+positionX+'/'+positionY);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error adding sensor:", error);
@@ -41,10 +38,9 @@ export const addMotionSensor = async (positionX, positionY) => {
 };
 
 //Call this to function to trigger a sensor
-export const triggerSensor = async (id) => {
+export const triggerSensor = async (index) => {
     try {
-      const response = await axios.get(`api/v1/shp/triggerSensor/`+id);
-      console.log(response.data);
+      const response = await axios.get(`api/v1/shp/triggerSensor/`+index);
       return response.data;
     } catch (error) {
       console.error("Error triggering sensor:", error);
@@ -56,7 +52,6 @@ export const triggerSensor = async (id) => {
 export const getAllSensors = async () => {
     try {
       const response = await axios.get(`api/v1/shp/getAllSensors`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error triggering sensor:", error);
@@ -65,16 +60,28 @@ export const getAllSensors = async () => {
 };
 
 //Call this function to trigger an alert (to the authorities) after a set amount of seconds pass
+//This version run a timer on the back end
 //This alert will be sent to the mediator and will be the latest event, you can retrieve it with one of the first two functions
-export const triggerAlert = async (seconds) => {
+export const triggerAlertStalling = async (seconds) => {
     try {
-      const response = await axios.get(`api/v1/shp/sendAlert/`+seconds);
-      console.log(response.data);
+      const response = await axios.get(`api/v1/shp/sendAlertStall/`+seconds);
       return response.data;
     } catch (error) {
       console.error("Error triggering sensor:", error);
       throw error;
     }
+};
+
+//Same as triggerAlertStalling except it does not run any timer on the back end
+//In case you want to to run a timer on the front end instead
+export const triggerAlert = async () => {
+  try {
+    const response = await axios.get(`api/v1/shp/sendAlert`);
+    return response.data;
+  } catch (error) {
+    console.error("Error triggering sensor:", error);
+    throw error;
+  }
 };
 
   

@@ -62,15 +62,9 @@ public class SHPModule {
         return House.getInstance().addMotionSensor(positionX,positionY);
     }
 
-    @GetMapping("/triggerSensor/{id}")
-    public void triggerSensor(@PathVariable ObjectId id){
-        int index = 0;
-        for (MotionDetector sensor : House.getDetectors()) {
-            if (sensor.getId().toString().equals(id.toString())) {
-                House.triggerMotionSensor(index);            
-            }
-            index++;
-        }
+    @GetMapping("/triggerSensor/{index}")
+    public void triggerSensor(@PathVariable int index){
+        House.triggerMotionSensor(index);
     }
 
     @GetMapping("/getAllSensors")
@@ -83,15 +77,19 @@ public class SHPModule {
         return House.getInstance().getMediator().getLastest();
     }
 
-    @GetMapping("/sendAlert/{seconds}")
-    public void sendAlert(@PathVariable int seconds){
+    @GetMapping("/sendAlertStall/{seconds}")
+    public void sendAlertStall(@PathVariable int seconds){
         try {
             Thread.sleep(seconds*1000);
             House.alertAuthortities();
         } catch (InterruptedException e) {
             System.out.println("Function Interrupted");
         }
+    }
 
+    @GetMapping("/sendAlert")
+    public void sendAlert(){
+        House.alertAuthortities();
     }
 
 }
