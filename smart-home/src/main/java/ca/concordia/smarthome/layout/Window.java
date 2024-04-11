@@ -1,13 +1,15 @@
 package ca.concordia.smarthome.layout;
 
+import ca.concordia.smarthome.communication.Notifier;
+
 public class Window extends HouseComponent {
 
     private int width;
     private boolean isClosed;
     private boolean isObscured;
 
-    public Window(int positionX, int positionY, int width, boolean isClosed, boolean isObscured) {
-        super(positionX, positionY);
+    public Window(int positionX, int positionY, int width, boolean isClosed, boolean isObscured, Notifier mediator) {
+        super(positionX, positionY, mediator);
         this.width = width;
         this.isClosed = isClosed;
         this.isObscured = isObscured;
@@ -35,6 +37,12 @@ public class Window extends HouseComponent {
 
     public void setIsObstructed(boolean isObstructed) {
         this.isObscured = isObstructed;
+    }
+
+    public void check(){
+        if(House.getAwayMode().getStatus()){
+            super.getMediator().output("Window opened while away",this);
+        }
     }
 
     

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ca.concordia.smarthome.communication.Notifier;
 
 public class Room extends HouseComponent{
     int width;
@@ -38,8 +39,8 @@ public class Room extends HouseComponent{
         this.name = name;
     }
     
-    public Room(int positionX, int positionY, int width, int height, Zone zone) {
-        super(positionX, positionY);
+    public Room(int positionX, int positionY, int width, int height, Zone zone, Notifier mediator) {
+        super(positionX, positionY, mediator);
         this.width = width;
         this.height = height;
         this.zone = zone;
@@ -47,8 +48,8 @@ public class Room extends HouseComponent{
         zone.addRoom(this);
     }
 
-    public Room(String name,int positionX, int positionY, int width, int height, Zone zone) {
-        super(positionX, positionY);
+    public Room(String name,int positionX, int positionY, int width, int height, Zone zone, Notifier mediator) {
+        super(positionX, positionY, mediator);
         this.width = width;
         this.height = height;
         this.zone = zone;

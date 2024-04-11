@@ -18,7 +18,6 @@ import ca.concordia.smarthome.handler.WindowHandler;
 import ca.concordia.smarthome.interfaces.JsonHandler;
 import ca.concordia.smarthome.layout.Door;
 import ca.concordia.smarthome.layout.House;
-import ca.concordia.smarthome.layout.Thermostat;
 import ca.concordia.smarthome.layout.Window;
 import ca.concordia.smarthome.layout.Zone;
 import ca.concordia.smarthome.handler.DoorHandler;

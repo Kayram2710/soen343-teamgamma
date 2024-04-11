@@ -1,8 +1,5 @@
 package ca.concordia.smarthome;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 public class SHHTemperature {
     private String date;
     private String time;

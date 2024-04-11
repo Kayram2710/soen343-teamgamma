@@ -20,7 +20,7 @@ public class WindowHandler extends AbstractJsonHandler {
                 int windowWidth = windowJson.getInt("width");
                 boolean isClosed = windowJson.getBoolean("isClosed");
 
-                Window newDoor = new Window(windowX, windowY, windowWidth, isClosed, false);
+                Window newDoor = new Window(windowX, windowY, windowWidth, isClosed, false, House.getInstance().getMediator());
                 House.getInstance().getWindows().add(newDoor);
 
                 int windowRotation = 0;

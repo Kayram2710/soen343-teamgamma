@@ -9,12 +9,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX, faClose } from "@fortawesome/free-solid-svg-icons";
 import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserProfiles, savePerm, updateTemp, startSim, stopSim } from "../../api/apiHelper";
+import {
+  getUserProfiles,
+  savePerm,
+  updateTemp,
+  startSim,
+  stopSim,
+} from "../../api/apiHelper";
 import HouseLayout from "../house/HouseLayout";
 import Clock from "../simulation/Clock";
 import Shc from "../shc/Shc";
 import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
+import Shp from "../shp/Shp";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
@@ -33,6 +40,7 @@ const SH_Dashboard = ({ user }) => {
   const [indoorTemperature, setIndoorTemperature] = useState(0);
   const [simulationDate, setSimulationDate] = useState(date);
   const [simulationHour, setSimulationHour] = useState(0);
+  const [awayMode, setawaymode] = useState(false);
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false); // SET TO TRUE FOR TESTING SISAHGA !!!!
   const [permissions, setPermissions] = useState([]);
@@ -47,7 +55,7 @@ const SH_Dashboard = ({ user }) => {
   const [profiles, setProfiles] = useState([]);
   const [activeProfileId, setActiveProfileId] = useState("");
 
-  useEffect(() => { }, [date]);
+  useEffect(() => {}, [date]);
 
   useEffect(() => {
     if (profiles.length > 0) {
@@ -70,7 +78,7 @@ const SH_Dashboard = ({ user }) => {
       .catch((error) => {
         console.error("Error fetching profiles:", error);
       })
-      .finally(() => { });
+      .finally(() => {});
   }, [user.email]);
 
   useEffect(() => {
@@ -95,7 +103,7 @@ const SH_Dashboard = ({ user }) => {
     }));
   }, [profiles, activeProfileId]);
 
-  useEffect(() =>{
+  useEffect(() => {
     var season = getSeason(settings.date);
     updateTemp(indoorTemperature, outdoorTemperature, season);
   }, [indoorTemperature, outdoorTemperature]);
@@ -296,6 +304,9 @@ const SH_Dashboard = ({ user }) => {
     handleOpenSettings();
   };
 
+  const [doors, setDoors] = useState([]);
+  const [windows, setWindows] = useState([]);
+
   const handleStart = async () => {
     setIsActive(true);
     handleCloseSettings();
@@ -312,6 +323,12 @@ const SH_Dashboard = ({ user }) => {
     var season = getSeason(settings.date);
 
     await startSim(indoorTemperature,outdoorTemperature);
+    var doorElements = document.querySelectorAll(".door");
+    setDoors(Array.from(doorElements));
+    var windowElements = document.querySelectorAll(".window");
+    setWindows(Array.from(windowElements));
+
+    //await startSim();
     await updateTemp(indoorTemperature, outdoorTemperature, season);
     //console.log("started");
   };
@@ -329,7 +346,7 @@ const SH_Dashboard = ({ user }) => {
       "var(--green)";
     await stopSim();
   };
-   
+
   return (
     <div className="dashboardMasterCtn flex justify-center">
       <div id="dashboardMainCtn">
@@ -340,7 +357,7 @@ const SH_Dashboard = ({ user }) => {
         <div id="dashboardMiddleCtn" className="grid">
           <div id="dashboardProfileCtn" className="flex f-col justify-center">
             <div
-              className="p-4 flex f-col gap-4"
+              className="p-4 flex f-col gap-2"
               style={{ justifyContent: "space-between", minHeight: "100%" }}
             >
               <div
@@ -397,66 +414,69 @@ const SH_Dashboard = ({ user }) => {
                   </div>
                 </div>
               </div>
-              <Clock
-                isActive={isActive}
-                speed={secondsPerTick}
-                date={settings.date}
-                changeOutdoorTemperature={handleOutdoorTemperatureChange}
-              />
-              <div
-                id="time-speed"
-                className="flex flex-col gap-2"
-                style={{ display: "none" }}
-              >
-                <p style={{ fontSize: "0.8rem" }}>
-                  <i>Time Speed</i>
-                </p>
+              <div>
+                <Clock
+                  isActive={isActive}
+                  speed={secondsPerTick}
+                  date={settings.date}
+                  changeOutdoorTemperature={handleOutdoorTemperatureChange}
+                />
                 <div
-                  id="timeSpeedCtn"
-                  className="flex w-full justify-between align-middle"
-                  style={{
-                    backgroundColor: "#FFF",
-                    color: "#000",
-                    borderRadius: "0.25rem",
-                  }}
+                  id="time-speed"
+                  className="flex flex-col gap-2 px-4 py-2"
+                  style={{ display: "none" }}
                 >
-                  <button
-                    id="speed1"
-                    className="flex flex-1 w-full justify-center timeSpeed speedActive"
-                    style={{ borderRadius: "0.25rem 0 0 0.25rem" }}
-                    onClick={() => handleTimeSpeed(1)}
+                  <p>
+                    <b>Time Speed</b>
+                  </p>
+                  <div
+                    id="timeSpeedCtn"
+                    className="flex w-full justify-between align-middle"
+                    style={{
+                      backgroundColor: "#FFF",
+                      color: "#000",
+                      borderRadius: "0.25rem",
+                      fontSize: "12px",
+                    }}
                   >
-                    1x
-                  </button>
-                  <button
-                    id="speed5"
-                    className="flex flex-1 w-full justify-center timeSpeed"
-                    onClick={() => handleTimeSpeed(5)}
-                  >
-                    5x
-                  </button>
-                  <button
-                    id="speed10"
-                    className="flex flex-1 w-full justify-center timeSpeed"
-                    onClick={() => handleTimeSpeed(10)}
-                  >
-                    10x
-                  </button>
-                  <button
-                    id="speed100"
-                    className="flex flex-1 w-full justify-center timeSpeed"
-                    onClick={() => handleTimeSpeed(100)}
-                  >
-                    100x
-                  </button>
-                  <button
-                    id="speed1000"
-                    className="flex flex-1 w-full justify-center timeSpeed p-0"
-                    style={{ borderRadius: "0 0.25rem 0.25rem 0" }}
-                    onClick={() => handleTimeSpeed(1000)}
-                  >
-                    1000x
-                  </button>
+                    <button
+                      id="speed1"
+                      className="flex flex-1 w-full justify-center timeSpeed speedActive"
+                      style={{ borderRadius: "0.25rem 0 0 0.25rem" }}
+                      onClick={() => handleTimeSpeed(1)}
+                    >
+                      1x
+                    </button>
+                    <button
+                      id="speed5"
+                      className="flex flex-1 w-full justify-center timeSpeed"
+                      onClick={() => handleTimeSpeed(5)}
+                    >
+                      5x
+                    </button>
+                    <button
+                      id="speed10"
+                      className="flex flex-1 w-full justify-center timeSpeed"
+                      onClick={() => handleTimeSpeed(10)}
+                    >
+                      10x
+                    </button>
+                    <button
+                      id="speed100"
+                      className="flex flex-1 w-full justify-center timeSpeed"
+                      onClick={() => handleTimeSpeed(100)}
+                    >
+                      100x
+                    </button>
+                    <button
+                      id="speed1000"
+                      className="flex flex-1 w-full justify-center timeSpeed p-0"
+                      style={{ borderRadius: "0 0.25rem 0.25rem 0" }}
+                      onClick={() => handleTimeSpeed(1000)}
+                    >
+                      1000x
+                    </button>
+                  </div>
                 </div>
               </div>
               <div id="simSettingsCtn" className="flex align-center">
@@ -541,10 +561,11 @@ const SH_Dashboard = ({ user }) => {
               id="shdControllerOutputCtn"
               className="flex align-center justify-center"
             >
-              <div id="moduleControls" style={{ width: '100%' }}>
+              <div id="moduleControls" className="max-w-full">
                 {/* {shdControllerActiveTab} */}
                 {shdControllerActiveTab === "SHC" && <Shc />}
                 {shdControllerActiveTab === "SHH" && <Shh />}
+                {shdControllerActiveTab === "SHP" && <Shp shpDoors={doors} shpWindows={windows} awayModeSet={setawaymode} awayModeVar={awayMode} />}
               </div>
             </div>
           </div>
@@ -568,7 +589,7 @@ function getSeason(dateString) {
   var datetime = new Date(dateString);
   var month = datetime.getMonth() + 1;
   var season = "";
-  
+
   switch (month) {
     case 12:
     case 1:
@@ -594,6 +615,5 @@ function getSeason(dateString) {
 
   return season;
 }
-
 
 export default SH_Dashboard;

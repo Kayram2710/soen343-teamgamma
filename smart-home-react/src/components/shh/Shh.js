@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllRooms ,getAllZones, updateTemps, removeZone, toggleThermo, getAllWindows } from '../../api/shhApi';
+import { getAllRooms, getAllZones, updateTemps, removeZone, toggleThermo, getAllWindows } from '../../api/shhApi';
 import { Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,44 +8,45 @@ import {
     faPlay,
     faStop,
     faUserCircle,
-  } from "@fortawesome/free-solid-svg-icons";
-  import { faX, faClose } from "@fortawesome/free-solid-svg-icons";
-  import { default as api, default as axios } from '../../api/axiosConfig';
+} from "@fortawesome/free-solid-svg-icons";
+import { faX, faClose } from "@fortawesome/free-solid-svg-icons";
+import { default as api, default as axios } from '../../api/axiosConfig';
 
 
-const Shc = () => {
+const Shh = () => {
     const [rooms, setRooms] = useState([]);
     const [zones, setZones] = useState([]);
     const [isZoneModalOpen, setIsZoneModalOpen] = useState(false);
     const [zone, setZone] = useState({
-        profile: "N/A", 
+        profile: "N/A",
         location: "Room",
         temperature: 23
-      });
-      const [selectedRooms, setSelectedRooms] = useState([]);
+    });
+    const [selectedRooms, setSelectedRooms] = useState([]);
 
     const handleOpenSettings = () => {
         setIsZoneModalOpen(true);
         console.log(isZoneModalOpen)
-      };
-    
-      const handleCloseSettings = () => {
-        setIsZoneModalOpen(false);
-      };
+    };
 
-      
+    const handleCloseSettings = () => {
+        setIsZoneModalOpen(false);
+    };
+
+
     useEffect(() => {
         const observer = new MutationObserver(() => {
-            if(!isZoneModalOpen){
+            if (!isZoneModalOpen) {
                 fetchElements();
-            }        });
+            }
+        });
 
         observer.observe(document, {
             childList: true,
             subtree: true
 
         });
-        if(!isZoneModalOpen){
+        if (!isZoneModalOpen) {
             fetchElements();
             fetchZones();
         }
@@ -101,18 +102,18 @@ const Shc = () => {
     const fetchZones = async () => {
         setZones(await getAllZones());
     };
-    const updateWindows = async () =>{
+    const updateWindows = async () => {
         const windows = await getAllWindows();
         let obscured = false;
         windows.forEach(window => {
             const element = document.getElementById(window.id);
             console.log(element.getAttribute('isClosed'));
-            if(element.getAttribute('isClosed') === 'true'){
-                if(window.isObstructed){
+            if (element.getAttribute('isClosed') === 'true') {
+                if (window.isObstructed) {
                     obscured = true;
-                }else{
+                } else {
                     console.log(window.id)
-                    element.setAttribute('isClosed','false');
+                    element.setAttribute('isClosed', 'false');
                     const currentTransform = element.style.transform;
                     const match = /rotate\(([-\d]+)deg\)/.exec(currentTransform);
                     const currentRotation = match ? parseInt(match[1]) : 0;
@@ -130,9 +131,9 @@ const Shc = () => {
                 }
             }
         });
-        if(obscured){
-           // alert("One or more windows were not able to open!");
-           //TODO
+        if (obscured) {
+            // alert("One or more windows were not able to open!");
+            //TODO
         }
     }
     const onRemove = async (name) => {
@@ -172,7 +173,7 @@ const Shc = () => {
                 currentTemp: parseInt(currentTemp),
                 outsideTemp: parseInt(outsideTemp)
             });
-    
+
             if (response.status === 200) {
                 console.log('Zone created successfully');
             } else {
@@ -181,11 +182,13 @@ const Shc = () => {
         } catch (error) {
             console.error('Error creating zone:', error);
         }
+
+        setIsZoneModalOpen(false);
     };
-    
+
     const toggleHeating = async (zoneName) => {
-       await toggleThermo(zoneName);
-       await fetchZones();
+        await toggleThermo(zoneName);
+        await fetchZones();
     }
 
     const ZoneModal = ({ isOpen, settings }) => {
@@ -252,13 +255,13 @@ const Shc = () => {
                         </button>
                     </form>
                 </div>
-          </div>
+            </div>
         );
-      };
+    };
 
     return (
         <div id="shc-content">
-        <table style={{ width: '100%'}}>
+            <table style={{ width: '100%' }}>
                 <thead>
                     <tr>
                         <th>Zone</th>
@@ -321,10 +324,10 @@ const Shc = () => {
             <br></br>
             <br></br>
             <br></br>
-            { <ZoneModal isOpen={isZoneModalOpen} zone={zone} /> }
+            {<ZoneModal isOpen={isZoneModalOpen} zone={zone} />}
         </div>
-        
+
     );
 };
 
-export default Shc;
+export default Shh;

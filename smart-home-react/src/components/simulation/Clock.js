@@ -113,9 +113,8 @@ const Clock = ({ isActive, speed, date, changeOutdoorTemperature }) => {
 
   return (
     <div>
-      <div id="timer-display" className="flex align-center topCtnPadding">
-        Simulation Time:
-        <br />
+      <div id="timer-display" className="flex topCtnPadding flex-col text-left">
+        <b>Simulation Time:</b>
         {formatTime(seconds)}
       </div>
     </div>

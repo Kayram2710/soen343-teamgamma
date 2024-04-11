@@ -16,51 +16,47 @@ import ca.concordia.smarthome.layout.Window;
 public class SHCModule {
 
     @GetMapping("/toggleDoor/{id}")
-    public String toggleDoor(@PathVariable ObjectId id) {
-        House.getInstance();
+    public void toggleDoor(@PathVariable ObjectId id) {
+        int index = 0;
         for (Door door : House.getDoors()) {
             if (door.getId().toString().equals(id.toString())) {
-                door.setIsClosed(!door.getIsClosed());
-                return "Success";
+                House.toggleDoor(index);
             }
+            index++;
         }
-        return "Failed";
     }
 
     @GetMapping("/toggleWindow/{id}")
-    public String toggleWindow(@PathVariable ObjectId id) {
-        House.getInstance();
+    public void toggleWindow(@PathVariable ObjectId id) {
+        int index = 0;
         for (Window window : House.getWindows()) {
             if (window.getId().toString().equals(id.toString())) {
-                window.setIsClosed(!window.getIsClosed());
-                return "Success";
+                House.toggleWindow(index);
             }
+            index++;
         }
-        return "Failed";
     }
 
     @GetMapping("/toggleLight/{id}")
-    public String toggleLight(@PathVariable ObjectId id) {
-        House.getInstance();
+    public void toggleLight(@PathVariable ObjectId id) {
+        int index = 0;
         for (Light light : House.getLights()) {
             if (light.getId().toString().equals(id.toString())) {
-                light.setIsOn(!light.getIsOn());
-                return "Success";
+                House.toggleLights(index);
             }
+            index++;
         }
-        return "Failed";
     }
 
     @GetMapping("/obstructWindow/{id}")
-    public String obstructWindow(@PathVariable ObjectId id) {
-        House.getInstance();
+    public void obstructWindow(@PathVariable ObjectId id) {
+        int index = 0;
         for (Window window : House.getWindows()) {
             if (window.getId().toString().equals(id.toString())) {
-                window.setIsObstructed(!window.getIsObstructed());
-                return "Success";
+                House.obstructWindow(index);            
             }
+            index++;
         }
-        return "Failed";
     }
 
 }

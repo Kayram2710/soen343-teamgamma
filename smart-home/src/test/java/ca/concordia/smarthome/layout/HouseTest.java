@@ -40,8 +40,8 @@ public class HouseTest {
         List<Room> testRooms = new ArrayList<Room>();
         Zone zone = new Zone("test");
         
-        testRooms.add(new Room(40, 20, 10, 10, zone));
-        testRooms.add(new Room(60, 20, 10, 20, zone));
+        testRooms.add(new Room(40, 20, 10, 10, zone, house.getMediator()));
+        testRooms.add(new Room(60, 20, 10, 20, zone, house.getMediator()));
 
         House.setRooms(testRooms);
 
@@ -54,8 +54,8 @@ public class HouseTest {
 
         List<Door> testDoors = new ArrayList<Door>();
         
-        testDoors.add(new Door(50, 20, 5, false));
-        testDoors.add(new Door(30, 20, 5, true));
+        testDoors.add(new Door(50, 20, house.getMediator(), 5, false));
+        testDoors.add(new Door(30, 20, house.getMediator(), 5, true));
 
         House.setDoors(testDoors);
 
@@ -69,8 +69,8 @@ public class HouseTest {
 
         List<Window> testWindow = new ArrayList<Window>();
         
-        testWindow.add(new Window(30, 27, 5, true, false));
-        testWindow.add(new Window(30, 12, 5, false, false));
+        testWindow.add(new Window(30, 27, 5, true, false, house.getMediator()));
+        testWindow.add(new Window(30, 12, 5, false, false, house.getMediator()));
 
         House.setWindows(testWindow);
 
@@ -83,8 +83,8 @@ public class HouseTest {
 
         List<Light> testLight = new ArrayList<Light>();
         
-        testLight.add(new Light(40, 20,false));
-        testLight.add(new Light(60, 20,false));
+        testLight.add(new Light(40, 20, house.getMediator(),false));
+        testLight.add(new Light(60, 20, house.getMediator(),false));
 
         House.setLights(testLight);
 
@@ -97,7 +97,7 @@ public class HouseTest {
         
         //setup closed window
         List<Window> testWindow = new ArrayList<Window>();
-        testWindow.add(new Window(30, 27, 5, true, false));
+        testWindow.add(new Window(30, 27, 5, true, false,house.getMediator()));
         House.setWindows(testWindow);
 
         //testing if window is open
@@ -115,7 +115,7 @@ public class HouseTest {
         
         //setup obstructed window
         List<Window> testWindow = new ArrayList<Window>();
-        testWindow.add(new Window(30, 27, 5, false, true));
+        testWindow.add(new Window(30, 27, 5, false, true,house.getMediator()));
         House.setWindows(testWindow);
 
         //testing if window is obstructed
@@ -133,7 +133,7 @@ public class HouseTest {
         
         //setup turned off light
         List<Light> testLight = new ArrayList<Light>();
-        testLight.add(new Light(40, 20,false));
+        testLight.add(new Light(40, 20,house.getMediator(),false));
         House.setLights(testLight);
 
         //testing if light is on
@@ -151,7 +151,7 @@ public class HouseTest {
         
         //setup turned off light
         List<Door> testDoor = new ArrayList<Door>();
-        testDoor.add(new Door(50, 20, 5, false));
+        testDoor.add(new Door(50, 20, house.getMediator(), 5, false));
         House.setDoors(testDoor);
 
         //testing if light is on
