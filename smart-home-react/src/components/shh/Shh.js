@@ -278,7 +278,7 @@ const Shh = () => {
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style={{ maxHeight: '280px', overflow: 'auto' }}>
                     {zones.map((zone, index) => (
                         <tr class="border-b border-gray-200 dark:border-gray-700" key={`zone-${index}`}>
                             <td class="px-2 py-1" style={{ textAlign: 'center' }}>{index + 1}</td>
