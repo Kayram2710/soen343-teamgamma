@@ -22,6 +22,7 @@ import Shc from "../shc/Shc";
 import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
 import Shp from "../shp/Shp";
+import Console from "./Console";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
@@ -576,12 +577,7 @@ const SH_Dashboard = ({ user }) => {
         </div>
 
         <div id="dashboardBottomCtn">
-          <div
-            id="shdOutputConsole"
-            className="flex align-center justify-center"
-          >
-            <h3>Output Console</h3>
-          </div>
+          <Console/>
         </div>
       </div>
       <SettingsModal isOpen={isSettingsModalOpen} settings={settings} />

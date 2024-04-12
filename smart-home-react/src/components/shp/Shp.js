@@ -1,99 +1,111 @@
 import { useEffect, useState } from "react";
 import AwayMode from "../shp/AwayMode";
-import { addMotionSensor, getAllSensors, getLatestOutput, triggerAlert, triggerAlertStalling, triggerSensor } from "./shpApi";
+import { addMotionSensor, getAllSensors, triggerAlert, triggerAlertStalling, triggerSensor } from "./shpApi";
 
 const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
-    const [output, setOutput] = useState('');
-    const [latestOutput, setLatestOutput] = useState('');
+    const [newSensorX, setX] = useState(0);
+    const [newSensorY, setY] = useState(0);
+    const [sensors, setSensors] = useState([]);
+    const [alertTime, setTime] = useState(0);
+    const [alert, setToggle] = useState(false);
 
-    const captureEvents = async () => {
+
+    const handleToggle = () => {
+        setToggle(!alert);
+    };
+
+    const handleAlertTimeChange = (e) => {
+        setTime(parseInt(e.target.value));
+    };
+
+    useEffect(() => {
+        fetchSensors();
+    }, []);
+
+    const fetchSensors = async () => {
         try {
-            const latestOutputResult = await getLatestOutput();
-            setLatestOutput(`\n${latestOutputResult}`);
+          const sensorList = await getAllSensors();
+          setSensors(sensorList);
         } catch (error) {
-            console.error("Error capturing events:", error);
+          console.error('Error fetching sensors:', error);
         }
     };
 
-    const handleCreateSensor = async () => {
-        const x = prompt("Enter the X coordinate for the sensor:");
-        const y = prompt("Enter the Y coordinate for the sensor:");
+    const handleCreateSensor = async (e) => {
+        e.preventDefault();
     
-        if (x !== null && y !== null && !isNaN(x) && !isNaN(y)) {
             try {
-                await addMotionSensor(parseInt(x, 10), parseInt(y, 10));
+                await addMotionSensor(newSensorX,newSensorY);
+                fetchSensors();
                 captureEvents();
-                console.log(`Motion Sensor Added at location x=${x} and y=${y}`);
+                console.log(`Motion Sensor Added at location x=${newSensorX} and y=${newSensorY}`);
             } catch (error) {
                 console.error("Error adding sensor:", error);
             }
-        } else {
-            console.log("Sensor creation cancelled or invalid coordinates provided.");
-        }
     };
 
-    const handleTriggerSensor = async () => {
-        try {
-            const sensors = await getAllSensors();
-            if (sensors.length === 0) {
-                console.log("No sensors available to trigger.");
-                return;
-            }
-    
-            const sensorOptions = sensors.map((sensor, index) => `${index}: Sensor at X=${sensor.positionX}, Y=${sensor.positionY}`).join("\n");
-            const chosenSensorIndex = prompt(`Which sensor would you like to trigger?\n${sensorOptions}`);
-    
-            if (chosenSensorIndex !== null && !isNaN(chosenSensorIndex) && sensors[chosenSensorIndex]) {
-                await triggerSensor(sensors[chosenSensorIndex].id);
-                captureEvents();
-                console.log(`Sensor with ID ${sensors[chosenSensorIndex].id} triggered.`);
-            } else {
-                console.log("Sensor triggering cancelled or invalid selection.");
-            }
-        } catch (error) {
-            console.error("Error triggering sensor:", error);
-        }
+    const checkTrigger = async (index) => {
+        await triggerSensor(index);
     };
-    
-
-    const handleTriggerAlert = async () => {
-        await triggerAlert();
-        captureEvents();
-    };
-
-    const handleTriggerAlertStalling = async () => {
-        await triggerAlertStalling();
-        captureEvents();
-    };
-
-    useEffect(() => {
-        const interval = setInterval(captureEvents, 5000);
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        if (!awayModeVar) {
-            setOutput('');
-            setLatestOutput('');
-        }
-    }, [awayModeVar]);
 
     return (
         <div id="awayModeCtn" className="px-4 py-2 space-y-2">
             <p className="font-bold"><b>Away Mode</b></p>
             <AwayMode layoutDoors={shpDoors} layoutWindows={shpWindows} setAwayModeEnabled={awayModeSet} awayModeEnabled={awayModeVar}/>
-            
-            <div className="sensor-actions flex space-x-2">
-                <button onClick={handleCreateSensor} className="px-4 py-2 rounded bg-blue-500 text-white">Create Sensor</button>
-                <button onClick={handleTriggerSensor} className="px-4 py-2 rounded bg-green-500 text-white">Trigger Sensor</button>
-                <button onClick={handleTriggerAlert} className="px-4 py-2 rounded bg-yellow-500 text-white">Trigger Alert</button>
-                <button onClick={handleTriggerAlertStalling} className="px-4 py-2 rounded bg-red-500 text-white">Trigger Alert Stalling</button>
-            </div>
+            <p className="font-bold" ><b>Create A New Sensor:</b></p>
+            <form onSubmit={handleCreateSensor}>
+                <input
+                    type="number"
+                    value={newSensorX}
+                    onChange={(e) => setX(e.target.value)}
+                    placeholder="X coordinate"
+                    style={{border: "2px solid #000000", marginRight: '10px', padding: '5px' }}
+                    required
+                />
+                <input
+                    type="number"
+                    value={newSensorY}
+                    onChange={(e) => setY(e.target.value)}
+                    placeholder="Y coordinate"
+                    style={{border: "2px solid #000000", marginRight: '10px', padding: '5px' }}
+                    required
+                />
+                <button type="submit">Submit</button>
+            </form>
 
-            <div className="console-box bg-gray-100 p-4 rounded-lg mt-4 max-h-75 overflow-y-auto">
-                <h3 className="font-semibold">Console:</h3>
-                {output && <p>{output}</p>}
-                {latestOutput && <p>{latestOutput}</p>}
+            <p className="font-bold" ><b>List of Sensors:</b></p>
+            <ul style={{ maxHeight: '280px', overflow: 'auto' }}>
+                {sensors.map((sensor, index) => (
+                <li key={index}>
+                    <h3>Sensor {index}:</h3>
+                    <p>X position = {sensor.positionX} Y position = {sensor.positionY}   
+                    <button onClick={() => checkTrigger(index)} className="rounded bg-green-500 text-white px-1 mx-4">Trigger Sensor</button>
+                    </p>
+                    <br></br>
+                </li>
+                ))}
+            </ul>
+            <label>
+                <p className="font-bold" >Alert Authorities When Sensor Trigger:</p>
+                <input 
+                type="checkbox" 
+                checked={alert} 
+                onChange={handleToggle} 
+                style={{ marginLeft: '10px' }} 
+                />
+            </label>
+            <div style={{ opacity: alert ? 1 : 0.5 }} >
+                Alert Authorities After: 
+                <input 
+                    min={0} 
+                    type="number" 
+                    value={alertTime} 
+                    onChange={handleAlertTimeChange} 
+                    style={{ border: "2px solid #000000", width: '10%'}} 
+                    disabled={!alert}
+                    className="rounded px-1 mx-4"
+                />
+                seconds
             </div>
         </div>
     );
