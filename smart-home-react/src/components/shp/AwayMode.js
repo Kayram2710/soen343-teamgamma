@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
+import {checkForFire, checkForFireStarting} from "./shpApi";
 import { useState } from "react";
 import "./AwayMode.css";
 
 const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnabled }) => {
   const [doors, setDoors] = useState([]);
   const [windows, setWindows] = useState([]);
+  const [fireInterval, setFireInterval] = useState(null);
 
   const fetchElements = () => {
     const doorElements = document.querySelectorAll(".door");
@@ -29,6 +31,15 @@ const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnab
         console.log("Away mode status: ", data);
       });
     if (awayModeEnabled) {
+      const intervalId = setInterval(async () => {
+        let fire = await checkForFire();
+        let startingFire = await checkForFireStarting();
+        if(result || startingFire){
+          handleAwayModeToggle();
+        }
+      }, 1000);
+      setFireInterval(intervalId);
+
       console.log("Attempting to close doors and windows...");
       console.log("Doors: ", doors);
       console.log("Windows: ", windows);
@@ -57,6 +68,8 @@ const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnab
         }
         window.style.transform = `rotate(${newRotation}deg)`;
       }
+    }else{
+      clearInterval(fireInterval);
     }
   }, [awayModeEnabled]);
 

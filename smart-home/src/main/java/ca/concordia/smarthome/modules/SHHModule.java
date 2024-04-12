@@ -95,5 +95,13 @@ public class SHHModule {
             zone.getThermostat().updateTemperature();
         }
     }
+
+    @GetMapping("/setPrevTemps")
+    public void setPrevTemp(){
+        House.getInstance();
+        for(Room room : House.getRooms()){
+            room.setPrevTemperature(room.getZone().getThermostat().getCurrentTemp());
+        }
+    }
 }
 

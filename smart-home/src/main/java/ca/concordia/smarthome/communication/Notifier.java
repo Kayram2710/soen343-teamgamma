@@ -1,6 +1,7 @@
 package ca.concordia.smarthome.communication;
 
 import ca.concordia.smarthome.layout.HouseComponent;
+import ca.concordia.smarthome.layout.Room;
 
 public class Notifier implements Mediator{
 
@@ -13,7 +14,11 @@ public class Notifier implements Mediator{
     }
 
     public void output(String event, HouseComponent source){
-        outputLog = outputLog+"Event "+logCount+": "+event+", at location: X="+source.getPositionX()+", Y="+source.getPositionY()+".\n";
+        if(source instanceof Room){
+            outputLog = outputLog+"Event "+logCount+": "+event+", in room "+ ((Room)source).getName() +".\n";
+        }else{
+            outputLog = outputLog+"Event "+logCount+": "+event+", at location: X="+source.getPositionX()+", Y="+source.getPositionY()+".\n";
+        }
         logCount++;
         System.out.println(outputLog);
     }

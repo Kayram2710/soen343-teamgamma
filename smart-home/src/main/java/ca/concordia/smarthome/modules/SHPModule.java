@@ -3,6 +3,7 @@ package ca.concordia.smarthome.modules;
 import ca.concordia.smarthome.AwayMode;
 import ca.concordia.smarthome.layout.House;
 import ca.concordia.smarthome.layout.MotionDetector;
+import ca.concordia.smarthome.layout.Room;
 
 import org.bson.types.ObjectId;
 import org.json.JSONArray;
@@ -90,6 +91,32 @@ public class SHPModule {
     @GetMapping("/sendAlert")
     public void sendAlert(){
         House.alertAuthortities();
+    }
+
+    @GetMapping("/checkForFire")
+    public boolean checkForFire(){
+        House.getInstance();
+        boolean fireDetected = false;
+        for(Room room : House.getRooms()){
+            if(room.getZone().getThermostat().getCurrentTemp() >= 135){
+                House.getMediator().output("Fire", room);
+                fireDetected=true;
+            }
+        }
+        return fireDetected;
+    }
+
+    @GetMapping("/checkForStartingFire")
+    public boolean checkForStartingFire(){
+        House.getInstance();
+        boolean fireDetected = false;
+        for(Room room : House.getRooms()){
+            if(room.getZone().getThermostat().getCurrentTemp() - room.getPrevTemperature() >= 15){
+                House.getMediator().output("Fire is starting", room);
+                fireDetected=true;
+            }
+        }
+        return fireDetected;
     }
 
 }

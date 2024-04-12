@@ -72,6 +72,28 @@ export const triggerAlertStalling = async (seconds) => {
     }
 };
 
+export const checkForFire = async () => {
+  try {
+    const response = await axios.get(`api/v1/shp/checkForFire`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error checking for fire:", error);
+    throw error;
+  }
+};
+
+export const checkForFireStarting = async () => {
+  try {
+    const response = await axios.get(`api/v1/shp/checkForStartingFire`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error checking for fire:", error);
+    throw error;
+  }
+};
+
 //Same as triggerAlertStalling except it does not run any timer on the back end
 //In case you want to to run a timer on the front end instead
 export const triggerAlert = async () => {
