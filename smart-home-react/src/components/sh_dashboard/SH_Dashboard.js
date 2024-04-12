@@ -23,6 +23,7 @@ import Shh from "../shh/Shh";
 import "./SH_Dashboard.css";
 import Shp from "../shp/Shp";
 import Console from "./Console";
+import EventLog from "./EventLog";
 
 const SH_Dashboard = ({ user }) => {
   // --> Variables and Use States ########################################################
@@ -355,8 +356,8 @@ const SH_Dashboard = ({ user }) => {
           <b>My Smart Home Dashboard</b>
         </div>
 
-        <div id="dashboardMiddleCtn" className="grid">
-          <div id="dashboardProfileCtn" className="flex f-col justify-center">
+        <div id="dashboardMiddleCtn" className="grid" >
+          <div id="dashboardProfileCtn" className="flex f-col justify-center" style={{ maxHeight: '700px', overflow: 'auto' }}> 
             <div
               className="p-4 flex f-col gap-2"
               style={{ justifyContent: "space-between", minHeight: "100%" }}
@@ -573,7 +574,7 @@ const SH_Dashboard = ({ user }) => {
         </div>
 
         <div id="dashboardBottomCtn">
-          <Console/>
+          <Console/><EventLog/>
         </div>
       </div>
       <SettingsModal isOpen={isSettingsModalOpen} settings={settings} />

@@ -4,12 +4,12 @@ import "./SH_Dashboard.css";
 
 
 const Console = () => {
-    const [latestOutput, setLatestOutput] = useState('');
+    const [latestEvent, setLatestEvent] = useState('');
 
     const captureEvents = async () => {
         try {
-            const latestOutputResult = await getLatestOutput();
-            setLatestOutput(`\n${latestOutputResult}`);
+            const latestEvent = await getLatestOutput();
+            setLatestEvent(latestEvent);
         } catch (error) {
             console.error("Error capturing events:", error);
         }
@@ -26,7 +26,7 @@ const Console = () => {
             id="shdOutputConsole"
             className="flex align-center justify-center"
           >
-            {latestOutput && <p>{latestOutput}</p>}
+            <p>{latestEvent}</p>
           </div>
     );
 }

@@ -115,12 +115,13 @@
 #dashboardBottomCtn {
     height: 10vh;
     padding: 0 3rem;
+    background: #FFF;
+    
 }
 
 #shdOutputConsole {
-    background: #FFF;
-    height: 100%;
-    width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #simulationCtn {
