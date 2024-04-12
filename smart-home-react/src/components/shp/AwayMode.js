@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import {checkForFire} from "./shpApi";
+import {checkForFire, checkForFireStarting} from "./shpApi";
 import { useState } from "react";
 import "./AwayMode.css";
 
@@ -32,8 +32,9 @@ const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnab
       });
     if (awayModeEnabled) {
       const intervalId = setInterval(async () => {
-        let result = await checkForFire();
-        if(result){
+        let fire = await checkForFire();
+        let startingFire = await checkForFireStarting();
+        if(result || startingFire){
           handleAwayModeToggle();
         }
       }, 1000);

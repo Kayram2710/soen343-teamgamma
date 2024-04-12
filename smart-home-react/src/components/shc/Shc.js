@@ -80,7 +80,7 @@ const Shc = () => {
     return window.style.backgroundColor === "red";
   };
   return (
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg" style={{ maxHeight: '510px', overflow: 'auto' }} >
       <table class="w-full text-sm text-left rtl:text-right">
         <thead class="text-xs uppercase" style={{ color: "white" }}>
           <tr>

@@ -25,9 +25,8 @@ public class Notifier implements Mediator{
 
     public String getLastest(){
         String[] events = outputLog.split("\n");
-        String lastevent = events[events.length - 1];
-        String latest = lastevent.split(": ")[0] + lastevent.split(":")[1];
-        return latest;
+        String result = events[events.length - 1];
+        return result;
     }
 
     public void outputEvent(String event){
