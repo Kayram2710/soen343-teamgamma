@@ -16,7 +16,7 @@ const Console = () => {
     };
 
     useEffect(() => {
-        const interval = setInterval(captureEvents, 5000);
+        const interval = setInterval(captureEvents, 100);
         return () => clearInterval(interval);
     }, []);
 
