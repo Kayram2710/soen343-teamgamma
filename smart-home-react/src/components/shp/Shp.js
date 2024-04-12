@@ -33,11 +33,9 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
 
     const handleCreateSensor = async (e) => {
         e.preventDefault();
-    
             try {
                 await addMotionSensor(newSensorX,newSensorY);
                 fetchSensors();
-                captureEvents();
                 console.log(`Motion Sensor Added at location x=${newSensorX} and y=${newSensorY}`);
             } catch (error) {
                 console.error("Error adding sensor:", error);
@@ -46,6 +44,13 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
 
     const checkTrigger = async (index) => {
         await triggerSensor(index);
+        if(alert){
+            if (alertTime === null || isNaN(alertTime)) {
+                await triggerAlertStalling(0);
+            } else {
+                await triggerAlertStalling(alertTime);
+            }
+        }
     };
 
     return (
@@ -77,7 +82,7 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
             <ul style={{ maxHeight: '280px', overflow: 'auto' }}>
                 {sensors.map((sensor, index) => (
                 <li key={index}>
-                    <h3>Sensor {index}:</h3>
+                    <h3>Sensor {index+1}:</h3>
                     <p>X position = {sensor.positionX} Y position = {sensor.positionY}   
                     <button onClick={() => checkTrigger(index)} className="rounded bg-green-500 text-white px-1 mx-4">Trigger Sensor</button>
                     </p>
@@ -86,19 +91,20 @@ const Shp = ({ shpDoors, shpWindows, awayModeSet, awayModeVar }) => {
                 ))}
             </ul>
             <label>
-                <p className="font-bold" >Alert Authorities When Sensor Trigger:</p>
+                <p className="font-bold" >Alert Authorities When Sensor Trigger:
                 <input 
                 type="checkbox" 
                 checked={alert} 
                 onChange={handleToggle} 
                 style={{ marginLeft: '10px' }} 
-                />
+                /></p>
             </label>
             <div style={{ opacity: alert ? 1 : 0.5 }} >
                 Alert Authorities After: 
                 <input 
                     min={0} 
                     type="number" 
+                    placeholder="0"
                     value={alertTime} 
                     onChange={handleAlertTimeChange} 
                     style={{ border: "2px solid #000000", width: '10%'}} 
