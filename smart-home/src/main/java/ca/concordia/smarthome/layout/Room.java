@@ -9,7 +9,7 @@ import ca.concordia.smarthome.communication.Notifier;
 public class Room extends HouseComponent{
     int width;
     int height;
-    int temperature;
+    int prevTemp;
     boolean isRoomEmpty;
     String name;
     @JsonBackReference
@@ -20,12 +20,12 @@ public class Room extends HouseComponent{
         return this.isRoomEmpty;
     }
 
-    public int getTemperature() {
-        return this.temperature;
+    public int getPrevTemperature() {
+        return this.prevTemp;
     }
 
-    public void setTemperature(int temperature) {
-        this.temperature = temperature;
+    public void setPrevTemperature(int temperature) {
+        this.prevTemp = temperature;
     }
 
     public boolean getIsRoomEmpty() {
@@ -71,14 +71,6 @@ public class Room extends HouseComponent{
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public int getTemp(){
-        return temperature;
-    }
-
-    public void setTemp(int temp){
-        this.temperature = temp;
     }
 
     public Zone getZone(){

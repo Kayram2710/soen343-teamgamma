@@ -576,7 +576,7 @@ const SH_Dashboard = ({ user }) => {
             id="shdOutputConsole"
             className="flex align-center justify-center"
           >
-            <h3>Output Console</h3>
+            <h3 id="Output">Output Console</h3>
           </div>
         </div>
       </div>

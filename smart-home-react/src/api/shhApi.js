@@ -62,3 +62,14 @@ export const getAllZones = async () => {
       throw error;
     }
   }
+
+  export const setPrevTemp= async () => {
+    try {
+      const response = await axios.get(`/api/v1/sshmodule/setPrevTemps`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error setting previous Temps", error);
+      throw error;
+    }
+  };

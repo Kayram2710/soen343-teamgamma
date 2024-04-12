@@ -77,5 +77,16 @@ export const triggerAlert = async (seconds) => {
     }
 };
 
+export const checkForFire = async () => {
+  try {
+    const response = await axios.get(`api/v1/shp/checkForFire`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error checking for fire:", error);
+    throw error;
+  }
+};
+
   
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllRooms, getAllZones, updateTemps, removeZone, toggleThermo, getAllWindows } from '../../api/shhApi';
+import { getAllRooms, getAllZones, updateTemps, removeZone, toggleThermo, getAllWindows, setPrevTemp} from '../../api/shhApi';
 import { Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -64,6 +64,7 @@ const Shh = () => {
         const [date, time] = dateTimeMatch[0].split(' ');
 
         previousTime = new Date(`${date} ${time}`);
+
         const observer = new MutationObserver(async () => {
             if (!isZoneModalOpen) {
 
@@ -77,6 +78,10 @@ const Shh = () => {
                 updateWindows();
 
                 console.log(isZoneModalOpen);
+                if (previousTime && (currentTime - previousTime) / (1000 * 60) >= 1) {
+                    setPrevTemp();
+                }
+
                 if (previousTime && (currentTime - previousTime) / (1000 * 60) >= 15) {
                     updateTemps();
                     fetchZones();

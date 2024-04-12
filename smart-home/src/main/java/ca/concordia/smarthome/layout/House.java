@@ -141,8 +141,8 @@ public class House {
         return house.sensors;
     }
 
-    public Notifier getMediator(){
-        return mediator;
+    public static Notifier getMediator(){
+        return house.mediator;
     }
 
     public static void toggleDoor(int index) {
