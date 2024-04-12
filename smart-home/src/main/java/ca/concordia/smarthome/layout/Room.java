@@ -1,5 +1,9 @@
 package ca.concordia.smarthome.layout;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ca.concordia.smarthome.communication.Notifier;
 
 public class Room extends HouseComponent{
@@ -8,7 +12,13 @@ public class Room extends HouseComponent{
     int temperature;
     boolean isRoomEmpty;
     String name;
+    @JsonBackReference
     Zone zone;
+    public Room(){}
+
+    public boolean isIsRoomEmpty() {
+        return this.isRoomEmpty;
+    }
 
     public int getTemperature() {
         return this.temperature;
@@ -35,6 +45,7 @@ public class Room extends HouseComponent{
         this.height = height;
         this.zone = zone;
         this.isRoomEmpty = true;
+        zone.addRoom(this);
     }
 
     public Room(String name,int positionX, int positionY, int width, int height, Zone zone, Notifier mediator) {
@@ -43,6 +54,7 @@ public class Room extends HouseComponent{
         this.height = height;
         this.zone = zone;
         this.name = name;
+        zone.addRoom(this);
     }
 
     public int getWidth() {
@@ -75,9 +87,14 @@ public class Room extends HouseComponent{
 
     public void setZone(Zone zone){
         this.zone = zone;
+        zone.addRoom(this);
     }
 
     public String getName(){
         return name;
+    }
+
+    public void removeZone(){
+        this.zone = null;
     }
 }

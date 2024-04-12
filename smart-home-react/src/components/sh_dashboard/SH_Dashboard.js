@@ -322,12 +322,13 @@ const SH_Dashboard = ({ user }) => {
 
     var season = getSeason(settings.date);
 
+    await startSim(indoorTemperature,outdoorTemperature);
     var doorElements = document.querySelectorAll(".door");
     setDoors(Array.from(doorElements));
     var windowElements = document.querySelectorAll(".window");
     setWindows(Array.from(windowElements));
 
-    await startSim();
+    //await startSim();
     await updateTemp(indoorTemperature, outdoorTemperature, season);
     //console.log("started");
   };
@@ -408,12 +409,7 @@ const SH_Dashboard = ({ user }) => {
                 >
                   <p>Outside Temp: </p>
                   <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>{outdoorTemperature}˚C</p>
-                    <FontAwesomeIcon icon={faCloud} />
-                  </div>
-                  <p>Indoor Temp: </p>
-                  <div className="flex align-center" style={{ gap: "0.25rem" }}>
-                    <p>{indoorTemperature}˚C</p>
+                    <p id='outdoorTemp'>{outdoorTemperature}˚C</p>
                     <FontAwesomeIcon icon={faCloud} />
                   </div>
                 </div>

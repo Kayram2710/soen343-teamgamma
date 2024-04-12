@@ -36,10 +36,11 @@ public class LayoutController {
 
     @PostMapping("/parse-layout")
     public String parseLayout(@RequestBody String jsonData) {
-
-        Zone main_zone = new Zone();
-        House.getInstance().addZone(main_zone);
-
+        House.getInstance();
+        House.clear();
+        Zone main_zone = new Zone("Main Zone");
+        House.addZone(main_zone);
+        
         JsonHandler roomHandler = new RoomHandler();
         JsonHandler lightHandler = new LightHandler();
         JsonHandler doorHandler = new DoorHandler();
@@ -55,43 +56,7 @@ public class LayoutController {
         for (Object room : rooms) {
             roomHandler.handle((JSONObject) room, htmlBuilder);
         }
-        House.getInstance();
         return htmlBuilder.toString();
     }
 
-    @GetMapping("/toggleDoor/{id}")
-    public String toggleDoor(@PathVariable ObjectId id) {
-        House.getInstance();
-        for (Door door : House.getDoors()) {
-            if (door.getId().toString().equals(id.toString())) {
-                door.setIsClosed(!door.getIsClosed());
-                return "Success";
-            }
-        }
-        return "Failed";
-    }
-
-    @GetMapping("/toggleWindow/{id}")
-    public String toggleWindow(@PathVariable ObjectId id) {
-        House.getInstance();
-        for (Window window : House.getWindows()) {
-            if (window.getId().toString().equals(id.toString())) {
-                window.setIsClosed(!window.getIsClosed());
-                return "Success";
-            }
-        }
-        return "Failed";
-    }
-
-    @GetMapping("/obstructWindow/{id}")
-    public String obstructWindow(@PathVariable ObjectId id) {
-        House.getInstance();
-        for (Window window : House.getWindows()) {
-            if (window.getId().toString().equals(id.toString())) {
-                window.setIsObstructed(!window.getIsObstructed());
-                return "Success";
-            }
-        }
-        return "Failed";
-    }
 }

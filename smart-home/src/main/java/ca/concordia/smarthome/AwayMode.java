@@ -23,9 +23,9 @@ public class AwayMode {
         this.enabled = enabled;
     }
 
-    public List<ObjectId> closeDoors() {
+    public List<String> closeDoors() {
         House.getInstance();
-        List<ObjectId> closedDoorsIds = new ArrayList<>();
+        List<String> closedDoorsIds = new ArrayList<>();
 
         for (Door door : House.getDoors()) {
             if (!(door.getIsClosed())) {
@@ -37,9 +37,9 @@ public class AwayMode {
 
         return closedDoorsIds;
     }
-    public List<ObjectId> closeWindows() {
+    public List<String> closeWindows() {
         House.getInstance();
-        List<ObjectId> closedWindowsIds = new ArrayList<>();
+        List<String> closedWindowsIds = new ArrayList<>();
 
         for (Window window : House.getWindows()) {
             if (!(window.getIsClosed())) {

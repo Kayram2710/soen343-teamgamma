@@ -15,7 +15,7 @@ public class zoneTest {
     @Before
     public void setup(){ 
         house = House.getInstance();
-        zone = new Zone();
+        zone = new Zone("test");
         house.addZone(zone);
     }
 

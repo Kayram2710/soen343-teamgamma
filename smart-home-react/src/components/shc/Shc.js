@@ -36,26 +36,28 @@ const Shc = () => {
     setLights(Array.from(lightElements));
     setWindows(Array.from(windowElements));
   };
-
-  const handleToggle = async (element) => {
-    if (element.classList.contains("door")) {
-      await toggleDoor(element.id);
-      updateTogglingUI(element);
-    } else if (element.classList.contains("light")) {
-      await toggleLight(element.id);
-      console.log(
-        window.getComputedStyle(element).getPropertyValue("background-color")
-      );
-      if (element.style.backgroundColor === "yellow") {
-        element.style.backgroundColor = "black";
-      } else {
-        element.style.backgroundColor = "yellow";
-      }
-    } else if (element.classList.contains("window")) {
-      await toggleWindow(element.id);
-      updateTogglingUI(element);
-    }
-  };
+    const handleToggle = async (element) => {
+        if (element.classList.contains('door')) {
+            await toggleDoor(element.id);
+            updateTogglingUI(element);
+        } else if (element.classList.contains('light')) {
+            await toggleLight(element.id);
+            console.log(window.getComputedStyle(element).getPropertyValue('background-color'))
+            if (element.style.backgroundColor === 'yellow') {
+                element.style.backgroundColor = 'black';
+            } else {
+                element.style.backgroundColor = 'yellow';
+            }
+        } else if (element.classList.contains('window')) {
+            await toggleWindow(element.id);
+            if(element.getAttribute('isClosed') === 'false'){
+                element.setAttribute('isClosed','true');
+            }else{
+                element.setAttribute('isClosed','false');
+            }
+            updateTogglingUI(element);
+        }
+    };
 
   const handleObstruct = async (element) => {
     await obstructWindow(element.id);

@@ -2,13 +2,17 @@ package ca.concordia.smarthome.layout;
 
 import org.bson.types.ObjectId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ca.concordia.smarthome.communication.Notifier;
 
 public abstract class HouseComponent {
     private ObjectId id;
     private int positionX;
     private int positionY;
+    public HouseComponent(){}
 
+    @JsonIgnore
     protected Notifier mediator;
 
     public HouseComponent(int positionX, int positionY, Notifier mediator) {
@@ -18,8 +22,8 @@ public abstract class HouseComponent {
         this.id = new ObjectId();
     }
 
-    public ObjectId getId() {
-        return this.id;
+    public String getId() {
+        return this.id.toString();
     }
     
     public int getPositionX() {

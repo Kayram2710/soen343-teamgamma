@@ -23,8 +23,8 @@ public class SHPModule {
         if (mode.equals("true")) {
             House.setAwayMode(true);
 
-            List<ObjectId> closedDoorsIds = House.getAwayMode().closeDoors(); // Close doors and retrieve list of doors just closed.
-            List<ObjectId> closedWindowsIds = House.getAwayMode().closeWindows(); // Close windows and retrieve list of windows just closed.
+            List<String> closedDoorsIds = House.getAwayMode().closeDoors(); // Close doors and retrieve list of doors just closed.
+            List<String> closedWindowsIds = House.getAwayMode().closeWindows(); // Close windows and retrieve list of windows just closed.
 
             System.out.println("Closed doors: " + closedDoorsIds);
             System.out.println("Closed windows: " + closedWindowsIds);

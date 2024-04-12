@@ -11,11 +11,33 @@ public class Thermostat {
     private boolean isHeatingOn;
     private boolean isCoolingOn;
 
-    private Timer temperatureAdjustmentTimer;
-
     public Thermostat() {
         isHeatingOn = false;
         isCoolingOn = false;
+    }
+
+    public boolean isIsHeatingOn() {
+        return this.isHeatingOn;
+    }
+
+    public boolean getIsHeatingOn() {
+        return this.isHeatingOn;
+    }
+
+    public void setIsHeatingOn(boolean isHeatingOn) {
+        this.isHeatingOn = isHeatingOn;
+    }
+
+    public boolean isIsCoolingOn() {
+        return this.isCoolingOn;
+    }
+
+    public boolean getIsCoolingOn() {
+        return this.isCoolingOn;
+    }
+
+    public void setIsCoolingOn(boolean isCoolingOn) {
+        this.isCoolingOn = isCoolingOn;
     }
 
     public int getCurrentTemp() {
@@ -43,53 +65,58 @@ public class Thermostat {
     }
 
     public void turnOnCooling() {
-        stopTemperatureAdjustment();
-        startTemperatureAdjustmentTimer();
         this.isCoolingOn = true;
         this.isHeatingOn = false;
     }
 
     public void turnOffCooling() {
-        stopTemperatureAdjustment();
         this.isCoolingOn = false;
     }
 
     public void turnOnHeating() {
-        stopTemperatureAdjustment();
-        startTemperatureAdjustmentTimer();
         this.isCoolingOn = false;
         this.isHeatingOn = true;
     }
 
     public void turnOffHeating() {
-        stopTemperatureAdjustment();
         this.isHeatingOn = false;
     }
+    public void toggle(){
+        if(isHeatingOn)
+            turnOffHeating();
+        else if(isCoolingOn)
+            turnOnCooling();
+        else{
+            if(currentTemp < goalTemp)
+                turnOnHeating();
+            else if(currentTemp > goalTemp)
+                turnOnCooling();
+        }
+    }
+    public void updateTemperature() {
 
-    private void updateTemperature() {
+        House.getInstance();
+        if(House.getSeason().equalsIgnoreCase("summer")){
+            if(outsideTemp < currentTemp){
+                turnOffCooling();
+                turnOffHeating();
+                House.openAllWindows();
+            }
+        }else if(House.getSeason().equalsIgnoreCase("winter")){
+            if(House.isHouseEmpty()){
+                House.getThermostat().setGoalTemp(17);
+            }
+        }
+
         if (isHeatingOn && currentTemp < goalTemp) {
             currentTemp++;
         } else if (isCoolingOn && currentTemp > goalTemp) {
             currentTemp--;
+        }else{
+            turnOffCooling();
+            turnOffHeating();
         }
 
-        System.out.println("Current Temperature: " + currentTemp);
-    }
 
-    private void startTemperatureAdjustmentTimer() {
-        temperatureAdjustmentTimer = new Timer();
-        temperatureAdjustmentTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                updateTemperature();
-            }
-        }, 0, 15 * 60 * 1000); // Adjust temperature every 15 minutes
-    }
-
-    public void stopTemperatureAdjustment() {
-        if (temperatureAdjustmentTimer != null) {
-            temperatureAdjustmentTimer.cancel();
-            temperatureAdjustmentTimer = null;
-        }
     }
 }
