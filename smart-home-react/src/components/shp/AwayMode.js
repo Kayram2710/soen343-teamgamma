@@ -34,7 +34,7 @@ const AwayMode = ({ layoutDoors, layoutWindows, setAwayModeEnabled, awayModeEnab
       const intervalId = setInterval(async () => {
         let fire = await checkForFire();
         let startingFire = await checkForFireStarting();
-        if(result || startingFire){
+        if(fire || startingFire){
           handleAwayModeToggle();
         }
       }, 1000);
