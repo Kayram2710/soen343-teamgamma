@@ -25,6 +25,7 @@ class AwayModeTest {
         House.reset();
     }
 
+    // Testing setting away mode on.
     @Test
     void setAwayMode() {
         AwayMode awayMode = new AwayMode();
